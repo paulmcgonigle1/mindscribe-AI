@@ -7,17 +7,20 @@ from rest_framework import viewsets
 
 
 # Create your views here.
-# Add this view temporarily to test your URL configuration.
-def test_view(request):
-    return JsonResponse({"status": "ok"}, safe=False)
 
 
 class JournalEntryViewSet(viewsets.ModelViewSet):
-    queryset = JournalEntry.objects.all()
     serializer_class = JournalEntrySerializer
+    queryset = JournalEntry.objects.all()
+
+    def get_queryset(self):
+        queryset = JournalEntry.objects.all()
+        user_id = self.request.query_params.get("user")
+        if user_id is not None:
+            queryset = queryset.filter(user=user_id)
+        return queryset
 
 
-# just creating a test view
 class MoodEntryListCreate(generics.ListCreateAPIView):
     queryset = MoodEntry.objects.all()
     serializer_class = MoodEntrySerializer
