@@ -43,7 +43,7 @@ export default function Sidebar() {
     <div className="bg-neutral-900 w-60 p-3 flex flex-col text-white">
       <div className="flex items-center gap-2 px-1 py-3">
         <FcBullish />
-        <span className="text-neutral-180 text-lg">Openshop</span>
+        <span className="text-neutral-180 text-lg">MindScribe AI</span>
       </div>
       <div className="flex-1 py-8 flex flex-col gap-8">
         {DASHBOARD_SIDEBAR_LINKS.map((item) => (
