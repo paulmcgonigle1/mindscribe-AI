@@ -99,6 +99,10 @@ class Insight(models.Model):
     )
     insightText = models.TextField()
     sentimentScore = models.FloatField()
+    mood = models.CharField(max_length=100, blank=True, null=True)
+    stressLevel = models.CharField(max_length=100, blank=True, null=True)
+    anxietyIndicator = models.TextField(blank=True, null=True)
+    keywords = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

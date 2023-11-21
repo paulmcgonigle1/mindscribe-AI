@@ -1,10 +1,11 @@
 export type JournalEntry = {
-    entryID: number;
-    user: {
-      id: string; // or number, depending on your User model
-      username: string;
-      // include any other fields from the User model that you need
-    };
-    timestamp: Date;
-    content: string;
-  };
+  entryID: number;
+  user: string|number;  
+  timestamp: Date;
+  content: string;
+};
+
+export type NewJournalEntry = {
+  user: string | number; // Assuming you only need to send the user ID
+  content: string;
+};

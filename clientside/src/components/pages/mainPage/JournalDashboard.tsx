@@ -7,7 +7,7 @@ import RecentJournals from "./RecentJournals";
 export default function JournalDashboard() {
   return (
     <div className="flex flex-col gap-4">
-      {/* <DashboardStatsGrid /> */}
+      <DashboardStatsGrid />
       <div className="flex flex-row gap-4 w-full">
         <JournalSection />
         <RecentJournals />

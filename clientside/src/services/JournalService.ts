@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -8,7 +8,8 @@ export const getRecentEntries = async (): Promise<JournalEntry[]> => {
     return response.data;
   };
 
-  export const createEntry = async (entry: JournalEntry): Promise<JournalEntry> => {
+  export const createEntry = async (entry: NewJournalEntry): Promise<NewJournalEntry> => {
+    console.log(entry);
     const response = await axios.post(`${BASE_URL}/myapp/journal-entries/`, entry);
     return response.data;
   };
