@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.translation import gettext_lazy as _
 
+default_user_id = 1  # Replace with an actual user ID from your database
+
 
 # inherits AbstractUser --djangos built-in user model providing authentication fields
 class User(AbstractUser):
@@ -94,16 +96,13 @@ class UserImprovement(models.Model):
 # Model for Insights derived from Journal Entries
 class Insight(models.Model):
     insightID = models.AutoField(primary_key=True)
-    entry = models.ForeignKey(
-        JournalEntry, on_delete=models.CASCADE, related_name="insights"
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="insights", default=default_user_id
     )
     insightText = models.TextField()
-    sentimentScore = models.FloatField()
-    mood = models.CharField(max_length=100, blank=True, null=True)
-    stressLevel = models.CharField(max_length=100, blank=True, null=True)
-    anxietyIndicator = models.TextField(blank=True, null=True)
     keywords = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
+        return f"Insight {self.insightID} by {self.user.username}"
         return f"Insight for Entry {self.entry.entryID}"

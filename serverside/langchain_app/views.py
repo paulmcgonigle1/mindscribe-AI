@@ -16,15 +16,11 @@ def process_entry(journal_entry):
     )
     schema = {
         "properties": {
-            "sentiment": {"type": "string"},
-            "emotions": {"type": "string"},
-            "stressLevel": {"type": "number"},
-            "anxietyIndicator": {"type": "number"},
-            "mood": {"type": "string"},
             "keywords": {"type": "string"},
+            "sentiments": {"type": "string"},
         },
         # You can adjust 'required' based on your essential insights
-        "required": ["sentiment", "emotions"],
+        "required": ["keywords", "sentiments"],
     }
 
     chain = create_extraction_chain(schema, llm)
@@ -34,12 +30,7 @@ def process_entry(journal_entry):
     for insight_data in insights_data:
         # Map the insight data to the Insight model's fields
         insight = Insight(
-            entry=journal_entry,
-            insightText=insight_data.get("insightText", ""),
-            sentimentScore=insight_data.get("sentimentScore", 0.0),
-            mood=insight_data.get("mood", ""),
-            stressLevel=insight_data.get("stressLevel", 0.0),
-            anxietyIndicator=insight_data.get("anxietyIndicator", 0.0),
+            insightText=insight_data.get("sentiments", "no sentiments found"),
             keywords=insight_data.get("keywords", ""),
         )
         insight.save()

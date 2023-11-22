@@ -1,10 +1,14 @@
 from django.shortcuts import render
+from django.utils import timezone
 from rest_framework import generics
-from .models import MoodEntry, JournalEntry
-from .serializers import MoodEntrySerializer, JournalEntrySerializer
+from .models import MoodEntry, JournalEntry, Insight
+from .serializers import MoodEntrySerializer, JournalEntrySerializer, InsightSerializer
 from django.http import JsonResponse
 from rest_framework import viewsets, status
+from rest_framework.views import APIView
 from langchain_app.views import process_entry
+from rest_framework.response import Response
+
 import logging
 
 # Create your views here.
@@ -34,3 +38,11 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
 class MoodEntryListCreate(generics.ListCreateAPIView):
     queryset = MoodEntry.objects.all()
     serializer_class = MoodEntrySerializer
+
+
+class DailyInsightsView(APIView):
+    def get(self, request, user_id, year, month, day):
+        date = timezone.datetime(year, month, day).date()
+        insights = Insight.objects.filter(user_id=user_id, timestamp__date=date)
+        serialized_insights = InsightSerializer(insights, many=True).data
+        return Response(serialized_insights)

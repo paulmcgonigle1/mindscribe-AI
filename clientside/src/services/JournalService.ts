@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -14,4 +14,10 @@ export const getRecentEntries = async (): Promise<JournalEntry[]> => {
     return response.data;
   };
 
+
+  export const getInsightbyDay = async (date: string, userId: number): Promise<Insight[]> => {
+    const [year, month, day] = date.split('-');
+    const response = await axios.get(`${BASE_URL}/myapp/daily-insights/${userId}/${year}/${month}/${day}/`);
+    return response.data;
+  }
 // Add more functions as needed for other API calls

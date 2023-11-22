@@ -9,3 +9,12 @@ export type NewJournalEntry = {
   user: string | number; // Assuming you only need to send the user ID
   content: string;
 };
+
+
+export type Insight = {
+  entryID: number;
+  insightText: string;
+  sentimentScore: number;
+  keywords: string;
+  mood: string;
+};
