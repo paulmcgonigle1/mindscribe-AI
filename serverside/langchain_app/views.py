@@ -4,6 +4,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from langchain.chains import create_extraction_chain
 from langchain.chat_models import ChatOpenAI
+from langchain.llms import openai
+from langchain.output_parsers import PydanticOutputParser
+from langchain.prompts import PromptTemplate
 import os
 import json
 
@@ -16,24 +19,34 @@ def process_entry(journal_entry):
     )
     schema = {
         "properties": {
+            "moods": {"type": "string"},
+            "sentiment": {"type": "string"},
             "keywords": {"type": "string"},
-            "sentiments": {"type": "string"},
+            "key_themes": {"type": "string"},
         },
-        # You can adjust 'required' based on your essential insights
-        "required": ["keywords", "sentiments"],
+        "required": ["moods", "sentiment", "key"],
     }
 
     chain = create_extraction_chain(schema, llm)
     insights_data = chain.run(journal_entry.content)
+    print("Insights data: ", insights_data)
+    print("Type of insights data: ", type(insights_data))
 
-    # Create and save insights
-    for insight_data in insights_data:
-        # Map the insight data to the Insight model's fields
-        insight = Insight(
-            insightText=insight_data.get("sentiments", "no sentiments found"),
-            keywords=insight_data.get("keywords", ""),
-        )
-        insight.save()
+    # Check if insights_data is a dictionary
+    if isinstance(insights_data, list):
+        # Process each dictionary of insights in the list
+        for insight_data in insights_data:
+            insight = Insight(
+                moods=insight_data.get("moods", "no moods found"),
+                sentiment=insight_data.get("sentiment", "no sentiments found"),
+                keywords=insight_data.get(
+                    "keywords", "no habits found"
+                ),  # Update this if 'habits' key exists
+                key_themes=insight_data.get("key_themes", "no themes"),
+            )
+            insight.save()
+    else:
+        print("Unexpected type for insights_data")
 
 
 @csrf_exempt

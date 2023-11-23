@@ -53,10 +53,16 @@ const Summary = () => {
           insights.map((insight: Insight, index: number) => (
             <div key={index} className="border-b last:border-b-0 py-2">
               <p className="text-sm text-gray-800">
-                <strong>Insight:</strong> {insight.insightText}
+                <strong>Moods:</strong> {insight.moods || "N/A"}
               </p>
               <p className="text-sm text-gray-600">
-                <strong>Keywords:</strong> {insight.keywords}
+                <strong>Sentiment:</strong> {insight.sentiment || "N/A"}
+              </p>
+              <p className="text-sm text-gray-600">
+                <strong>Keywords:</strong> {insight.keywords || "N/A"}
+              </p>
+              <p className="text-sm text-gray-600">
+                <strong>Themes:</strong> {insight.key_themes || "N/A"}
               </p>
             </div>
           ))

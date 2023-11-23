@@ -12,9 +12,14 @@ export type NewJournalEntry = {
 
 
 export type Insight = {
-  entryID: number;
-  insightText: string;
-  sentimentScore: number;
-  keywords: string;
-  mood: string;
+  insightID: number;
+  userID: number; // Assuming you want to track the user associated with the insight
+  timestamp: string; // The date and time when the insight was created
+
+  // New properties corresponding to the updated Django model
+  moods: string | null;
+  sentiment: string | null;
+  keywords: string | null;
+  key_themes: string | null;  
 };
+

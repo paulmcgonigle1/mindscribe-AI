@@ -44,7 +44,6 @@ class UserImprovementAdmin(admin.ModelAdmin):
 class InsightAdmin(admin.ModelAdmin):
     list_display = [
         "insightID",
-        "insightText",
         "keywords",
         "timestamp",
     ]  # Update these fields based on your current model

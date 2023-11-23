@@ -99,9 +99,12 @@ class Insight(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="insights", default=default_user_id
     )
-    insightText = models.TextField()
-    keywords = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    keywords = models.TextField(blank=True, null=True)
+    moods = models.TextField(blank=True, null=True)
+    sentiment = models.TextField(blank=True, null=True)
+    key_themes = models.TextField(blank=True, null=True)
+    # Add more fields here as needed
 
     def __str__(self):
         return f"Insight {self.insightID} by {self.user.username}"
