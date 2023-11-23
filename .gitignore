@@ -11,3 +11,5 @@ myenv/
 
 # Ignore production builds
 /frontend/build/
+
+.env

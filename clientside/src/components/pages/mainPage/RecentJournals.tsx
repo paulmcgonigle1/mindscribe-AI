@@ -19,17 +19,19 @@ const RecentJournals: React.FC = () => {
     fetchRecentEntries();
   }, []);
   return (
-    <div>
-      <h2>Recent Journal Entries</h2>
-      {recentEntries.map((entry) => {
-        const date = new Date(entry.timestamp);
-        return (
-          <div key={entry.entryID}>
-            <h3>{date.toLocaleDateString()}</h3>
-            <p>{entry.content.substring(0, 100)}...</p>
-          </div>
-        );
-      })}
+    <div className="flex flex-col max-h-96 overflow-auto">
+      <h2 className="text-lg font-bold mb-2">Recent Journal Entries</h2>
+      <div className="space-y-4">
+        {recentEntries.map((entry) => {
+          const date = new Date(entry.timestamp);
+          return (
+            <div key={entry.entryID} className="p-2 border rounded shadow-sm">
+              <h3 className="font-semibold">{date.toLocaleDateString()}</h3>
+              <p>{entry.content.substring(0, 100)}...</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

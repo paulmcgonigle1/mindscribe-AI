@@ -17,12 +17,13 @@ class InsightInline(admin.StackedInline):
 class UserAdmin(admin.ModelAdmin):
     list_display = ("username", "email", "is_staff")
     search_fields = ("username", "email")
+    inlines = [InsightInline]
 
 
 class JournalEntryAdmin(admin.ModelAdmin):
     list_display = ("entryID", "user", "timestamp")
     list_filter = ("timestamp",)
-    inlines = [EmotionInline, InsightInline]
+    inlines = [EmotionInline]
 
 
 class EmotionAdmin(admin.ModelAdmin):
@@ -41,8 +42,13 @@ class UserImprovementAdmin(admin.ModelAdmin):
 
 
 class InsightAdmin(admin.ModelAdmin):
-    list_display = ("insightID", "entry", "sentimentScore", "timestamp")
-    list_filter = ("sentimentScore",)
+    list_display = [
+        "insightID",
+        "keywords",
+        "timestamp",
+    ]  # Update these fields based on your current model
+
+    # list_filter = ("sentimentScore",)
 
 
 # Register each model with its respective admin class
