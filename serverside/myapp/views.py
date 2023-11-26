@@ -6,7 +6,7 @@ from .serializers import MoodEntrySerializer, JournalEntrySerializer, InsightSer
 from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
-from langchain_app.views import process_entry
+from langchain_app.views import create_plan_from_insights_insights, process_entry
 from rest_framework.response import Response
 
 import logging
@@ -46,3 +46,18 @@ class DailyInsightsView(APIView):
         insights = Insight.objects.filter(user_id=user_id, timestamp__date=date)
         serialized_insights = InsightSerializer(insights, many=True).data
         return Response(serialized_insights)
+
+
+class CreatePlanView(APIView):
+    def get(self, request, user_id):
+        # Get today's date
+        today = timezone.now().date()
+
+        # Fetch today's insights for the user
+        insights = Insight.objects.filter(user_id=user_id, timestamp__date=today)
+        serialized_insights = InsightSerializer(insights, many=True).data
+
+        # Create a mental health plan from today's insights
+        mental_health_plan = create_plan_from_insights_insights(serialized_insights)
+
+        return Response({"plan": mental_health_plan})

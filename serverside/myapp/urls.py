@@ -1,5 +1,6 @@
 from django.urls import path, include
 from .views import (
+    CreatePlanView,
     MoodEntryListCreate,
     JournalEntryViewSet,
     DailyInsightsView,
@@ -24,4 +25,5 @@ urlpatterns = [
         DailyInsightsView.as_view(),
         name="daily-insights",
     ),
+    path("create-plan/<int:user_id>/", CreatePlanView.as_view(), name="create-plan"),
 ]

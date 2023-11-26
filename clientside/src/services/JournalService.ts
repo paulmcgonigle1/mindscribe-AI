@@ -20,4 +20,11 @@ export const getRecentEntries = async (): Promise<JournalEntry[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/daily-insights/${userId}/${year}/${month}/${day}/`);
     return response.data;
   }
+
+  export const createMentalHealthPlan = async (userId: number): Promise<string> => {
+    const response = await axios.get(`${BASE_URL}/myapp/create-plan/${userId}/`);
+    return response.data.plan;
+}
+
+
 // Add more functions as needed for other API calls
