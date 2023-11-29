@@ -23,3 +23,7 @@ export type Insight = {
   key_themes: string | null;  
 };
 
+export type  ImprovementData = {
+  plan: string;
+  createdAt: string | null;
+}

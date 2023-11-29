@@ -1,10 +1,9 @@
 from django.shortcuts import render
-from myapp.models import JournalEntry, Insight
+from myapp.models import JournalEntry, Insight, UserImprovement, User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from langchain.chains import create_extraction_chain
 from langchain.chat_models import ChatOpenAI
-
 from langchain.llms import openai
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
@@ -16,6 +15,8 @@ llm = ChatOpenAI(
     model="gpt-3.5-turbo",
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
+
+user_id = 1
 
 
 def process_entry(journal_entry):
@@ -56,18 +57,26 @@ def interact_with_llm(prompt):
     response = llm.invoke(prompt)
     # Debugging: Print the response object to understand its structure
     print("Response object:", response)
-    print("Response object type:", type(response))
+
     return response.content.strip()
 
 
-def create_plan_from_insights_insights(insights):
+def create_plan_from_insights(insights, user_id):
     formatted_insights = format_insights_for_prompt(insights)
-
     # create prompt
     prompt = create_prompt_with_insights(formatted_insights)
 
     # get mental health plan from openAI
     mental_health_plan = interact_with_llm(prompt)
+
+    # Save mental_health_plan to UserImprovement database
+
+    user_improvement = UserImprovement(
+        user=User.objects.get(id=user_id),
+        tipType="recommendation",
+        tipText=mental_health_plan,
+    )
+    user_improvement.save()
 
     return mental_health_plan
 
