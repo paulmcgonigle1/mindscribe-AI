@@ -42,6 +42,7 @@ class JournalEntry(models.Model):
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
+    moodRating = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Journal Entry {self.entryID} by {self.user.username}"

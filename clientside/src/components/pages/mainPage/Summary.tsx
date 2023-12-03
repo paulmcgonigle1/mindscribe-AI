@@ -32,7 +32,7 @@ const Summary = () => {
   };
 
   return (
-    <div className="flex flex-col max-h-60 items-center justify-center space-y-4 mb-8 ">
+    <div className="flex flex-col items-center justify-center space-y-4 mb-8 ">
       <div className="flex space-x-2">
         <button
           onClick={() => changeDay(-1)}
@@ -48,12 +48,12 @@ const Summary = () => {
           Next
         </button>
       </div>
-      <div className="w-full max-w-2xl max-h-64 overflow-auto bg-white rounded shadow-md p-4 border border-gray-300">
+      <div className="w-full max-w-2xl max-h-72 overflow-auto bg-white rounded shadow-md p-4 border border-gray-300">
         {insights.length > 0 ? (
           insights.map((insight: Insight, index: number) => (
             <div key={index} className="border-b last:border-b-0 py-2">
               <p className="text-sm text-gray-800">
-                <strong>Moods:</strong> {insight.moods || "N/A"}
+                <strong>Emotions:</strong> {insight.moods || "N/A"}
               </p>
               <p className="text-sm text-gray-600">
                 <strong>Sentiment:</strong> {insight.sentiment || "N/A"}

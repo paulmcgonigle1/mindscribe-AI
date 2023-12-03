@@ -8,6 +8,7 @@ export type JournalEntry = {
 export type NewJournalEntry = {
   user: string | number; // Assuming you only need to send the user ID
   content: string;
+  moodRating: number; 
 };
 
 
@@ -23,3 +24,7 @@ export type Insight = {
   key_themes: string | null;  
 };
 
+export type  ImprovementData = {
+  plan: string;
+  createdAt: string | null;
+}

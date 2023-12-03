@@ -1,8 +1,10 @@
 from django.urls import path, include
 from .views import (
+    CreatePlanView,
     MoodEntryListCreate,
     JournalEntryViewSet,
     DailyInsightsView,
+    RecentMentalHealthPlanView,
 )  # Import your views here
 from rest_framework.routers import DefaultRouter
 from . import views
@@ -23,5 +25,11 @@ urlpatterns = [
         "daily-insights/<int:user_id>/<int:year>/<int:month>/<int:day>/",
         DailyInsightsView.as_view(),
         name="daily-insights",
+    ),
+    path("create-plan/<int:user_id>/", CreatePlanView.as_view(), name="create-plan"),
+    path(
+        "mental-health-plan/<int:user_id>/",
+        RecentMentalHealthPlanView.as_view(),
+        name="mental-health-plan",
     ),
 ]
