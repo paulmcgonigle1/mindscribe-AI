@@ -30,11 +30,11 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
         return response
 
     def get_queryset(self):
-        queryset = JournalEntry.objects.all()
-        user_id = self.request.query_params.get("user")
+        user_id = self.kwargs.get("user_id")  # Access user_id from URL parameters
         if user_id is not None:
-            queryset = queryset.filter(user=user_id)
-        return queryset
+            return JournalEntry.objects.filter(user=user_id)
+        print("Got journal Entries")
+        return JournalEntry.objects.all()
 
 
 class MoodEntryListCreate(generics.ListCreateAPIView):

@@ -3,6 +3,7 @@ export type JournalEntry = {
   user: string|number;  
   timestamp: Date;
   content: string;
+  moodRating: number;
 };
 
 export type NewJournalEntry = {

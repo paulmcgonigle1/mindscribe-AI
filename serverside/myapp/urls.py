@@ -22,6 +22,13 @@ urlpatterns = [
         name="mood-entries-list-create",
     ),
     path(
+        "journal-entries/user/<int:user_id>/",
+        views.JournalEntryViewSet.as_view(
+            {"get": "list"}
+        ),  # Specify the 'list' action for 'get' requests
+        name="user-journal-entries",
+    ),
+    path(
         "daily-insights/<int:user_id>/<int:year>/<int:month>/<int:day>/",
         DailyInsightsView.as_view(),
         name="daily-insights",

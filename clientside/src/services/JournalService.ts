@@ -7,9 +7,12 @@ export const getRecentEntries = async (): Promise<JournalEntry[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/journal-entries/`);
     return response.data;
   };
+  export const getEntriesByUser = async (userId: number): Promise<JournalEntry[]> => {
+    const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);
+    return response.data;
+  }
 
   export const createEntry = async (entry: NewJournalEntry): Promise<NewJournalEntry> => {
-    console.log(entry);
     const response = await axios.post(`${BASE_URL}/myapp/journal-entries/`, entry);
     return response.data;
   };
