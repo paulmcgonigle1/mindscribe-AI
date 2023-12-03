@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { createEntry } from "../../../services/JournalService";
 import { NewJournalEntry } from "../../../lib/types/types";
-export default function JournalSection() {
+
+interface JournalSectionProps {
+  moodRating: number | null;
+}
+export default function JournalSection({ moodRating }: JournalSectionProps) {
   const [entryText, setEntryText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
-    if (entryText) {
+    if (entryText && moodRating != null) {
       setIsLoading(true);
       try {
         const newEntry: NewJournalEntry = {
           user: 1, // Provide the user information here
           content: entryText,
+          moodRating: moodRating,
         };
 
         const response = await createEntry(newEntry);
@@ -26,9 +31,9 @@ export default function JournalSection() {
   };
   return (
     <>
-      <div className="w-1/2">
+      <div className="w-full">
         <textarea
-          className="w-full h-64 p-2 border border-gray-300 rounded-md"
+          className="w-full h-80 p-2 border border-gray-300 rounded-md"
           placeholder="Write your journal entry here..."
           value={entryText}
           onChange={(e) => setEntryText(e.target.value)}

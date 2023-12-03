@@ -6,7 +6,7 @@ from langchain.chains import create_extraction_chain
 from langchain.chat_models import ChatOpenAI
 from langchain.llms import openai
 from langchain.output_parsers import PydanticOutputParser
-from langchain.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate, ChatPromptTemplate
 import os
 import json
 
@@ -17,21 +17,37 @@ llm = ChatOpenAI(
 )
 
 user_id = 1
+user_name = "paul"
 
 
 def process_entry(journal_entry):
+    _CUSTOM_EXTRACTION_TEMPLATE = """
+    This is a journal entry from {user}, Extract and save the relevant entities mentioned \
+in the following passage together with their properties.
+Only extract the properties mentioned in the 'information_extraction' function.
+If a property is not present and is not required in the function parameters, do not include it in the output.
+Passage:
+{input}
+    """
+    # Create a dictionary with the required inputs
+    inputs = {
+        "user": user_name,  # The name of the user
+        "input": journal_entry.content,  # The content of the journal entry
+    }
+
     schema = {
         "properties": {
-            "moods": {"type": "string"},
+            "emotions": {"type": "string"},
             "sentiment": {"type": "string"},
             "keywords": {"type": "string"},
             "key_themes": {"type": "string"},
         },
-        "required": ["moods", "sentiment", "key"],
+        "required": ["emotions", "sentiment", "key_themes", "keywords"],
     }
+    extraction_prompt = ChatPromptTemplate.from_template(_CUSTOM_EXTRACTION_TEMPLATE)
 
-    chain = create_extraction_chain(schema, llm)
-    insights_data = chain.run(journal_entry.content)
+    chain = create_extraction_chain(schema, llm, verbose=True, prompt=extraction_prompt)
+    insights_data = chain.run(inputs)
     print("Insights data: ", insights_data)
     print("Type of insights data: ", type(insights_data))
 
@@ -40,7 +56,7 @@ def process_entry(journal_entry):
         # Process each dictionary of insights in the list
         for insight_data in insights_data:
             insight = Insight(
-                moods=insight_data.get("moods", "no moods found"),
+                moods=insight_data.get("emotions", "no emotions found"),
                 sentiment=insight_data.get("sentiment", "no sentiments found"),
                 keywords=insight_data.get(
                     "keywords", "no habits found"

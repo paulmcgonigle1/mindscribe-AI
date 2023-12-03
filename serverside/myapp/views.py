@@ -15,12 +15,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+# class for creating journals
 class JournalEntryViewSet(viewsets.ModelViewSet):
     serializer_class = JournalEntrySerializer
     queryset = JournalEntry.objects.all()
 
     def create(self, request, *args, **kwargs):
         response = super(JournalEntryViewSet, self).create(request, *args, **kwargs)
+        print("Response: ", response.data)
         if response.status_code == status.HTTP_201_CREATED:
             journal_entry_id = response.data.get("entryID")
             journal_entry = JournalEntry.objects.get(entryID=journal_entry_id)
@@ -74,9 +76,7 @@ class RecentMentalHealthPlanView(APIView):
             latest_plan = UserImprovement.objects.filter(
                 user_id=user_id, tipType="recommendation"
             ).latest("timestamp")
-            print("Latest plan: ", latest_plan)
-            print("Latest plan : ", latest_plan.tipText)
-            print("createdAt : ", latest_plan.timestamp)
+
             return Response(
                 {"plan": latest_plan.tipText, "created_at": latest_plan.timestamp}
             )

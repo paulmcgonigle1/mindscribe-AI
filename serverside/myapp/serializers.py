@@ -5,7 +5,7 @@ from .models import Insight, MoodEntry, JournalEntry  # Import other models as n
 class JournalEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = JournalEntry
-        fields = ["entryID", "user", "timestamp", "content"]
+        fields = ["entryID", "user", "timestamp", "content", "moodRating"]
 
 
 class MoodEntrySerializer(serializers.ModelSerializer):
