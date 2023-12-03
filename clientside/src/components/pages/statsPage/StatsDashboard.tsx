@@ -6,6 +6,7 @@ import BuyerProfileChart from "./BuyerProfileChart";
 import RecentOrders from "./RecentOrders";
 import PopularProducts from "./PopularProducts";
 import StreakChart from "./StreakChart";
+import MoodChart from "./MoodSection/MoodChart";
 export default function StatsDashboard() {
   return (
     <div className="flex flex-col gap-4">
@@ -16,7 +17,8 @@ export default function StatsDashboard() {
         <BuyerProfileChart />
       </div>
       <div className="flex flex-row gap-4 w-full">
-        <RecentOrders />
+        {/* <RecentOrders /> */}
+        <MoodChart />
         <PopularProducts />
       </div>
     </div>
