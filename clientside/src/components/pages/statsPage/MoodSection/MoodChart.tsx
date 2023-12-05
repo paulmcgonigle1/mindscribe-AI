@@ -32,13 +32,13 @@ function MoodChart() {
       try {
         //const userId = 1;
         const userEntries = await getRecentEntries(); //this needs to be updated to get entries for the user
-        console.log("Fetched entries:", userEntries); // Check the fetched entries
         setEntries(userEntries);
       } catch (error) {
         console.error("Error fetching recent entries:", error);
       }
     };
     fetchEntries();
+    console.log(entries);
   }, []);
 
   useEffect(() => {

@@ -32,18 +32,31 @@ function StreakChart() {
   //helper function to calculate streak
   const calculateStreak = (entries: JournalEntry[]): number => {
     if (entries.length === 0) return 0;
+
+    // Sort entries by timestamp in descending order
+    const sortedEntries = [...entries].sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
     let streak = 0;
     let currentDate = new Date();
-
-    for (let entry of entries) {
+    currentDate.setHours(0, 0, 0, 0); //normalize the date
+    //loop through the sorted entries
+    for (let entry of sortedEntries) {
       const entryDate = new Date(entry.timestamp);
-      if (entryDate.toDateString() === currentDate.toDateString()) {
+
+      //normalize the date
+      entryDate.setHours(0, 0, 0, 0);
+
+      //check if entry date matches the current date for the streak
+      if (entryDate.getTime() === currentDate.getTime()) {
         streak++;
         currentDate.setDate(currentDate.getDate() - 1);
       } else {
         break;
       }
     }
+    console.log("Streak:", streak);
     return streak;
   };
 
@@ -56,7 +69,6 @@ function StreakChart() {
       date.setDate(date.getDate() - i);
       dates.push(date);
     }
-    console.log("Last 7 days:", dates);
     return dates;
   };
 
@@ -82,8 +94,8 @@ function StreakChart() {
   };
   //inside the streakchart components return statement
   return (
-    <div className="bg-black p-4 rounded-lg">
-      <h1 className="text-white text-xl mb-4">Days in a Row : {streak}</h1>
+    <div className="  bg-white p-4 rounded-lg max-h-[300px] border border-gray-200">
+      <h1 className="text-black text-xl mb-2">Days in a Row : {streak}</h1>
       <div className="flex justify-between items-center">
         {daysStatus.map((entryExists, index) => {
           const day = getLast7Days()[index];
@@ -101,15 +113,16 @@ function StreakChart() {
               >
                 {entryExists ? "+" : "-"}
               </div>
-              <span className="text-white mt-1">{formatDay(day)}</span>
+              <span className="text-black mt-1">{formatDay(day)}</span>
             </div>
           );
         })}
       </div>
-      <div className="flex justify-center items-center mt-4">
+
+      <div className="flex justify-center items-center mt-2">
         <div className="flex items-center">
-          <span className="text-white">Longest Chain:</span>
-          <span className="text-yellow-400 ml-2">{streak}</span>
+          <span className="text-black">Longest Streak(needsUpdated):</span>
+          <span className="text-black-400 ml-2">{streak}</span>
         </div>
       </div>
     </div>

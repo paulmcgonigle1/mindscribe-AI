@@ -1,7 +1,7 @@
 import React from "react";
 
 import DashboardStatsGrid from "./DashboardStatsGrid";
-import TransactionChart from "./TransactionChart";
+import TransactionChart from "./MoodChartBar";
 import BuyerProfileChart from "./BuyerProfileChart";
 import RecentOrders from "./RecentOrders";
 import PopularProducts from "./PopularProducts";
@@ -9,8 +9,8 @@ import StreakChart from "./StreakChart";
 import MoodChart from "./MoodSection/MoodChart";
 export default function StatsDashboard() {
   return (
-    <div className="flex flex-col gap-4">
-      <DashboardStatsGrid />
+    <div className="flex flex-col gap-4 m-5">
+      {/* <DashboardStatsGrid /> */}
       <StreakChart />
       <div className="flex flex-row gap-4 w-full">
         <TransactionChart />

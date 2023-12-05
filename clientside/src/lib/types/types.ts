@@ -29,3 +29,8 @@ export type  ImprovementData = {
   plan: string;
   createdAt: string | null;
 }
+
+export type MoodChartData = {
+  date: string;
+  moodRating: number;
+} 
