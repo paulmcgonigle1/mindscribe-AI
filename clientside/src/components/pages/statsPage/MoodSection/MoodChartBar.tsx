@@ -14,31 +14,17 @@ import {
 import {
   getEntriesByUser,
   getRecentEntries,
-} from "../../../services/JournalService";
-import { JournalEntry, MoodChartData } from "../../../lib/types/types";
+} from "../../../../services/JournalService";
+import { JournalEntry, MoodChartData } from "../../../../lib/types/types";
 
-function MoodChart() {
-  const [data, setData] = useState<MoodChartData[]>([]);
-
-  useEffect(() => {
-    const fetchEntries = async () => {
-      try {
-        const moodData = await getRecentEntries();
-        const transformedData = transformMoodData(moodData);
-        setData(transformedData);
-      } catch (error) {
-        console.error("Error fetching mood entries:", error);
-      }
-    };
-    fetchEntries();
-  }, []);
-
+function MoodChartBar({ entries }: { entries: JournalEntry[] }) {
   const transformMoodData = (moodData: JournalEntry[]): MoodChartData[] => {
     return moodData.map((entry) => ({
       date: new Date(entry.timestamp).toLocaleDateString(),
       moodRating: entry.moodRating,
     }));
   };
+  const data = transformMoodData(entries);
 
   type MoodRatingColours = {
     [key: number]: string;
@@ -83,4 +69,4 @@ function MoodChart() {
   );
 }
 
-export default MoodChart;
+export default MoodChartBar;
