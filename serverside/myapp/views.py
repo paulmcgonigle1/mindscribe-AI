@@ -8,7 +8,7 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from langchain_app.views import create_plan_from_insights, process_entry
 from rest_framework.response import Response
-
+from datetime import timedelta  # Will be used for date range queries
 import logging
 
 # Create your views here.
@@ -86,3 +86,39 @@ class RecentMentalHealthPlanView(APIView):
                 {"error": "No mental health plan found for this user"},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+def get_emotion_statistics(request, user_id, days=7):
+    end_date = timezone.now()
+    start_date = end_date - timedelta(days=days)
+
+    insights = Insight.objects.filter(
+        user=user_id, timestamp__range=(start_date, end_date)
+    )
+
+    emotion_counts = {}
+    for insight in insights:
+        if insight.moods:
+            emotions = insight.moods.split(",")
+            for emotion in emotions:
+                normalized_emotion = (
+                    emotion.strip().lower()
+                )  # Normalize the emotion string
+                if normalized_emotion in emotion_counts:
+                    emotion_counts[normalized_emotion] += 1
+                else:
+                    emotion_counts[normalized_emotion] = 1
+
+    # Sort and limit the results
+    sorted_limited_emotion_data = sorted(
+        [
+            {"emotion": emotion, "count": count}
+            for emotion, count in emotion_counts.items()
+        ],
+        key=lambda x: x["count"],
+        reverse=True,
+    )[
+        :10
+    ]  # Adjust the number as needed
+
+    return JsonResponse(sorted_limited_emotion_data, safe=False)

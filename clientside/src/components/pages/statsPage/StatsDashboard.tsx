@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import DashboardStatsGrid from "./DashboardStatsGrid";
 import TransactionChart from "./MoodSection/MoodChartBar";
 import BuyerProfileChart from "./MoodPieChart";
-import RecentOrders from "./RecentOrders";
+import RecentOrders from "./EmotionGrid";
 import PopularProducts from "./PopularProducts";
 import StreakChart from "./StreakChart";
 import MoodChart from "./MoodSection/MoodStats";
@@ -13,6 +13,7 @@ import MoodAnalytics from "./MoodSection/MoodAnalytics";
 import { getRecentEntries } from "../../../services/JournalService";
 import { JournalEntry } from "../../../lib/types/types";
 import MoodPieChart from "./MoodPieChart";
+import EmotionGrid from "./EmotionGrid";
 export default function StatsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(7); // Default to last 7 days
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -56,7 +57,7 @@ export default function StatsDashboard() {
       </div>
       <div className="flex flex-row gap-4 w-full">
         <div className="flex flex-grow min-w-0">
-          <RecentOrders />
+          <EmotionGrid />
         </div>
         <div className="flex flex-grow min-w-0">
           <PopularProducts />

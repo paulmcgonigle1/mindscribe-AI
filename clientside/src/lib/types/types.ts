@@ -34,3 +34,8 @@ export type MoodChartData = {
   date: string;
   moodRating: number;
 } 
+
+export type EmotionData = { 
+  emotion: string;
+  count: number;
+}
