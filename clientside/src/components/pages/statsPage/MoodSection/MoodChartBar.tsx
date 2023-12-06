@@ -10,33 +10,30 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-import {
-  getEntriesByUser,
-  getRecentEntries,
-} from "../../../../services/JournalService";
 import { JournalEntry, MoodChartData } from "../../../../lib/types/types";
+import { filterEntriesByPeriod } from "../../../../lib/utils/filter-by-period";
+import { moodRatingColors } from "../../../../lib/constants/moodColors";
 
-function MoodChartBar({ entries }: { entries: JournalEntry[] }) {
+interface MoodStatsProps {
+  entries: JournalEntry[];
+  selectedPeriod: number;
+  onPeriodChange: (newPeriod: number) => void;
+}
+function MoodChartBar({
+  entries,
+  selectedPeriod,
+  onPeriodChange,
+}: MoodStatsProps) {
   const transformMoodData = (moodData: JournalEntry[]): MoodChartData[] => {
-    return moodData.map((entry) => ({
+    const filteredEntries = filterEntriesByPeriod(moodData, selectedPeriod);
+
+    return filteredEntries.map((entry) => ({
       date: new Date(entry.timestamp).toLocaleDateString(),
       moodRating: entry.moodRating,
     }));
   };
-  const data = transformMoodData(entries);
 
-  type MoodRatingColours = {
-    [key: number]: string;
-  };
-  const moodRatingColours: MoodRatingColours = {
-    //colors from red to green to display mood ratings
-    1: "#FF6347", // Tomato for rating 1
-    2: "#FFA500", // Orange for rating 2
-    3: "#FFD700", // Gold for rating 3
-    4: "#90EE90", // LightGreen for rating 4
-    5: "#32CD32", // LimeGreen for rating 5
-  };
+  const data = transformMoodData(entries);
 
   return (
     <div className="h-[22rem] bg-white p-4 rounded-sm border border-gray-200 flex flex-col flex-1">
@@ -58,7 +55,7 @@ function MoodChartBar({ entries }: { entries: JournalEntry[] }) {
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={moodRatingColours[entry.moodRating]}
+                  fill={moodRatingColors[entry.moodRating]}
                 />
               ))}
             </Bar>

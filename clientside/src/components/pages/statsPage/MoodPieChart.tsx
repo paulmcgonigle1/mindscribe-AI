@@ -1,15 +1,38 @@
 import React from "react";
 import { ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
+import { JournalEntry, MoodChartData } from "../../../lib/types/types";
+import { filterEntriesByPeriod } from "../../../lib/utils/filter-by-period";
+import { moodRatingColors } from "../../../lib/constants/moodColors";
+interface MoodPieChartProps {
+  entries: JournalEntry[];
+  selectedPeriod: number;
+  onPeriodChange: (newPeriod: number) => void;
+}
 
-const data = [
-  { name: "Male", value: 540 },
-  { name: "Female", value: 460 },
-  { name: "18-24", value: 200 },
-];
+// Helper function to transform entries into mood rating data for the PieChart
+const transformMoodDataToPieData = (
+  entries: JournalEntry[],
+  selectedPeriod: number
+) => {
+  const filteredEntries = filterEntriesByPeriod(entries, selectedPeriod);
+
+  const moodRatingCounts = filteredEntries.reduce((acc, entry) => {
+    const moodRating = entry.moodRating;
+    if (moodRating in acc) {
+      acc[moodRating] += 1;
+    } else {
+      acc[moodRating] = 1;
+    }
+    return acc;
+  }, {} as { [key: number]: number });
+
+  return Object.entries(moodRatingCounts).map(([moodRating, count]) => ({
+    name: moodRating,
+    value: count,
+  }));
+};
 
 const RADIAN = Math.PI / 180;
-const COLORS = ["#00C49F", "#FFBB28", "#FF8042"];
-
 interface CustomLabelProps {
   cx: number;
   cy: number;
@@ -43,11 +66,13 @@ function renderCustomizedLabel({
     </text>
   );
 }
+const moodColors = Object.values(moodRatingColors);
 
-function BuyerProfileChart() {
+function MoodPieChart({ entries, selectedPeriod }: MoodPieChartProps) {
+  const data = transformMoodDataToPieData(entries, selectedPeriod);
   return (
-    <div className="w-[20rem] h-[22rem] bg-white p-4 rounded-sm border border-gray-200 flex flex-col ">
-      <strong className="text-gray-7090 font-medium">Buyer Profile</strong>
+    <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
+      <h1 className=" text-lg">Buyer Profile</h1>
       <div className="w-full mt-3 flex-1 text-xs">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart width={400} height={300}>
@@ -64,7 +89,7 @@ function BuyerProfileChart() {
               {data.map((_, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+                  fill={moodColors[index % moodColors.length]}
                 />
               ))}
             </Pie>
@@ -76,4 +101,4 @@ function BuyerProfileChart() {
   );
 }
 
-export default BuyerProfileChart;
+export default MoodPieChart;

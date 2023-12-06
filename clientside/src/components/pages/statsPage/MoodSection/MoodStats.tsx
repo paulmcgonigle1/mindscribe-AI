@@ -5,17 +5,6 @@ import {
   getRecentEntries,
 } from "../../../../services/JournalService";
 
-// Helper function to filter entries by date
-function filterEntriesByDate(entries: JournalEntry[], days: number) {
-  const filteredEntries = entries.filter((entry) => {
-    const entryDate = new Date(entry.timestamp);
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - days);
-    return entryDate >= cutoffDate;
-  });
-  return filteredEntries;
-}
-
 // Helper function to calculate average mood
 function calculateAverageMood(entries: JournalEntry[]) {
   const moodSum = entries.reduce((acc, entry) => acc + entry.moodRating, 0);
@@ -34,6 +23,7 @@ function MoodStats({
   onPeriodChange,
 }: MoodStatsProps) {
   const averageMood = calculateAverageMood(entries);
+
   return (
     <div className="flex-1 mb-2">
       <h1 className="text-xl ">Mood Over Time</h1>
@@ -44,6 +34,10 @@ function MoodStats({
           value={selectedPeriod}
           onChange={(e) => onPeriodChange(Number(e.target.value))}
         >
+          <option value={1}>Last 1 Days</option>
+          <option value={2}>Last 2 Days</option>
+          <option value={3}>Last 3 Days</option>
+          <option value={4}>Last 4 Days</option>
           <option value={7}>Last 7 Days</option>
           <option value={30}>Last 30 Days</option>
           <option value={365}>Last Year</option>

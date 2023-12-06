@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import DashboardStatsGrid from "./DashboardStatsGrid";
 import TransactionChart from "./MoodSection/MoodChartBar";
-import BuyerProfileChart from "./BuyerProfileChart";
+import BuyerProfileChart from "./MoodPieChart";
 import RecentOrders from "./RecentOrders";
 import PopularProducts from "./PopularProducts";
 import StreakChart from "./StreakChart";
@@ -10,21 +10,51 @@ import MoodChart from "./MoodSection/MoodStats";
 import MoodChartBar from "./MoodSection/MoodChartBar";
 import MoodStats from "./MoodSection/MoodStats";
 import MoodAnalytics from "./MoodSection/MoodAnalytics";
+import { getRecentEntries } from "../../../services/JournalService";
+import { JournalEntry } from "../../../lib/types/types";
+import MoodPieChart from "./MoodPieChart";
 export default function StatsDashboard() {
+  const [selectedPeriod, setSelectedPeriod] = useState<number>(7); // Default to last 7 days
+  const [entries, setEntries] = useState<JournalEntry[]>([]);
+
+  useEffect(() => {
+    const fetchEntries = async () => {
+      try {
+        //const userId = 1;
+        const userEntries = await getRecentEntries(); //this needs to be updated to get entries for the user
+        setEntries(userEntries);
+      } catch (error) {
+        console.error("Error fetching recent entries:", error);
+      }
+    };
+    fetchEntries();
+    console.log(entries);
+  }, [selectedPeriod]);
+
+  const handlePeriodChange = (newPeriod: number) => {
+    setSelectedPeriod(newPeriod);
+  };
+
   return (
     <div className="flex flex-col gap-4 m-5">
       <StreakChart />
       <div className="flex flex-row gap-4 w-full">
-        {/* Use flex-grow for flexible sizing */}
         <div className="flex flex-grow min-w-0">
-          <MoodAnalytics />
+          <MoodAnalytics
+            entries={entries}
+            selectedPeriod={selectedPeriod}
+            onPeriodChange={handlePeriodChange}
+          />
         </div>
         <div className="flex flex-grow min-w-0">
-          <BuyerProfileChart />
+          <MoodPieChart
+            entries={entries}
+            selectedPeriod={selectedPeriod}
+            onPeriodChange={handlePeriodChange}
+          />
         </div>
       </div>
       <div className="flex flex-row gap-4 w-full">
-        {/* Allow both components to grow but give RecentOrders more space if needed */}
         <div className="flex flex-grow min-w-0">
           <RecentOrders />
         </div>
