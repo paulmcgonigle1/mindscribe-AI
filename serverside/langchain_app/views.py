@@ -26,6 +26,9 @@ def process_entry(journal_entry):
 in the following passage together with their properties.
 Only extract the properties mentioned in the 'information_extraction' function.
 If a property is not present and is not required in the function parameters, do not include it in the output.
+ -Emotions: List the specific emotions expressed, quantifying them if possible (e.g., 'mildly happy', 'extremely anxious').
+- Sentiment: Describe the overall sentiment of the entry.
+- Key Themes: Identify the central topics or messages conveyed in the entry.
 Passage:
 {input}
     """
@@ -39,7 +42,6 @@ Passage:
         "properties": {
             "emotions": {"type": "string"},
             "sentiment": {"type": "string"},
-            "keywords": {"type": "string"},
             "key_themes": {"type": "string"},
         },
         "required": ["emotions", "sentiment", "key_themes", "keywords"],
@@ -58,9 +60,6 @@ Passage:
             insight = Insight(
                 moods=insight_data.get("emotions", "no emotions found"),
                 sentiment=insight_data.get("sentiment", "no sentiments found"),
-                keywords=insight_data.get(
-                    "keywords", "no habits found"
-                ),  # Update this if 'habits' key exists
                 key_themes=insight_data.get("key_themes", "no themes"),
             )
             insight.save()

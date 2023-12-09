@@ -39,3 +39,7 @@ export type EmotionData = {
   emotion: string;
   count: number;
 }
+export type ThemeData = { 
+  theme: string;
+  count: number;
+}

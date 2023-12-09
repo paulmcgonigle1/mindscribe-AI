@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -40,9 +40,13 @@ export const getMentalHealthPlan = async (userId: number): Promise<ImprovementDa
     };
 } 
 
-export const getEmotions = async (userId: number): Promise<EmotionData[]> => {
-    const response = await axios.get(`${BASE_URL}/myapp/emotions/${userId}/`);  
+export const getEmotions = async (userId: number, days: number): Promise<EmotionData[]> => {
+    const response = await axios.get(`${BASE_URL}/myapp/emotions/${userId}/?days=${days}`);  
     return response.data;
+}   
+export const getThemes = async (userId: number, days: number): Promise<ThemeData[]> => {
+  const response = await axios.get(`${BASE_URL}/myapp/themes/${userId}/?days=${days}`);  
+  return response.data;
 }   
 
 

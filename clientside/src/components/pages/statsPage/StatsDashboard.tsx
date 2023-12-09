@@ -14,6 +14,7 @@ import { getRecentEntries } from "../../../services/JournalService";
 import { JournalEntry } from "../../../lib/types/types";
 import MoodPieChart from "./MoodPieChart";
 import EmotionGrid from "./EmotionGrid";
+import ThemesGrid from "./ThemesGrid";
 export default function StatsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(7); // Default to last 7 days
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -57,10 +58,10 @@ export default function StatsDashboard() {
       </div>
       <div className="flex flex-row gap-4 w-full">
         <div className="flex flex-grow min-w-0">
-          <EmotionGrid />
+          <EmotionGrid selectedPeriod={selectedPeriod} />
         </div>
         <div className="flex flex-grow min-w-0">
-          <PopularProducts />
+          <ThemesGrid selectedPeriod={selectedPeriod} />
         </div>
       </div>
     </div>

@@ -45,4 +45,5 @@ urlpatterns = [
         views.get_emotion_statistics,
         name="emotion-list-create",
     ),
+    path("themes/<int:user_id>/", views.get_theme_statistics, name="theme-list-create"),
 ]
