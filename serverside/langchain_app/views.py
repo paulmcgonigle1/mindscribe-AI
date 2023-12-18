@@ -42,9 +42,9 @@ Passage:
         "properties": {
             "emotions": {"type": "string"},
             "sentiment": {"type": "string"},
-            "key_themes": {"type": "string"},
+            "themes": {"type": "string"},
         },
-        "required": ["emotions", "sentiment", "key_themes", "keywords"],
+        "required": ["emotions", "sentiment", "themes"],
     }
     extraction_prompt = ChatPromptTemplate.from_template(_CUSTOM_EXTRACTION_TEMPLATE)
 
@@ -60,7 +60,7 @@ Passage:
             insight = Insight(
                 moods=insight_data.get("emotions", "no emotions found"),
                 sentiment=insight_data.get("sentiment", "no sentiments found"),
-                key_themes=insight_data.get("key_themes", "no themes"),
+                key_themes=insight_data.get("themes", "no themes"),
             )
             insight.save()
     else:
@@ -100,7 +100,7 @@ def format_insights_for_prompt(insights):
     formatted_insights = ""
     for insight in insights:
         # Assuming insights have 'moods', 'sentiment', 'keywords', and 'key_themes' fields
-        formatted_insights += f"Moods: {insight['moods']}, Sentiment: {insight['sentiment']}, Keywords: {insight['keywords']}, Themes: {insight['key_themes']}.\n"
+        formatted_insights += f"Moods: {insight['moods']}, Sentiment: {insight['sentiment']}, Themes: {insight['key_themes']}.\n"
     return formatted_insights
 
 
