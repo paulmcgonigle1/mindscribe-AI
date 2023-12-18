@@ -3,6 +3,7 @@ export type JournalEntry = {
   user: string|number;  
   timestamp: Date;
   content: string;
+  moodRating: number;
 };
 
 export type NewJournalEntry = {
@@ -27,4 +28,18 @@ export type Insight = {
 export type  ImprovementData = {
   plan: string;
   createdAt: string | null;
+}
+
+export type MoodChartData = {
+  date: string;
+  moodRating: number;
+} 
+
+export type EmotionData = { 
+  emotion: string;
+  count: number;
+}
+export type ThemeData = { 
+  theme: string;
+  count: number;
 }

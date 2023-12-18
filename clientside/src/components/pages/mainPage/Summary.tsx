@@ -58,9 +58,9 @@ const Summary = () => {
               <p className="text-sm text-gray-600">
                 <strong>Sentiment:</strong> {insight.sentiment || "N/A"}
               </p>
-              <p className="text-sm text-gray-600">
+              {/* <p className="text-sm text-gray-600">
                 <strong>Keywords:</strong> {insight.keywords || "N/A"}
-              </p>
+              </p> */}
               <p className="text-sm text-gray-600">
                 <strong>Themes:</strong> {insight.key_themes || "N/A"}
               </p>

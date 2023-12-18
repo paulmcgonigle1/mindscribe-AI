@@ -4,6 +4,7 @@ import JournalSection from "./JournalSection";
 import MoodRating from "./MoodRating";
 import RecentJournals from "./RecentJournals";
 import Summary from "./Summary";
+import Calendar from "./Calendar";
 export default function JournalDashboard() {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   return (
@@ -19,7 +20,7 @@ export default function JournalDashboard() {
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-2/3">
-          <RecentJournals />
+          <Calendar />
         </div>
         <div className="w-full md:w-1/3">
           <Summary />

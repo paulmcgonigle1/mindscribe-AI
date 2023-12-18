@@ -8,7 +8,20 @@ interface JournalSectionProps {
 export default function JournalSection({ moodRating }: JournalSectionProps) {
   const [entryText, setEntryText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async () => {
+    //checks for missing moodRating
+    if (!moodRating && moodRating !== 0) {
+      alert("Please select a mood rating before submitting your entry");
+      return;
+    }
+
+    //check for missing entryText
+    if (!entryText) {
+      alert("Please write a journal entry before submitting");
+      return;
+    }
+
     if (entryText && moodRating != null) {
       setIsLoading(true);
       try {

@@ -8,7 +8,7 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from langchain_app.views import create_plan_from_insights, process_entry
 from rest_framework.response import Response
-
+from datetime import timedelta  # Will be used for date range queries
 import logging
 
 # Create your views here.
@@ -30,11 +30,11 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
         return response
 
     def get_queryset(self):
-        queryset = JournalEntry.objects.all()
-        user_id = self.request.query_params.get("user")
+        user_id = self.kwargs.get("user_id")  # Access user_id from URL parameters
         if user_id is not None:
-            queryset = queryset.filter(user=user_id)
-        return queryset
+            return JournalEntry.objects.filter(user=user_id)
+        print("Got journal Entries")
+        return JournalEntry.objects.all()
 
 
 class MoodEntryListCreate(generics.ListCreateAPIView):
@@ -86,3 +86,137 @@ class RecentMentalHealthPlanView(APIView):
                 {"error": "No mental health plan found for this user"},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+# Getting the emotion statistics
+def get_emotion_statistics(request, user_id):
+    # Get 'days' from request query parameters, default to 7 if not provided
+    days = request.GET.get("days", 7)
+
+    try:
+        # Convert days to integer
+        days = int(days)
+    except ValueError:
+        # Handle the case where 'days' is not a valid integer
+        return JsonResponse({"error": "Invalid 'days' parameter"}, status=400)
+
+    end_date = timezone.now()
+    start_date = end_date - timedelta(days=days)
+
+    insights = Insight.objects.filter(
+        user=user_id, timestamp__range=(start_date, end_date)
+    )
+
+    emotion_counts = {}
+    for insight in insights:
+        if insight.moods:
+            emotions = insight.moods.split(",")
+            for emotion in emotions:
+                normalized_emotion = (
+                    emotion.strip().lower()
+                )  # Normalize the emotion string
+                if normalized_emotion in emotion_counts:
+                    emotion_counts[normalized_emotion] += 1
+                else:
+                    emotion_counts[normalized_emotion] = 1
+
+    # Sort and limit the results
+    sorted_limited_emotion_data = sorted(
+        [
+            {"emotion": emotion, "count": count}
+            for emotion, count in emotion_counts.items()
+        ],
+        key=lambda x: x["count"],
+        reverse=True,
+    )[
+        :10
+    ]  # Adjust the number as needed
+
+    return JsonResponse(sorted_limited_emotion_data, safe=False)
+
+
+def get_emotion_statistics(request, user_id):
+    # Get 'days' from request query parameters, default to 7 if not provided
+    days = request.GET.get("days", 7)
+
+    try:
+        # Convert days to integer
+        days = int(days)
+    except ValueError:
+        # Handle the case where 'days' is not a valid integer
+        return JsonResponse({"error": "Invalid 'days' parameter"}, status=400)
+
+    end_date = timezone.now()
+    start_date = end_date - timedelta(days=days)
+
+    insights = Insight.objects.filter(
+        user=user_id, timestamp__range=(start_date, end_date)
+    )
+
+    emotion_counts = {}
+    for insight in insights:
+        if insight.moods:
+            emotions = insight.moods.split(",")
+            for emotion in emotions:
+                normalized_emotion = (
+                    emotion.strip().lower()
+                )  # Normalize the emotion string
+                if normalized_emotion in emotion_counts:
+                    emotion_counts[normalized_emotion] += 1
+                else:
+                    emotion_counts[normalized_emotion] = 1
+
+    # Sort and limit the results
+    sorted_limited_emotion_data = sorted(
+        [
+            {"emotion": emotion, "count": count}
+            for emotion, count in emotion_counts.items()
+        ],
+        key=lambda x: x["count"],
+        reverse=True,
+    )[
+        :10
+    ]  # Adjust the number as needed
+
+    return JsonResponse(sorted_limited_emotion_data, safe=False)
+
+
+def get_theme_statistics(request, user_id):
+    # Get 'days' from request query parameters, default to 7 if not provided
+    days = request.GET.get("days", 7)
+
+    try:
+        # Convert days to integer
+        days = int(days)
+    except ValueError:
+        # Handle the case where 'days' is not a valid integer
+        return JsonResponse({"error": "Invalid 'days' parameter"}, status=400)
+
+    end_date = timezone.now()
+    start_date = end_date - timedelta(days=days)
+
+    insights = Insight.objects.filter(
+        user=user_id, timestamp__range=(start_date, end_date)
+    )
+
+    theme_counts = {}
+    for insight in insights:
+        if insight.key_themes:
+            themes = insight.key_themes.split(",")
+            for theme in themes:
+                normalized_theme = theme.strip().lower()  # Normalize the theme string
+                if normalized_theme in theme_counts:
+                    theme_counts[normalized_theme] += 1
+                else:
+                    theme_counts[normalized_theme] = 1
+
+    # Sort and limit the results
+    sorted_limited_theme_data = sorted(
+        [{"theme": theme, "count": count} for theme, count in theme_counts.items()],
+        key=lambda x: x["count"],
+        reverse=True,
+    )[
+        :10
+    ]  # Adjust the number as needed
+
+    return JsonResponse(sorted_limited_theme_data, safe=False)
