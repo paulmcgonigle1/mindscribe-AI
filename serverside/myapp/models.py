@@ -97,8 +97,10 @@ class UserImprovement(models.Model):
 # Model for Insights derived from Journal Entries
 class Insight(models.Model):
     insightID = models.AutoField(primary_key=True)
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="insights", default=default_user_id
+    entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.CASCADE,
+        related_name="insights",
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     keywords = models.TextField(blank=True, null=True)
@@ -108,5 +110,7 @@ class Insight(models.Model):
     # Add more fields here as needed
 
     def __str__(self):
-        return f"Insight {self.insightID} by {self.user.username}"
-        return f"Insight for Entry {self.entry.entryID}"
+        if self.entry:
+            return f"Insight {self.insightID} for Entry {self.entry.entryID}"
+        else:
+            return f"Insight {self.insightID} with no associated entry"

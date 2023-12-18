@@ -15,6 +15,7 @@ import { JournalEntry } from "../../../lib/types/types";
 import MoodPieChart from "./MoodPieChart";
 import EmotionGrid from "./EmotionGrid";
 import ThemesGrid from "./ThemesGrid";
+import AnalysisDisplay from "./AnalysisSection/AnalysisDisplay";
 export default function StatsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(7); // Default to last 7 days
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -63,6 +64,12 @@ export default function StatsDashboard() {
         <div className="flex flex-grow min-w-0">
           <ThemesGrid selectedPeriod={selectedPeriod} />
         </div>
+      </div>
+      <div className="flex flex-row gap-4 w-full">
+        <div className="flex flex-grow min-w-0">
+          <AnalysisDisplay />
+        </div>
+        <div className="flex flex-grow min-w-0"></div>
       </div>
     </div>
   );

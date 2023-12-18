@@ -58,6 +58,7 @@ Passage:
         # Process each dictionary of insights in the list
         for insight_data in insights_data:
             insight = Insight(
+                entry=journal_entry,
                 moods=insight_data.get("emotions", "no emotions found"),
                 sentiment=insight_data.get("sentiment", "no sentiments found"),
                 key_themes=insight_data.get("themes", "no themes"),

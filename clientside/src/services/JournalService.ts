@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, AnalysisData } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -49,5 +49,9 @@ export const getThemes = async (userId: number, days: number): Promise<ThemeData
   return response.data;
 }   
 
+export const getAnalysisData = async (userId: number): Promise<AnalysisData> => {
+  const response = await axios.get(`${BASE_URL}/myapp/analyze-data/${userId}/`);
+  return response.data;
+}
 
 // Add more functions as needed for other API calls

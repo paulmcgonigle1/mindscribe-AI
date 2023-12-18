@@ -17,13 +17,13 @@ class InsightInline(admin.StackedInline):
 class UserAdmin(admin.ModelAdmin):
     list_display = ("username", "email", "is_staff")
     search_fields = ("username", "email")
-    inlines = [InsightInline]
+    # inlines = [InsightInline]
 
 
 class JournalEntryAdmin(admin.ModelAdmin):
     list_display = ("entryID", "user", "timestamp")
     list_filter = ("timestamp",)
-    inlines = [EmotionInline]
+    inlines = [EmotionInline, InsightInline]
 
 
 class EmotionAdmin(admin.ModelAdmin):

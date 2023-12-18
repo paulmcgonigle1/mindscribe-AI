@@ -43,3 +43,12 @@ export type ThemeData = {
   theme: string;
   count: number;
 }
+export type AnalysisData  ={
+  emotion_mood_correlation: { [key: string]: any };
+  theme_mood_correlation: { [key: string]: any };
+}
+export type MyAnalysisData = {
+  name: string;
+  value: number;
+  // Add more properties as needed
+};
