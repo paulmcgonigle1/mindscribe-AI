@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { getAnalysisData } from "../../../../services/JournalService";
 import MyTable from "./MyTable";
-import { MyAnalysisData } from "../../../../lib/types/types";
-import { Column } from "react-table";
+
+import EmotionChart from "./MyChart";
+
+// Assuming you have these interfaces for your data
+interface EmotionCorrelation {
+  emotion: string;
+  mood_ratings: { [moodRating: string]: number };
+  average_mood_rating: number;
+  total_occurrences: number;
+}
+
+interface ThemeCorrelation {
+  theme: string;
+  mood_ratings: { [moodRating: string]: number };
+  // ... any other properties you might have
+}
 
 interface AnalysisData {
-  emotion_mood_correlation: { [key: string]: any };
-  theme_mood_correlation: { [key: string]: any };
+  emotion_mood_correlation: EmotionCorrelation[];
+  theme_mood_correlation: ThemeCorrelation[];
 }
 
 const AnalysisDisplay: React.FC = () => {
@@ -33,6 +47,31 @@ const AnalysisDisplay: React.FC = () => {
 
     fetchData();
   }, [userId]);
+  // Check if we have data and if so, prepare it for the chart and table
+  const preparedChartData = analysisData?.emotion_mood_correlation.map(
+    (item) => ({
+      emotion: item.emotion,
+      total_occurrences: item.total_occurrences,
+    })
+  );
+
+  const preparedTableData = analysisData?.emotion_mood_correlation; // Or whatever structure MyTable expects
+
+  // Assuming MyTable is similar to react-table, define your columns
+  const preparedColumns = React.useMemo(
+    () => [
+      {
+        Header: "Emotion",
+        accessor: "emotion", // accessor is the "key" in the data
+      },
+      {
+        Header: "Total Occurrences",
+        accessor: "total_occurrences",
+      },
+      // Add more columns based on the structure of your data
+    ],
+    []
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -42,44 +81,11 @@ const AnalysisDisplay: React.FC = () => {
     return <div>No data available</div>;
   }
 
-  // Convert the emotion_mood_correlation data into an array of objects
-  const emotionMoodCorrelationData = Object.keys(
-    analysisData.emotion_mood_correlation
-  ).map((key) => ({
-    emotion: key,
-    ...analysisData.emotion_mood_correlation[key],
-  }));
-  // Convert the theme_mood_correlation data into an array of objects
-  const themeMoodCorrelationData: MyAnalysisData[] = Object.keys(
-    analysisData.theme_mood_correlation
-  ).map((key) => ({
-    name: key,
-    value: analysisData.theme_mood_correlation[key],
-  }));
-  // Define columns for the tables
-  const columns: Column<MyAnalysisData>[] = [
-    {
-      Header: "Mood Rating",
-      accessor: "name", // Change "emotion" to "name"
-    },
-    ...(Object.keys(emotionMoodCorrelationData[0])
-      .filter((key) => key !== "name") // Exclude the "name" key
-      .map((key) => ({
-        Header: key,
-        accessor: key,
-      })) as Column<MyAnalysisData>[]), // Cast the mapped array to the correct type
-    // Add more columns as needed
-  ];
-
   return (
-    <div>
-      <h2>Emotion and Mood Correlation</h2>
-      <MyTable columns={columns} data={emotionMoodCorrelationData} />
-
-      <h2>Key Theme Analysis</h2>
-      {/* <MyTable columns={columns} data={themeMoodCorrelationData} /> */}
-
-      {/* Render your theme_mood_correlation data here as a table or chart */}
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-semibold mb-4">Analysis</h1>
+      <EmotionChart data={preparedChartData || []} />
+      <MyTable data={preparedTableData || []} columns={preparedColumns} />
     </div>
   );
 };
