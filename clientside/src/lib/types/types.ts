@@ -56,10 +56,8 @@ export type ThemeCorrelation = {
   // ... any other properties you might have
 };
 
-export type AnalysisData = {
-  emotion_mood_correlation: EmotionCorrelation[];
-  theme_mood_correlation: ThemeCorrelation[];
-};
+// In your types file
+
 export type MyAnalysisData = {
   name: string;
   value: number;

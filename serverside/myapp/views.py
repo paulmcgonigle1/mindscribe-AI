@@ -226,12 +226,12 @@ def get_theme_statistics(request, user_id):
 
 
 def analyze_data(request, user_id):
-    # Authentication and authorization checks
-    # if not request.user.is_authenticated:
-    #     return JsonResponse({"error": "Unauthorized"}, status=401)
-
-    # Call the analysis function
-    analysis_results = perform_mood_and_emotion_analysis(user_id)
-
-    # Return the results as JSON
-    return JsonResponse(analysis_results)
+    try:
+        matrix, themes = perform_mood_and_emotion_analysis(user_id)
+        data = {
+            "matrix": matrix.tolist(),  # Convert numpy array to list
+            "themes": themes,
+        }
+        return JsonResponse(data, safe=False)  # Set safe to False
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
