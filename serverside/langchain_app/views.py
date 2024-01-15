@@ -18,20 +18,17 @@ llm = ChatOpenAI(
 
 user_id = 1
 user_name = "paul"
+#     _CUSTOM_EXTRACTION_TEMPLATE = """
+#     This is a journal entry from {user}, Extract and save the relevant entities mentioned \
+# in the following passage together with their properties.
+# Only extract the properties mentioned in the 'information_extraction' function.
+# If a property is not present and is not required in the function parameters, do not include it in the output.
+# Passage:
+# {input}
+#     """
 
 
 def process_entry(journal_entry):
-    _CUSTOM_EXTRACTION_TEMPLATE = """
-    This is a journal entry from {user}, Extract and save the relevant entities mentioned \
-in the following passage together with their properties.
-Only extract the properties mentioned in the 'information_extraction' function.
-If a property is not present and is not required in the function parameters, do not include it in the output.
- -Emotions: List the specific emotions expressed, quantifying them if possible (e.g., 'mildly happy', 'extremely anxious').
-- Sentiment: Describe the overall sentiment of the entry.
-- Key Themes: Identify the central topics or messages conveyed in the entry.
-Passage:
-{input}
-    """
     # Create a dictionary with the required inputs
     inputs = {
         "user": user_name,  # The name of the user
@@ -46,9 +43,9 @@ Passage:
         },
         "required": ["emotions", "sentiment", "themes"],
     }
-    extraction_prompt = ChatPromptTemplate.from_template(_CUSTOM_EXTRACTION_TEMPLATE)
+    # extraction_prompt = ChatPromptTemplate.from_template(_CUSTOM_EXTRACTION_TEMPLATE)
 
-    chain = create_extraction_chain(schema, llm, verbose=True, prompt=extraction_prompt)
+    chain = create_extraction_chain(schema, llm, verbose=True)
     insights_data = chain.run(inputs)
     print("Insights data: ", insights_data)
     print("Type of insights data: ", type(insights_data))
