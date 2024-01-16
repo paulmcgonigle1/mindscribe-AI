@@ -10,6 +10,7 @@ from langchain_app.views import create_plan_from_insights, process_entry
 from rest_framework.response import Response
 from datetime import timedelta  # Will be used for date range queries
 import logging
+from .analysis import perform_mood_and_emotion_analysis
 
 # Create your views here.
 logger = logging.getLogger(__name__)
@@ -45,7 +46,7 @@ class MoodEntryListCreate(generics.ListCreateAPIView):
 class DailyInsightsView(APIView):
     def get(self, request, user_id, year, month, day):
         date = timezone.datetime(year, month, day).date()
-        insights = Insight.objects.filter(user_id=user_id, timestamp__date=date)
+        insights = Insight.objects.filter(entry__user__id=user_id, timestamp__date=date)
         serialized_insights = InsightSerializer(insights, many=True).data
         return Response(serialized_insights)
 
@@ -56,7 +57,9 @@ class CreatePlanView(APIView):
         today = timezone.now().date()
 
         # Fetch today's insights for the user
-        insights = Insight.objects.filter(user_id=user_id, timestamp__date=today)
+        insights = Insight.objects.filter(
+            entry__user__id=user_id, timestamp__date=today
+        )
         serialized_insights = InsightSerializer(insights, many=True).data
 
         # Create a mental health plan from today's insights
@@ -104,7 +107,7 @@ def get_emotion_statistics(request, user_id):
     start_date = end_date - timedelta(days=days)
 
     insights = Insight.objects.filter(
-        user=user_id, timestamp__range=(start_date, end_date)
+        entry__user__id=user_id, timestamp__range=(start_date, end_date)
     )
 
     emotion_counts = {}
@@ -150,7 +153,7 @@ def get_emotion_statistics(request, user_id):
     start_date = end_date - timedelta(days=days)
 
     insights = Insight.objects.filter(
-        user=user_id, timestamp__range=(start_date, end_date)
+        entry__user__id=user_id, timestamp__range=(start_date, end_date)
     )
 
     emotion_counts = {}
@@ -196,7 +199,7 @@ def get_theme_statistics(request, user_id):
     start_date = end_date - timedelta(days=days)
 
     insights = Insight.objects.filter(
-        user=user_id, timestamp__range=(start_date, end_date)
+        entry__user__id=user_id, timestamp__range=(start_date, end_date)
     )
 
     theme_counts = {}
@@ -220,3 +223,15 @@ def get_theme_statistics(request, user_id):
     ]  # Adjust the number as needed
 
     return JsonResponse(sorted_limited_theme_data, safe=False)
+
+
+def analyze_data(request, user_id):
+    try:
+        matrix, themes = perform_mood_and_emotion_analysis(user_id)
+        data = {
+            "matrix": matrix.tolist(),  # Convert numpy array to list
+            "themes": themes,
+        }
+        return JsonResponse(data, safe=False)  # Set safe to False
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

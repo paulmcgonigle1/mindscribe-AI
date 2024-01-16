@@ -43,3 +43,23 @@ export type ThemeData = {
   theme: string;
   count: number;
 }
+export type EmotionCorrelation = {
+  emotion: string;
+  mood_ratings: { [moodRating: string]: number };
+  average_mood_rating: number;
+  total_occurrences: number;
+};
+
+export type ThemeCorrelation = {
+  theme: string;
+  mood_ratings: { [moodRating: string]: number };
+  // ... any other properties you might have
+};
+
+// In your types file
+
+export type MyAnalysisData = {
+  name: string;
+  value: number;
+  // Add more properties as needed
+};
