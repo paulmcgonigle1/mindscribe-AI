@@ -1,12 +1,8 @@
 from django.shortcuts import render
 from myapp.models import JournalEntry, Insight, UserImprovement, User
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from langchain.chains import create_extraction_chain
 from langchain.chat_models import ChatOpenAI
-from langchain.llms import openai
-from langchain.output_parsers import PydanticOutputParser
-from langchain.prompts import PromptTemplate, ChatPromptTemplate
 import os
 import json
 
