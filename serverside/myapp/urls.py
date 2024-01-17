@@ -1,6 +1,5 @@
 from django.urls import path, include
 from .views import (
-    MoodEntryListCreate,
     JournalEntryViewSet,
     DailyInsightsView,
     get_emotion_statistics,
@@ -17,11 +16,6 @@ router.register(r"journal-entries", views.JournalEntryViewSet, basename="journal
 urlpatterns = [
     path("", include(router.urls)),
     # Define the URL pattern for the MoodEntryListCreate view
-    path(
-        "moodentries/",
-        MoodEntryListCreate.as_view(),
-        name="mood-entries-list-create",
-    ),
     path(
         "journal-entries/user/<int:user_id>/",
         views.JournalEntryViewSet.as_view(
