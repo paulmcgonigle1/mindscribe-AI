@@ -69,6 +69,7 @@ class ActionableTask(models.Model):
         UserImprovement, on_delete=models.CASCADE, related_name="actionable_tasks"
     )
     content = models.TextField(help_text="The actionable task text.")
+    explanation = models.TextField(null=True)
     isCompleted = models.BooleanField(
         default=False, help_text="Whether the user has completed this action."
     )

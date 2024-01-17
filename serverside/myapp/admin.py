@@ -49,10 +49,7 @@ class UserImprovementAdmin(admin.ModelAdmin):
 
 
 class ActionableTaskAdmin(admin.ModelAdmin):
-    list_display = (
-        "content",
-        "isCompleted",
-    )
+    list_display = ("content", "isCompleted", "explanation")
     list_filter = ("content",)
 
 

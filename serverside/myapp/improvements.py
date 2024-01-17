@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render
 from django.utils import timezone
 from .models import (
@@ -109,17 +110,23 @@ def create_structured_prompt_with_insights(formatted_insights):
 
 def parse_mental_health_plan(raw_plan):
     # Implement logic to parse the raw_plan into distinct tasks
-    # Example: split the text based on bullets or numbers
-    print("Raw mental health plan: " + raw_plan)
-    tasks = raw_plan.split("\n")  # Simple example, consider more robust parsing
-    return [task for task in tasks if task.strip()]  # Filter out empty lines
+    # Split the plan into sections
+    pattern = re.compile(r"Task: (.+?) Explanation: (.+?)(?= Task:|$)", re.DOTALL)
+    tasks_with_explanations = pattern.findall(raw_plan)
+    # Create a list of dicts containing the task and its explanation
+    parsed_tasks = [
+        {"task": task.strip(), "explanation": explanation.strip()}
+        for task, explanation in tasks_with_explanations
+    ]
+    return parsed_tasks
 
 
-def save_tasks_to_database(tasks, user_improvement):
-    for task in tasks:
+def save_tasks_to_database(parsed_tasks, user_improvement):
+    for task in parsed_tasks:
         print("Task: ", task)
         actionable_insight = ActionableTask(
             improvement=user_improvement,
-            content=task,
+            content=task["task"],
+            explanation=task["explanation"],
         )
         actionable_insight.save()
