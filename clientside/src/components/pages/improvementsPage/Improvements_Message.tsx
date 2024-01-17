@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ImprovementData } from "../../../lib/types/types";
-import {
-  createImprovements,
-  getImprovements,
-} from "../../../services/JournalService";
 
 interface ImprovementsMessageProps {
   improvementData: ImprovementData; // Define the type based on your actual type definitions

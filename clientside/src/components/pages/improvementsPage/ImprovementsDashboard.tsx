@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Summary from "../mainPage/Summary";
 import Improvements_Analysis from "./Improvements_Message";
+import ActionableTasks from "./ActionableTasksView";
 import { ImprovementData } from "../../../lib/types/types";
 import {
   createImprovements,
@@ -59,7 +60,9 @@ function ImprovementsDashboard() {
         <div className="flex flex-1 min-w-0">
           <Improvements_Message improvementData={improvementData} />
         </div>
-        <div className="flex flex-1 min-w-0">{/* <Summary /> */}</div>
+        <div className="flex flex-1 min-w-0">
+          <ActionableTasks improvementData={improvementData} />
+        </div>
       </div>
     </div>
   );

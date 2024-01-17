@@ -8,7 +8,11 @@ from .models import (
     UserImprovement,
     ActionableTask,
 )
-from .serializers import JournalEntrySerializer, InsightSerializer
+from .serializers import (
+    ActionableTaskSerializer,
+    JournalEntrySerializer,
+    InsightSerializer,
+)
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from langchain_app.views import (
@@ -21,18 +25,25 @@ from .analysis import perform_mood_and_emotion_analysis
 
 
 class GetRecentImprovements(APIView):
-    """
-    API view to fetch the most recent mental health plan for a given user.
-    """
-
     def get(self, request, user_id):
         try:
             # Assuming 'recommendation' is the type for mental health plans
             latest_plan = UserImprovement.objects.filter(user_id=user_id).latest(
                 "timestamp"
             )
+            tasks = ActionableTaskSerializer(
+                latest_plan.actionable_tasks.all(), many=True
+            ).data
 
-            return Response({"created_at": latest_plan.timestamp})
+            # Return the serialized tasks
+            return Response(
+                {
+                    "message": latest_plan.message_of_the_day,
+                    "tasks": tasks,
+                    "created_at": latest_plan.timestamp,
+                }
+            )
+
         except UserImprovement.DoesNotExist:
             # Handle the case where no plan exists for the user
             return Response(

@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from .models import Insight, JournalEntry  # Import other models as needed
+from .models import (
+    ActionableTask,
+    Insight,
+    JournalEntry,
+)  # Import other models as needed
 
 
 class JournalEntrySerializer(serializers.ModelSerializer):
@@ -11,4 +15,10 @@ class JournalEntrySerializer(serializers.ModelSerializer):
 class InsightSerializer(serializers.ModelSerializer):
     class Meta:
         model = Insight
+        fields = "__all__"
+
+
+class ActionableTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ActionableTask
         fields = "__all__"
