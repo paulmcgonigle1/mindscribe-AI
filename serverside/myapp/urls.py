@@ -1,12 +1,12 @@
 from django.urls import path, include
 from .views import (
-    CreatePlanView,
     MoodEntryListCreate,
     JournalEntryViewSet,
     DailyInsightsView,
-    RecentMentalHealthPlanView,
     get_emotion_statistics,
 )  # Import your views here
+
+from .improvements import CreatePlanView, RecentMentalHealthPlanView
 from rest_framework.routers import DefaultRouter
 from . import views
 
