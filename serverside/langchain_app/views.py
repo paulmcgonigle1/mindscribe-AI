@@ -80,3 +80,5 @@ def create_message_of_the_day():
         user_improvement.message_of_the_day = message
         user_improvement.save()
         print("Message of the day: ", message)
+
+        return message

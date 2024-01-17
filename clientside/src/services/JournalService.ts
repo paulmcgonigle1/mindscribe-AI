@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, AnalysisData } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -24,19 +24,21 @@ export const getRecentEntries = async (): Promise<JournalEntry[]> => {
     return response.data;
   }
 
-  export const createMentalHealthPlan = async (userId: number): Promise<ImprovementData> => {
-    const response = await axios.get(`${BASE_URL}/myapp/create-plan/${userId}/`);
+  export const createImprovements = async (userId: number): Promise<ImprovementData> => {
+    const response = await axios.get(`${BASE_URL}/myapp/create-improvements/${userId}/`);
     return {
-      plan: response.data.plan,
-      createdAt: response.data.created_at
+      message: response.data.message,
+        tasks: response.data.tasks,
+        createdAt: response.data.createdAt,
     };
     
 }
-export const getMentalHealthPlan = async (userId: number): Promise<ImprovementData> => {
-    const response = await axios.get(`${BASE_URL}/myapp/mental-health-plan/${userId}/`);
+export const getImprovements = async (userId: number): Promise<ImprovementData> => {
+    const response = await axios.get(`${BASE_URL}/myapp/get-improvements/${userId}/`);
     return {
-      plan: response.data.plan,
-      createdAt: response.data.created_at
+        message: response.data.message,
+        tasks: response.data.tasks,
+        createdAt: response.data.createdAt,
     };
 } 
 
@@ -49,7 +51,7 @@ export const getThemes = async (userId: number, days: number): Promise<ThemeData
   return response.data;
 }   
 
-export const getAnalysisData = async (userId: number): Promise<AnalysisData> => {
+export const getAnalysisData = async (userId: number): Promise<MyAnalysisData> => {
   const response = await axios.get(`${BASE_URL}/myapp/analyze-data/${userId}/`);
   return response.data;
 }

@@ -5,7 +5,7 @@ from .views import (
     get_emotion_statistics,
 )  # Import your views here
 
-from .improvements import CreatePlanView, RecentMentalHealthPlanView
+from .improvements import CreatePlanView, GetRecentImprovements
 from rest_framework.routers import DefaultRouter
 from . import views
 
@@ -28,11 +28,15 @@ urlpatterns = [
         DailyInsightsView.as_view(),
         name="daily-insights",
     ),
-    path("create-plan/<int:user_id>/", CreatePlanView.as_view(), name="create-plan"),
     path(
-        "mental-health-plan/<int:user_id>/",
-        RecentMentalHealthPlanView.as_view(),
-        name="mental-health-plan",
+        "create-improvements/<int:user_id>/",
+        CreatePlanView.as_view(),
+        name="create-improvements",
+    ),
+    path(
+        "get-improvements/<int:user_id>/",
+        GetRecentImprovements.as_view(),
+        name="get-improvements",
     ),
     path(
         "emotions/<int:user_id>/",

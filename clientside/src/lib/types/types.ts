@@ -26,7 +26,9 @@ export type Insight = {
 };
 
 export type  ImprovementData = {
-  plan: string;
+  message: string;
+  tasks: string[];
+
   createdAt: string | null;
 }
 

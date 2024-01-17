@@ -20,7 +20,7 @@ from rest_framework.response import Response
 from .analysis import perform_mood_and_emotion_analysis
 
 
-class RecentMentalHealthPlanView(APIView):
+class GetRecentImprovements(APIView):
     """
     API view to fetch the most recent mental health plan for a given user.
     """
@@ -56,9 +56,9 @@ class CreatePlanView(APIView):
         serialized_insights = InsightSerializer(insights, many=True).data
 
         # Create a mental health plan from today's insights
-        mental_health_plan = create_plan_from_insights(serialized_insights, user_id)
-        create_message_of_the_day()
-        return Response({"plan": mental_health_plan})
+        mental_health_tasks = create_plan_from_insights(serialized_insights, user_id)
+        message_of_the_day = create_message_of_the_day()
+        return Response({"message": message_of_the_day, "tasks": mental_health_tasks})
 
 
 def create_plan_from_insights(insights, user_id):
@@ -71,7 +71,6 @@ def create_plan_from_insights(insights, user_id):
     # Parse the raw plan into distinct tasks
     mental_health_tasks = parse_mental_health_plan(mental_health_plan_raw)
     # getting the user_ID to pass through so it can save to ActionableTask
-    # Unpack the tuple returned by get_or_create to get the UserImprovement instance
 
     user = User.objects.get(id=user_id)
     user_improvement, created = UserImprovement.objects.get_or_create(
