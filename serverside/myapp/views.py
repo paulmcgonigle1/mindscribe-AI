@@ -6,7 +6,8 @@ from .serializers import MoodEntrySerializer, JournalEntrySerializer, InsightSer
 from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
-from langchain_app.views import create_plan_from_insights, process_entry
+from langchain_app.views import process_entry
+from .improvements import create_plan_from_insights
 from rest_framework.response import Response
 from datetime import timedelta  # Will be used for date range queries
 import logging
@@ -96,52 +97,6 @@ def get_emotion_statistics(request, user_id):
     ]  # Adjust the number as needed
 
     return JsonResponse(sorted_limited_emotion_data, safe=False)
-
-
-# def get_emotion_statistics(request, user_id):
-#     # Get 'days' from request query parameters, default to 7 if not provided
-#     days = request.GET.get("days", 7)
-
-#     try:
-#         # Convert days to integer
-#         days = int(days)
-#     except ValueError:
-#         # Handle the case where 'days' is not a valid integer
-#         return JsonResponse({"error": "Invalid 'days' parameter"}, status=400)
-
-#     end_date = timezone.now()
-#     start_date = end_date - timedelta(days=days)
-
-#     insights = Insight.objects.filter(
-#         entry__user__id=user_id, timestamp__range=(start_date, end_date)
-#     )
-
-#     emotion_counts = {}
-#     for insight in insights:
-#         if insight.moods:
-#             emotions = insight.moods.split(",")
-#             for emotion in emotions:
-#                 normalized_emotion = (
-#                     emotion.strip().lower()
-#                 )  # Normalize the emotion string
-#                 if normalized_emotion in emotion_counts:
-#                     emotion_counts[normalized_emotion] += 1
-#                 else:
-#                     emotion_counts[normalized_emotion] = 1
-
-#     # Sort and limit the results
-#     sorted_limited_emotion_data = sorted(
-#         [
-#             {"emotion": emotion, "count": count}
-#             for emotion, count in emotion_counts.items()
-#         ],
-#         key=lambda x: x["count"],
-#         reverse=True,
-#     )[
-#         :10
-#     ]  # Adjust the number as needed
-
-#     return JsonResponse(sorted_limited_emotion_data, safe=False)
 
 
 def get_theme_statistics(request, user_id):

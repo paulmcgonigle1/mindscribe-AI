@@ -70,24 +70,24 @@ def interact_with_llm(prompt):
     return response.content.strip()
 
 
-def create_plan_from_insights(insights, user_id):
-    formatted_insights = format_insights_for_prompt(insights)
-    # create prompt
-    prompt = create_prompt_with_insights(formatted_insights)
+# def create_plan_from_insights(insights, user_id):
+#     formatted_insights = format_insights_for_prompt(insights)
+#     # create prompt
+#     prompt = create_prompt_with_insights(formatted_insights)
 
-    # get mental health plan from openAI
-    mental_health_plan = interact_with_llm(prompt)
+#     # get mental health plan from openAI
+#     mental_health_plan = interact_with_llm(prompt)
 
-    # Save mental_health_plan to UserImprovement database
+#     # Save mental_health_plan to UserImprovement database
 
-    user_improvement = UserImprovement(
-        user=User.objects.get(id=user_id),
-        tipType="recommendation",
-        tipText=mental_health_plan,
-    )
-    user_improvement.save()
+#     user_improvement = UserImprovement(
+#         user=User.objects.get(id=user_id),
+#         tipType="recommendation",
+#         tipText=mental_health_plan,
+#     )
+#     user_improvement.save()
 
-    return mental_health_plan
+#     return mental_health_plan
 
 
 def format_insights_for_prompt(insights):

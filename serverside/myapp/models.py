@@ -94,6 +94,32 @@ class UserImprovement(models.Model):
         return f"{self.tipType.title()} for {self.user.username}"
 
 
+# Actionable insights instead of user improvements
+class ActionableInsight(models.Model):
+    insightId = models.AutoField(primary_key=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="actionable_insights"
+    )
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField(help_text="The actionable insight text.")
+    isCompleted = models.BooleanField(
+        default=False, help_text="Whether the user has completed this action."
+    )
+    relevance = models.IntegerField(
+        default=0,
+        help_text="Relevance score of the insight based on user's current context.",
+    )
+
+    def __str__(self):
+        return f"Actionable Insight {self.insightId} for {self.user.username}"
+
+    class Meta:
+        ordering = [
+            "-timestamp",
+            "relevance",
+        ]  # Orders by most recent and then by relevance
+
+
 # Model for Insights derived from Journal Entries
 class Insight(models.Model):
     insightID = models.AutoField(primary_key=True)

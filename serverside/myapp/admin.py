@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import User, JournalEntry, Emotion, MoodEntry, UserImprovement, Insight
+from .models import (
+    User,
+    JournalEntry,
+    Emotion,
+    MoodEntry,
+    UserImprovement,
+    Insight,
+    ActionableInsight,
+)
 
 
 # Define inline admin classes for related models
@@ -41,6 +49,11 @@ class UserImprovementAdmin(admin.ModelAdmin):
     list_filter = ("tipType", "isActive")
 
 
+class ActionableInsightAdmin(admin.ModelAdmin):
+    list_display = ("user", "content", "isCompleted")
+    list_filter = ("content",)
+
+
 class InsightAdmin(admin.ModelAdmin):
     list_display = [
         "insightID",
@@ -58,3 +71,4 @@ admin.site.register(Emotion, EmotionAdmin)
 admin.site.register(MoodEntry, MoodEntryAdmin)
 admin.site.register(UserImprovement, UserImprovementAdmin)
 admin.site.register(Insight, InsightAdmin)
+admin.site.register(ActionableInsight, ActionableInsightAdmin)
