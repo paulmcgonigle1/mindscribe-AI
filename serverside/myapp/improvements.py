@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from langchain_app.views import (
     interact_with_llm,
     process_entry,
+    create_message_of_the_day,
 )
 from rest_framework.response import Response
 from .analysis import perform_mood_and_emotion_analysis
@@ -56,7 +57,7 @@ class CreatePlanView(APIView):
 
         # Create a mental health plan from today's insights
         mental_health_plan = create_plan_from_insights(serialized_insights, user_id)
-
+        create_message_of_the_day()
         return Response({"plan": mental_health_plan})
 
 
