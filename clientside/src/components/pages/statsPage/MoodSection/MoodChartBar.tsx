@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-  Bar,
-  BarChart,
+  LineChart,
+  Line,
   CartesianGrid,
-  Cell,
   Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
+  Cell,
 } from "recharts";
+
 import { JournalEntry, MoodChartData } from "../../../../lib/types/types";
 import { filterEntriesByPeriod } from "../../../../lib/utils/filter-by-period";
 import { moodRatingColors } from "../../../../lib/constants/moodColors";
@@ -19,7 +20,7 @@ interface MoodStatsProps {
   selectedPeriod: number;
   onPeriodChange: (newPeriod: number) => void;
 }
-function MoodChartBar({
+function MoodLineChart({
   entries,
   selectedPeriod,
   onPeriodChange,
@@ -34,13 +35,20 @@ function MoodChartBar({
   };
 
   const data = transformMoodData(entries);
+  const moodRatingColors = [
+    "#FFD700",
+    "#FF8C00",
+    "#FF4500",
+    "#FF0000",
+    "#B22222",
+  ]; // Define your mood rating colors
 
   return (
     <div className="h-[22rem] bg-white p-4 rounded-sm border border-gray-200 flex flex-col flex-1">
-      <strong className="text-gray-7090 font-medium">Mood Ratings</strong>
+      <strong className="text-gray-7090 font-medium">Mood</strong>
       <div className="w-full mt-3 flex-1 text-xs">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
+          <LineChart
             width={500}
             height={300}
             data={data}
@@ -51,19 +59,24 @@ function MoodChartBar({
             <YAxis domain={[0, 5]} />
             <Tooltip />
             <Legend />
-            <Bar dataKey="moodRating" fill="#0ea5e9">
+            <Line
+              dataKey="moodRating"
+              fill="#82ca9d"
+              type={"monotone"}
+              strokeWidth={2}
+            >
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={moodRatingColors[entry.moodRating]}
                 />
               ))}
-            </Bar>
-          </BarChart>
+            </Line>
+          </LineChart>
         </ResponsiveContainer>
       </div>
     </div>
   );
 }
 
-export default MoodChartBar;
+export default MoodLineChart;
