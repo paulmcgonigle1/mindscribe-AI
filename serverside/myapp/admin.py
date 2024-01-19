@@ -1,13 +1,14 @@
 from django.contrib import admin
-from .models import User, JournalEntry, Emotion, MoodEntry, UserImprovement, Insight
+from .models import (
+    User,
+    JournalEntry,
+    UserImprovement,
+    Insight,
+    ActionableTask,
+)
 
 
 # Define inline admin classes for related models
-class EmotionInline(admin.TabularInline):
-    model = Emotion
-    extra = 1  # Specifies how many extra forms to display
-
-
 class InsightInline(admin.StackedInline):
     model = Insight
     extra = 0  # You can set this to 0 if you don't want extra empty forms
@@ -23,7 +24,7 @@ class UserAdmin(admin.ModelAdmin):
 class JournalEntryAdmin(admin.ModelAdmin):
     list_display = ("entryID", "user", "timestamp")
     list_filter = ("timestamp",)
-    inlines = [EmotionInline, InsightInline]
+    inlines = [InsightInline]
 
 
 class EmotionAdmin(admin.ModelAdmin):
@@ -37,8 +38,19 @@ class MoodEntryAdmin(admin.ModelAdmin):
 
 
 class UserImprovementAdmin(admin.ModelAdmin):
-    list_display = ("tipId", "user", "timestamp", "tipType")
-    list_filter = ("tipType", "isActive")
+    list_display = (
+        "improvementId",
+        "user",
+        "timestamp",
+        "message_of_the_day",
+        "additional_info",
+    )
+    list_filter = ("timestamp",)
+
+
+class ActionableTaskAdmin(admin.ModelAdmin):
+    list_display = ("content", "isCompleted", "explanation")
+    list_filter = ("content",)
 
 
 class InsightAdmin(admin.ModelAdmin):
@@ -54,7 +66,6 @@ class InsightAdmin(admin.ModelAdmin):
 # Register each model with its respective admin class
 admin.site.register(User, UserAdmin)
 admin.site.register(JournalEntry, JournalEntryAdmin)
-admin.site.register(Emotion, EmotionAdmin)
-admin.site.register(MoodEntry, MoodEntryAdmin)
 admin.site.register(UserImprovement, UserImprovementAdmin)
 admin.site.register(Insight, InsightAdmin)
+admin.site.register(ActionableTask, ActionableTaskAdmin)

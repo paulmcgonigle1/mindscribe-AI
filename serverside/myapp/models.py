@@ -48,50 +48,43 @@ class JournalEntry(models.Model):
         return f"Journal Entry {self.entryID} by {self.user.username}"
 
 
-# Model for Emotions detected in Journal Entries
-class Emotion(models.Model):
-    emotionID = models.AutoField(primary_key=True)
-    entry = models.ForeignKey(
-        JournalEntry, on_delete=models.CASCADE, related_name="emotions"
-    )
-    emotionType = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"Emotion {self.emotionType} for Entry {self.entry.entryID}"
-
-
-# Model for Mood Entries
-class MoodEntry(models.Model):
-    moodEntryID = models.AutoField(primary_key=True)
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="mood_entries"
-    )
-    timestamp = models.DateTimeField(auto_now_add=True)
-    moodRating = models.IntegerField()
-    note = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return f"Mood Entry {self.moodEntryID} by {self.user.username}"
-
-
 # Model for User Improvements like tips, recommendations, etc.
 class UserImprovement(models.Model):
-    tipId = models.AutoField(primary_key=True)
+    improvementId = models.AutoField(primary_key=True)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_improvements"
+        User, on_delete=models.CASCADE, related_name="improvement_plans"
     )
     timestamp = models.DateTimeField(auto_now_add=True)
-    tipText = models.TextField()
-    TIP_TYPES = [
-        ("quote", "Quote"),
-        ("recommendation", "Recommendation"),
-        ("tip", "Tip"),
-    ]
-    tipType = models.CharField(max_length=20, choices=TIP_TYPES)
-    isActive = models.BooleanField(default=True)
+    message_of_the_day = models.TextField(blank=True, null=True)
+    additional_info = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.tipType.title()} for {self.user.username}"
+        return f"Improvement Plan {self.improvementId} for {self.user.username}"
+
+
+# Actionable insights instead of user improvements
+class ActionableTask(models.Model):
+    taskId = models.AutoField(primary_key=True)
+    improvement = models.ForeignKey(
+        UserImprovement, on_delete=models.CASCADE, related_name="actionable_tasks"
+    )
+    content = models.TextField(help_text="The actionable task text.")
+    explanation = models.TextField(null=True)
+    isCompleted = models.BooleanField(
+        default=False, help_text="Whether the user has completed this action."
+    )
+    relevance = models.IntegerField(
+        default=0,
+        help_text="Relevance score of the insight based on user's current context.",
+    )
+
+    def __str__(self):
+        return f"Actionable Insight {self.taskId} for Improvement Plan {self.improvement.improvementId}"
+
+    class Meta:
+        ordering = [
+            "relevance",
+        ]  # Orders by most recent and then by relevance
 
 
 # Model for Insights derived from Journal Entries

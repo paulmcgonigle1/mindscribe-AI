@@ -1,12 +1,11 @@
 from django.urls import path, include
 from .views import (
-    CreatePlanView,
-    MoodEntryListCreate,
     JournalEntryViewSet,
     DailyInsightsView,
-    RecentMentalHealthPlanView,
     get_emotion_statistics,
 )  # Import your views here
+
+from .improvements import CreatePlanView, GetRecentImprovements
 from rest_framework.routers import DefaultRouter
 from . import views
 
@@ -17,11 +16,6 @@ router.register(r"journal-entries", views.JournalEntryViewSet, basename="journal
 urlpatterns = [
     path("", include(router.urls)),
     # Define the URL pattern for the MoodEntryListCreate view
-    path(
-        "moodentries/",
-        MoodEntryListCreate.as_view(),
-        name="mood-entries-list-create",
-    ),
     path(
         "journal-entries/user/<int:user_id>/",
         views.JournalEntryViewSet.as_view(
@@ -34,11 +28,15 @@ urlpatterns = [
         DailyInsightsView.as_view(),
         name="daily-insights",
     ),
-    path("create-plan/<int:user_id>/", CreatePlanView.as_view(), name="create-plan"),
     path(
-        "mental-health-plan/<int:user_id>/",
-        RecentMentalHealthPlanView.as_view(),
-        name="mental-health-plan",
+        "create-improvements/<int:user_id>/",
+        CreatePlanView.as_view(),
+        name="create-improvements",
+    ),
+    path(
+        "get-improvements/<int:user_id>/",
+        GetRecentImprovements.as_view(),
+        name="get-improvements",
     ),
     path(
         "emotions/<int:user_id>/",

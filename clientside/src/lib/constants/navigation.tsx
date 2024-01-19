@@ -30,9 +30,9 @@ export const DASHBOARD_SIDEBAR_LINKS = [
   },
 
   {
-    key: "messages",
-    label: "Messages",
-    path: "/messages",
+    key: "chatbot",
+    label: "Chatbot",
+    path: "/chatbot",
     icon: <HiOutlineAnnotation />,
   },
 ];

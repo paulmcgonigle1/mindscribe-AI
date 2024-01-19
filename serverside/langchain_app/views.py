@@ -14,16 +14,10 @@ llm = ChatOpenAI(
 
 user_id = 1
 user_name = "paul"
-#     _CUSTOM_EXTRACTION_TEMPLATE = """
-#     This is a journal entry from {user}, Extract and save the relevant entities mentioned \
-# in the following passage together with their properties.
-# Only extract the properties mentioned in the 'information_extraction' function.
-# If a property is not present and is not required in the function parameters, do not include it in the output.
-# Passage:
-# {input}
-#     """
+style = "Marcus Aurelius"
 
 
+# Extracts properties from journal to DB
 def process_entry(journal_entry):
     # Create a dictionary with the required inputs
     inputs = {
@@ -61,6 +55,7 @@ def process_entry(journal_entry):
         print("Unexpected type for insights_data")
 
 
+# Calls the LLM
 def interact_with_llm(prompt):
     print("Interacting with LLM")
     response = llm.invoke(prompt)
@@ -70,41 +65,20 @@ def interact_with_llm(prompt):
     return response.content.strip()
 
 
-def create_plan_from_insights(insights, user_id):
-    formatted_insights = format_insights_for_prompt(insights)
-    # create prompt
-    prompt = create_prompt_with_insights(formatted_insights)
-
-    # get mental health plan from openAI
-    mental_health_plan = interact_with_llm(prompt)
-
-    # Save mental_health_plan to UserImprovement database
-
-    user_improvement = UserImprovement(
-        user=User.objects.get(id=user_id),
-        tipType="recommendation",
-        tipText=mental_health_plan,
-    )
-    user_improvement.save()
-
-    return mental_health_plan
-
-
-def format_insights_for_prompt(insights):
-    formatted_insights = ""
-    for insight in insights:
-        # Assuming insights have 'moods', 'sentiment', 'keywords', and 'key_themes' fields
-        formatted_insights += f"Moods: {insight['moods']}, Sentiment: {insight['sentiment']}, Themes: {insight['key_themes']}.\n"
-    return formatted_insights
-
-
-def create_prompt_with_insights(formatted_insights):
+def create_message_of_the_day():
     prompt = (
-        "I am an AI mental health assistant providing personalized advice based on a user's daily insights. "
-        "It is important to tailor the recommendations specifically to the user's moods, sentiments, keywords, and themes from today. "
-        "For each suggestion, include reasons why it would be beneficial for the user's specific situation.\n\n"
-        "User's insights from today:\n"
-        f"{formatted_insights}\n"
-        "Based on these insights, what specific activities or practices should the user consider for improving their mood and mental health, and why would these be particularly effective in their case?"
+        "I am an AI mental health assistant, I write up a personal message to "
+        + user_name
+        + " to help them start their day in the style of "
+        + style
+        + "Mention the users name, and keep it short and sweet:\n\n"
     )
-    return prompt
+    message = interact_with_llm(prompt)
+
+    if message:
+        user_improvement = UserImprovement.objects.get(user__id=user_id)
+        user_improvement.message_of_the_day = message
+        user_improvement.save()
+        print("Message of the day: ", message)
+
+        return message

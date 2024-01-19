@@ -26,8 +26,15 @@ export type Insight = {
 };
 
 export type  ImprovementData = {
-  plan: string;
+  message: string;
+  tasks: Task[];
+
   createdAt: string | null;
+}
+export type Task = {
+  taskId: number;
+  content: string;
+  explanation: string;
 }
 
 export type MoodChartData = {
