@@ -57,9 +57,10 @@ function ImprovementsDashboard() {
         Create Improvements
       </button>
       <div className="flex flex-row gap-4 w-full px-4">
-        <div className="flex flex-1 min-w-0">
-          <Improvements_Message improvementData={improvementData} />
-        </div>
+        <Improvements_Message improvementData={improvementData} />
+      </div>
+
+      <div className="flex flex-row gap-4 w-full px-4">
         <div className="flex flex-1 min-w-0">
           <ActionableTasks improvementData={improvementData} />
         </div>
