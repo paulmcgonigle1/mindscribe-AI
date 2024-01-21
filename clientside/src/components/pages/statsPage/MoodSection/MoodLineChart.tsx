@@ -57,7 +57,7 @@ function MoodLineChart({
             <CartesianGrid strokeDasharray="3 3 0 0" vertical={false} />
             <XAxis dataKey={"date"} />
             <YAxis
-              domain={[0, 5]}
+              domain={[1, 5]}
               ticks={[1, 2, 3, 4, 5]}
               tick={{ fill: "red" }}
               tickLine={{ stroke: "blue" }}
