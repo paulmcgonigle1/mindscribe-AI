@@ -1,118 +1,253 @@
-import React, { useEffect, useState } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+  add,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  isEqual,
+  isSameDay,
+  isSameMonth,
+  isToday,
+  parse,
+  parseISO,
+  startOfToday,
+} from "date-fns";
+import { Fragment, useEffect, useState } from "react";
 import { JournalEntry } from "../../../lib/types/types";
 import { getRecentEntries } from "../../../services/JournalService";
 
-// Assume this function is available and properly imported
-import getDaysArrayForMonth from "../../../lib/utils/get-days-for-month-array";
+function classNames(...classes: (string | boolean)[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
-const daysOfWeek = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-]; // 0-indexed
-
-const DayPreview = ({ entries }: { entries: JournalEntry[] }) => {
-  // This component would render the content of journal entries
-  // You could use a simple list, or style it however you prefer
-  return (
-    <div>
-      {entries.map((entry) => (
-        <div key={entry.entryID}>
-          <p>{entry.content}</p>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-function Calendar() {
+export default function Example() {
+  let today = startOfToday();
+  let [selectedDay, setSelectedDay] = useState(today);
+  let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
+  let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
+
+  let days = eachDayOfInterval({
+    start: firstDayCurrentMonth,
+    end: endOfMonth(firstDayCurrentMonth),
+  });
+
+  function previousMonth() {
+    let firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
+    setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
+  }
+
+  function nextMonth() {
+    let firstDayNextMonth = add(firstDayCurrentMonth, { months: 1 });
+    setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
+  }
+
+  let selectedDayMeetings = entries.filter((entry) =>
+    isSameDay(entry.timestamp, selectedDay)
+  );
 
   useEffect(() => {
     const fetchEntries = async () => {
       try {
-        const entries = await getRecentEntries();
-        console.log("Received entries:", entries);
-        setEntries(entries);
+        const response = await getRecentEntries();
+
+        setEntries(response);
       } catch (error) {
-        console.error("Failed to fetch recent entries:", error);
+        console.error("Error fetching entries:", error);
       }
     };
     fetchEntries();
   }, []);
 
-  // Placeholder function to simulate getting day data
-  // In practice, you would replace this with actual data fetching logic
-  // Find journal entries for a particular day
-  const getDayData = (date: Date) => {
-    return entries.filter(
-      (entry) =>
-        new Date(entry.timestamp).toDateString() === date.toDateString()
-    );
-  };
-  const daysArray = getDaysArrayForMonth(new Date());
-  const DayPreview = ({ entries }: { entries: JournalEntry[] }) => {
-    // Renders a preview of entries for a day
-    return (
-      <div className="absolute bg-white shadow-lg rounded px-4 py-2 -mt-20">
-        {entries.map((entry) => (
-          <div key={entry.entryID}>
-            <p>{entry.content}</p>
-          </div>
-        ))}
-      </div>
-    );
-  };
-  const moodsEmojiMap: { [key: number]: string } = {
-    1: "😢", // Awful
-    2: "😟", // Bad
-    3: "😐", // Meh
-    4: "🙂", // Good
-    5: "😄", // Amazing
-  };
-
   return (
-    <div className="flex flex-col">
-      <div className="grid grid-cols-7 gap-1 bg-white p-4">
-        {daysOfWeek.map((day) => (
-          <div
-            key={day}
-            className="text-center font-bold uppercase text-gray-600"
-          >
-            {day}
-          </div>
-        ))}
-        {daysArray.map((day: Date, index: number) => {
-          const dayEntries = getDayData(day);
-          return (
-            <div
-              key={index}
-              onMouseEnter={() => setHoveredDate(day)}
-              onMouseLeave={() => setHoveredDate(null)}
-              onClick={() => {
-                /* handle day click */
-              }}
-              className={`h-20 border border-gray-300 rounded flex justify-center items-center ${
-                dayEntries.length > 0 ? "bg-blue-200" : "bg-gray-100"
-              }`}
-            >
-              {day.getDay()}
-              {dayEntries.length > 0 && moodsEmojiMap[dayEntries[0].moodRating]}
-              {hoveredDate &&
-                day.toDateString() === hoveredDate.toDateString() && (
-                  <DayPreview entries={dayEntries} />
-                )}
+    <div className="pt-8">
+      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white rounded-xl p-8">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-4 lg:divide-x lg:divide-gray-200">
+          <div className="lg:pr-10">
+            <div className="flex items-center justify-between">
+              <h2 className="flex-auto text-lg font-medium text-gray-900">
+                {format(firstDayCurrentMonth, "MMMM yyyy")}
+              </h2>
+              <button
+                type="button"
+                onClick={previousMonth}
+                className="flex items-center justify-center p-2 text-gray-500 hover:text-gray-700"
+              >
+                <span className="sr-only">Previous month</span>
+                <FaChevronLeft className="w-5 h-5" aria-hidden="true" />
+              </button>
+              <button
+                onClick={nextMonth}
+                type="button"
+                className="flex items-center justify-center p-2 text-gray-500 hover:text-gray-700"
+              >
+                <span className="sr-only">Next month</span>
+                <FaChevronRight className="w-5 h-5" aria-hidden="true" />
+              </button>
             </div>
-          );
-        })}
+            <div className="grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500">
+              <div>S</div>
+              <div>M</div>
+              <div>T</div>
+              <div>W</div>
+              <div>T</div>
+              <div>F</div>
+              <div>S</div>
+            </div>
+            <div className="grid grid-cols-7 mt-2 text-sm">
+              {days.map((day, dayIdx) => (
+                <div
+                  key={day.toString()}
+                  className={classNames(
+                    dayIdx === 0 && colStartClasses[getDay(day)],
+                    "py-1.5"
+                  )}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setSelectedDay(day)}
+                    className={classNames(
+                      isEqual(day, selectedDay) && "text-white",
+                      !isEqual(day, selectedDay) &&
+                        isToday(day) &&
+                        "text-red-500",
+                      !isEqual(day, selectedDay) &&
+                        !isToday(day) &&
+                        isSameMonth(day, firstDayCurrentMonth) &&
+                        "text-gray-900",
+                      !isEqual(day, selectedDay) &&
+                        !isToday(day) &&
+                        !isSameMonth(day, firstDayCurrentMonth) &&
+                        "text-gray-400",
+                      isEqual(day, selectedDay) && isToday(day) && "bg-red-500",
+                      isEqual(day, selectedDay) &&
+                        !isToday(day) &&
+                        "bg-gray-900",
+                      !isEqual(day, selectedDay) && "hover:bg-gray-200",
+                      (isEqual(day, selectedDay) || isToday(day)) &&
+                        "font-semibold",
+                      entries.some((entry) => isSameDay(entry.timestamp, day))
+                        ? "bg-green-500 text-white"
+                        : "",
+                      "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+                    )}
+                  >
+                    <time dateTime={format(day, "yyyy-MM-dd")}>
+                      {format(day, "d")}
+                    </time>
+                  </button>
+
+                  <div className="w-1 h-1 mx-auto mt-1">
+                    {entries.some((entry) =>
+                      isSameDay(entry.timestamp, day)
+                    ) && (
+                      <div className="w-1 h-1 rounded-full bg-sky-500"></div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <section className="mt-12 md:mt-0 md:pl-14">
+            <h2 className="font-semibold text-gray-900">
+              Journal Entries for{" "}
+              <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
+                {format(selectedDay, "MMM dd, yyy")}
+              </time>
+            </h2>
+            <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
+              {selectedDayMeetings.length > 0 ? (
+                selectedDayMeetings.map((entry) => (
+                  <DayInsights entry={entry} key={entry.entryID} />
+                ))
+              ) : (
+                <p>No Journal entries for today.</p>
+              )}
+            </ol>
+          </section>
+        </div>
       </div>
     </div>
   );
 }
 
-export default Calendar;
+function DayInsights({ entry }: { entry: JournalEntry }) {
+  return (
+    <li className="flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100">
+      <div className="flex-auto">
+        <p className="text-gray-900">Journal Entry: {entry.entryID}</p>
+        <p className="mt-0.5">
+          <time dateTime={new Date(entry.timestamp).toISOString()}>
+            {format(new Date(entry.timestamp), "h:mm a")}
+          </time>
+          <p>{entry.content}</p>
+        </p>
+      </div>
+      <Menu
+        as="div"
+        className="relative opacity-0 focus-within:opacity-100 group-hover:opacity-100"
+      >
+        <div>
+          <Menu.Button className="-m-2 flex items-center rounded-full p-1.5 text-gray-500 hover:text-gray-600">
+            <span className="sr-only">Open options</span>
+            <BsThreeDotsVertical className="w-6 h-6" aria-hidden="true" />
+          </Menu.Button>
+        </div>
+
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items className="absolute right-0 z-10 mt-2 origin-top-right bg-white rounded-md shadow-lg w-36 ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div className="py-1">
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href="#"
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block px-4 py-2 text-sm"
+                    )}
+                  >
+                    Edit
+                  </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href="#"
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block px-4 py-2 text-sm"
+                    )}
+                  >
+                    Cancel
+                  </a>
+                )}
+              </Menu.Item>
+            </div>
+          </Menu.Items>
+        </Transition>
+      </Menu>
+    </li>
+  );
+}
+
+let colStartClasses = [
+  "",
+  "col-start-2",
+  "col-start-3",
+  "col-start-4",
+  "col-start-5",
+  "col-start-6",
+  "col-start-7",
+];
