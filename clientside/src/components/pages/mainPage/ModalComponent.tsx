@@ -3,7 +3,7 @@ import { JournalEntry } from "../../../lib/types/types";
 
 interface ModalComponentProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (event: React.MouseEvent<HTMLButtonElement>) => void; // Updated to accept a mouse event
   entry: JournalEntry;
 }
 
@@ -26,7 +26,7 @@ const ModalComponent = ({ isOpen, onClose, entry }: ModalComponentProps) => {
           <div className="items-center px-4 py-3">
             <button
               id="ok-btn"
-              onClick={onClose}
+              onClick={(event) => onClose(event)}
               className="px-4 py-2 bg-gray-800 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               Close

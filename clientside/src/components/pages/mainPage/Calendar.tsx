@@ -13,11 +13,13 @@ import {
   isToday,
   parse,
   parseISO,
+  set,
   startOfToday,
 } from "date-fns";
 import { Fragment, useEffect, useState } from "react";
 import { JournalEntry } from "../../../lib/types/types";
 import { getRecentEntries } from "../../../services/JournalService";
+import ModalComponent from "./ModalComponent";
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
@@ -175,13 +177,19 @@ export default function Example() {
 }
 
 function DayInsights({ entry }: { entry: JournalEntry }) {
-  const handleEntryClick = (entry: JournalEntry) => {
-    // Your logic to handle the click, e.g., show a modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleEntryClick = (entry: JournalEntry) => {
+    setIsModalOpen(true);
     console.log(
-      "Entry :" + entry.entryID + "\nWith  " + entry.content.slice(0, 50)
-    ); // For testing, replace with actual modal logic
+      "Entry  " + entry.entryID + "\nWith  " + entry.content.slice(0, 50)
+    );
   };
+  const handleCloseModal = (event: any) => {
+    event.stopPropagation();
+    setIsModalOpen(false);
+  };
+
   return (
     <li
       onClick={() => handleEntryClick(entry)}
@@ -195,7 +203,13 @@ function DayInsights({ entry }: { entry: JournalEntry }) {
           </time>{" "}
           \n - {entry.content}
         </p>
+        <ModalComponent
+          entry={entry}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        ></ModalComponent>
       </div>
+
       <Menu
         as="div"
         className="relative opacity-0 focus-within:opacity-100 group-hover:opacity-100"
