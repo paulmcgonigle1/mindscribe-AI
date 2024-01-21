@@ -1,13 +1,13 @@
 import React from "react";
-import { JournalEntry } from "../../../lib/types/types";
+import { Insight, JournalEntry } from "../../../lib/types/types";
 
 interface ModalComponentProps {
   isOpen: boolean;
   onClose: (event: React.MouseEvent<HTMLButtonElement>) => void; // Updated to accept a mouse event
-  entry: JournalEntry;
+  insight: Insight;
 }
 
-const ModalComponent = ({ isOpen, onClose, entry }: ModalComponentProps) => {
+const ModalComponent = ({ isOpen, onClose, insight }: ModalComponentProps) => {
   if (!isOpen) return null;
 
   return (
@@ -15,12 +15,22 @@ const ModalComponent = ({ isOpen, onClose, entry }: ModalComponentProps) => {
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div className="mt-3 text-center">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
-            Journal Entry Details
+            Insight for Journal Entry
           </h3>
           <div className="mt-2 px-7 py-3">
             <p className="text-sm text-gray-500">
-              Content: {entry.content}
+              Insight Id: {insight.insightID}
               {/* ... add more details you want to show ... */}
+            </p>
+            <p className="text-sm text-gray-800">
+              <strong>Emotions:</strong> {insight.moods || "N/A"}
+            </p>
+            <p className="text-sm text-gray-600">
+              <strong>Sentiment:</strong> {insight.sentiment || "N/A"}
+            </p>
+
+            <p className="text-sm text-gray-600">
+              <strong>Themes:</strong> {insight.key_themes || "N/A"}
             </p>
           </div>
           <div className="items-center px-4 py-3">

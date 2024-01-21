@@ -15,9 +15,6 @@ export default function JournalDashboard() {
             <MoodRating setParentMoodRating={setMoodRating} />
             <JournalSection moodRating={moodRating} />
           </div>
-          <div className="w-1/4">
-            <Summary />
-          </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-6">

@@ -17,8 +17,11 @@ import {
   startOfToday,
 } from "date-fns";
 import { Fragment, useEffect, useState } from "react";
-import { JournalEntry } from "../../../lib/types/types";
-import { getRecentEntries } from "../../../services/JournalService";
+import { Insight, JournalEntry } from "../../../lib/types/types";
+import {
+  getRecentEntries,
+  getInsightForJournalEntry,
+} from "../../../services/JournalService";
 import ModalComponent from "./ModalComponent";
 
 function classNames(...classes: (string | boolean)[]) {
@@ -178,13 +181,34 @@ export default function Example() {
 
 function DayInsights({ entry }: { entry: JournalEntry }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [insight, setInsight] = useState<Insight | null>(null);
 
+  //use service to get insight for selectedEntry
+
+  const fetchAndSetInsight = async (entryId: number) => {
+    try {
+      const insights = await getInsightForJournalEntry(entryId);
+      // If insights are returned as an array and you want the first one:
+      if (insights.length > 0) {
+        setInsight(insights[0]);
+      } else {
+        // Handle the case where there are no insights
+        console.log(`No insights found for entry ID: ${entryId}`);
+        setInsight(null); // Or however you want to handle this case
+      }
+    } catch (error) {
+      console.error("Error fetching insights:", error);
+    }
+  };
+  //handles click on the entry to get insights for that entry
   const handleEntryClick = (entry: JournalEntry) => {
+    fetchAndSetInsight(entry.entryID);
     setIsModalOpen(true);
     console.log(
-      "Entry  " + entry.entryID + "\nWith  " + entry.content.slice(0, 50)
+      "Entry " + entry.entryID + " clicked" + entry.content.slice(0, 10)
     );
   };
+  //close modal
   const handleCloseModal = (event: any) => {
     event.stopPropagation();
     setIsModalOpen(false);
@@ -203,11 +227,13 @@ function DayInsights({ entry }: { entry: JournalEntry }) {
           </time>{" "}
           \n - {entry.content}
         </p>
-        <ModalComponent
-          entry={entry}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-        ></ModalComponent>
+        {insight && (
+          <ModalComponent
+            insight={insight}
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+          />
+        )}
       </div>
 
       <Menu

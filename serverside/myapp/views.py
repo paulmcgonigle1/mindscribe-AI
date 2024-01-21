@@ -6,6 +6,8 @@ from .serializers import JournalEntrySerializer, InsightSerializer
 from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
+from rest_framework.decorators import action
+
 from langchain_app.views import process_entry
 from .improvements import create_plan_from_insights
 from rest_framework.response import Response
@@ -37,6 +39,16 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
             return JournalEntry.objects.filter(user=user_id)
         print("Got journal Entries")
         return JournalEntry.objects.all()
+
+    @action(detail=True, methods=["get"])
+    def insights(self, request, pk=None):
+        """
+        Retrieve insights for a specific journal entry.
+        """
+        journal_entry = self.get_object()
+        insights = Insight.objects.filter(entry=journal_entry)
+        serializer = InsightSerializer(insights, many=True)
+        return Response(serializer.data)
 
 
 class DailyInsightsView(APIView):

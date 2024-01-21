@@ -7,6 +7,11 @@ export const getRecentEntries = async (): Promise<JournalEntry[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/journal-entries/`);
     return response.data;
   };
+
+  export const getInsightForJournalEntry = async (entryId: number): Promise<Insight[]> => {
+    const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${entryId}/insights/`);
+    return response.data;
+  }
   export const getEntriesByUser = async (userId: number): Promise<JournalEntry[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);
     return response.data;
