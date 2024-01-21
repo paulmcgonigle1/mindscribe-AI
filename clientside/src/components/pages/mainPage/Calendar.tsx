@@ -175,15 +175,25 @@ export default function Example() {
 }
 
 function DayInsights({ entry }: { entry: JournalEntry }) {
+  const handleEntryClick = (entry: JournalEntry) => {
+    // Your logic to handle the click, e.g., show a modal
+
+    console.log(
+      "Entry :" + entry.entryID + "\nWith  " + entry.content.slice(0, 50)
+    ); // For testing, replace with actual modal logic
+  };
   return (
-    <li className="flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100">
+    <li
+      onClick={() => handleEntryClick(entry)}
+      className="flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100"
+    >
       <div className="flex-auto">
         <p className="text-gray-900">Journal Entry: {entry.entryID}</p>
         <p className="mt-0.5">
           <time dateTime={new Date(entry.timestamp).toISOString()}>
             {format(new Date(entry.timestamp), "h:mm a")}
-          </time>
-          <p>{entry.content}</p>
+          </time>{" "}
+          \n - {entry.content}
         </p>
       </div>
       <Menu
