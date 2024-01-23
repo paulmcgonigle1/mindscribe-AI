@@ -65,12 +65,12 @@ export default function StatsDashboard() {
           <ThemesGrid selectedPeriod={selectedPeriod} />
         </div>
       </div>
-      <div className="flex flex-row gap-4 w-full">
+      {/* <div className="flex flex-row gap-4 w-full">
         <div className="flex flex-grow min-w-0">
           <AnalysisDisplay />
         </div>
         <div className="flex flex-grow min-w-0"></div>
-      </div>
+      </div> */}
     </div>
   );
 }
