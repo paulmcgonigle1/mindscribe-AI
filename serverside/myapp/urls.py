@@ -4,7 +4,7 @@ from .views import (
     DailyInsightsView,
     get_emotion_statistics,
 )  # Import your views here
-
+from . import authviews
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
@@ -51,4 +51,6 @@ urlpatterns = [
     ),
     path("themes/<int:user_id>/", views.get_theme_statistics, name="theme-list-create"),
     path("analyze-data/<int:user_id>/", views.analyze_data, name="analyze-data"),
+    # pointing to api folder
+    path("", authviews.getRoutes),
 ]
