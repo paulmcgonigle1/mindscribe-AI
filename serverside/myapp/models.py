@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 default_user_id = 1  # Replace with an actual user ID from your database
 
@@ -73,6 +74,8 @@ class ActionableTask(models.Model):
     isCompleted = models.BooleanField(
         default=False, help_text="Whether the user has completed this action."
     )
+    created_at = models.DateTimeField(default=timezone.now)
+
     relevance = models.IntegerField(
         default=0,
         help_text="Relevance score of the insight based on user's current context.",

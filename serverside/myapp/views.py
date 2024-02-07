@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 
 from langchain_app.views import process_entry
-from .improvements import create_plan_from_insights
+from .improvements import create_tasks_from_insights
 from rest_framework.response import Response
 from datetime import timedelta  # Will be used for date range queries
 import logging
@@ -40,6 +40,7 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
         print("Got journal Entries")
         return JournalEntry.objects.all()
 
+    # get insights for a particular journal entry
     @action(detail=True, methods=["get"])
     def insights(self, request, pk=None):
         """

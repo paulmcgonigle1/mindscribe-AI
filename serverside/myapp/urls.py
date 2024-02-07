@@ -5,7 +5,10 @@ from .views import (
     get_emotion_statistics,
 )  # Import your views here
 
-from .improvements import CreatePlanView, GetRecentImprovements
+from .improvements import (
+    CreateImprovementWithTasksAndMessage,
+    GetRecentImprovements,
+)
 from rest_framework.routers import DefaultRouter
 from . import views
 
@@ -33,7 +36,7 @@ urlpatterns = [
     ),
     path(
         "create-improvements/<int:user_id>/",
-        CreatePlanView.as_view(),
+        CreateImprovementWithTasksAndMessage.as_view(),
         name="create-improvements",
     ),
     path(

@@ -1,0 +1,4 @@
+langchain
+djangorestframework
+django-cors-headers
+openai

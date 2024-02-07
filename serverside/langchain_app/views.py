@@ -60,7 +60,7 @@ def interact_with_llm(prompt):
     print("Interacting with LLM")
     response = llm.invoke(prompt)
     # Debugging: Print the response object to understand its structure
-    print("Response object:", response)
+    # print("Response from GPT:", response)
 
     return response.content.strip()
 
