@@ -11,7 +11,10 @@ from .improvements import (
 )
 from rest_framework.routers import DefaultRouter
 from . import views
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 router = DefaultRouter()
 router.register(r"journal-entries", views.JournalEntryViewSet, basename="journalentry")
@@ -51,6 +54,10 @@ urlpatterns = [
     ),
     path("themes/<int:user_id>/", views.get_theme_statistics, name="theme-list-create"),
     path("analyze-data/<int:user_id>/", views.analyze_data, name="analyze-data"),
+    ###################################################
+    # WORKING WITH AUTH AND LOGIN ETC
     # pointing to api folder
     path("", authviews.getRoutes),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
