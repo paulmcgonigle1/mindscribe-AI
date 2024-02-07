@@ -5,7 +5,10 @@ from .views import (
     get_emotion_statistics,
 )  # Import your views here
 
-from .improvements import CreatePlanView, GetRecentImprovements
+from .improvements import (
+    CreateImprovementWithTasksAndMessage,
+    GetRecentImprovements,
+)
 from rest_framework.routers import DefaultRouter
 from . import views
 
@@ -18,10 +21,13 @@ urlpatterns = [
     # Define the URL pattern for the MoodEntryListCreate view
     path(
         "journal-entries/user/<int:user_id>/",
-        views.JournalEntryViewSet.as_view(
-            {"get": "list"}
-        ),  # Specify the 'list' action for 'get' requests
+        views.JournalEntryViewSet.as_view({"get": "list"}),
         name="user-journal-entries",
+    ),
+    path(
+        "journal-entries/<int:pk>/insights/",
+        views.JournalEntryViewSet.as_view({"get": "insights"}),
+        name="journal-entry-insights",
     ),
     path(
         "daily-insights/<int:user_id>/<int:year>/<int:month>/<int:day>/",
@@ -30,7 +36,7 @@ urlpatterns = [
     ),
     path(
         "create-improvements/<int:user_id>/",
-        CreatePlanView.as_view(),
+        CreateImprovementWithTasksAndMessage.as_view(),
         name="create-improvements",
     ),
     path(

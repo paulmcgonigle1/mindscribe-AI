@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 import DashboardStatsGrid from "./DashboardStatsGrid";
-import TransactionChart from "./MoodSection/MoodChartBar";
+import TransactionChart from "./MoodSection/MoodLineChart";
 import BuyerProfileChart from "./MoodPieChart";
 import RecentOrders from "./EmotionGrid";
 import PopularProducts from "./PopularProducts";
 import StreakChart from "./StreakChart";
 import MoodChart from "./MoodSection/MoodStats";
-import MoodChartBar from "./MoodSection/MoodChartBar";
+import MoodChartBar from "./MoodSection/MoodLineChart";
 import MoodStats from "./MoodSection/MoodStats";
 import MoodAnalytics from "./MoodSection/MoodAnalytics";
 import { getRecentEntries } from "../../../services/JournalService";
@@ -65,12 +65,12 @@ export default function StatsDashboard() {
           <ThemesGrid selectedPeriod={selectedPeriod} />
         </div>
       </div>
-      <div className="flex flex-row gap-4 w-full">
+      {/* <div className="flex flex-row gap-4 w-full">
         <div className="flex flex-grow min-w-0">
           <AnalysisDisplay />
         </div>
         <div className="flex flex-grow min-w-0"></div>
-      </div>
+      </div> */}
     </div>
   );
 }
