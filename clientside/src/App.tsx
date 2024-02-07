@@ -5,9 +5,11 @@ import Products from "./components/pages/statsPage/Products";
 import JournalDashboard from "./components/pages/mainPage/JournalDashboard";
 import StatsDashboard from "./components/pages/statsPage/StatsDashboard";
 import ImprovementsDashboard from "./components/pages/improvementsPage/ImprovementsDashboard";
-
+import HomePage from "./components/pages/homePage/HomePage";
+import LoginPage from "./components/pages/homePage/LoginPage";
 function App() {
   return (
+    //this will have to be swapped around to have home as the default etc
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -15,7 +17,8 @@ function App() {
           <Route path="statistics" element={<StatsDashboard />} />
           <Route path="improvements" element={<ImprovementsDashboard />} />
         </Route>
-        <Route path="login" element={<div>This is login page</div>}></Route>
+        <Route path="login" element={<LoginPage />}></Route>
+        <Route path="home" element={<HomePage />}></Route>
       </Routes>
     </BrowserRouter>
   );

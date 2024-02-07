@@ -4,7 +4,7 @@ from .views import (
     DailyInsightsView,
     get_emotion_statistics,
 )  # Import your views here
-from . import authviews
+from .authviews import MyTokenObtainPairView, getRoutes
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
@@ -57,7 +57,7 @@ urlpatterns = [
     ###################################################
     # WORKING WITH AUTH AND LOGIN ETC
     # pointing to api folder
-    path("", authviews.getRoutes),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("", getRoutes),
+    path("api/token/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
