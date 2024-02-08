@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import {
   HiOutlineBell,
   HiOutlineChatAlt,
@@ -7,8 +7,10 @@ import {
 import { Popover, Transition, Menu } from "@headlessui/react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../context/AuthContext";
 useNavigate;
 export default function Header() {
+  let { user } = useContext(AuthContext)!;
   const navigate = useNavigate();
   return (
     <div className="bg-white h-16 px-4 flex justify-between items-center border-b border-gray-200">
@@ -144,6 +146,9 @@ export default function Header() {
             </Menu.Items>
           </Transition>
         </Menu>
+        <div>
+          <p>Hello, {user?.name}</p>
+        </div>
       </div>
     </div>
   );

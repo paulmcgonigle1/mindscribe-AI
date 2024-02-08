@@ -7,7 +7,7 @@ import StatsDashboard from "./components/pages/statsPage/StatsDashboard";
 import ImprovementsDashboard from "./components/pages/improvementsPage/ImprovementsDashboard";
 import HomePage from "./components/pages/homePage/HomePage";
 import LoginPage from "./components/pages/homePage/LoginPage";
-
+import { AuthProvider } from "./context/AuthContext";
 // Example authentication check function
 const isAuthenticated = () => {
   // Replace this with your actual authentication logic
@@ -16,25 +16,31 @@ const isAuthenticated = () => {
 };
 function App() {
   return (
-    //this will have to be swapped around to have home as the default etc
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<JournalDashboard />} />
-          <Route path="statistics" element={<StatsDashboard />} />
-          <Route path="improvements" element={<ImprovementsDashboard />} />
-        </Route>
+    //Auth Provider now allow the context to be available throughout all the components
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<JournalDashboard />} />
+            <Route path="statistics" element={<StatsDashboard />} />
+            <Route path="improvements" element={<ImprovementsDashboard />} />
+          </Route>
 
-        <Route path="login" element={<LoginPage />}></Route>
-        <Route
-          path="home"
-          //this needs to be updated so that i can go on home page
-          element={
-            isAuthenticated() ? <HomePage /> : <Navigate to="/login" replace />
-          }
-        ></Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path="login" element={<LoginPage />}></Route>
+          <Route
+            path="home"
+            //this needs to be updated so that i can go on home page
+            element={
+              isAuthenticated() ? (
+                <HomePage />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          ></Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
