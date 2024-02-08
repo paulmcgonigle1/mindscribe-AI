@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/pages/statsPage/StatsDashboard";
 import Layout from "./components/shared/Layout";
 import Products from "./components/pages/statsPage/Products";
@@ -7,6 +7,13 @@ import StatsDashboard from "./components/pages/statsPage/StatsDashboard";
 import ImprovementsDashboard from "./components/pages/improvementsPage/ImprovementsDashboard";
 import HomePage from "./components/pages/homePage/HomePage";
 import LoginPage from "./components/pages/homePage/LoginPage";
+
+// Example authentication check function
+const isAuthenticated = () => {
+  // Replace this with your actual authentication logic
+  // For example, check if a user token exists in local storage
+  return Boolean(localStorage.getItem("userToken"));
+};
 function App() {
   return (
     //this will have to be swapped around to have home as the default etc
@@ -17,8 +24,15 @@ function App() {
           <Route path="statistics" element={<StatsDashboard />} />
           <Route path="improvements" element={<ImprovementsDashboard />} />
         </Route>
+
         <Route path="login" element={<LoginPage />}></Route>
-        <Route path="home" element={<HomePage />}></Route>
+        <Route
+          path="home"
+          //this needs to be updated so that i can go on home page
+          element={
+            isAuthenticated() ? <HomePage /> : <Navigate to="/login" replace />
+          }
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
