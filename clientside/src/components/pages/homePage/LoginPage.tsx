@@ -1,17 +1,23 @@
 import React, { useState, useContext } from "react";
 import AuthContext from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   // State to store the username and password
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const { loginUser } = useContext(AuthContext)!; // Assert that AuthContext is not undefined
 
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    // Wrap navigate in a function to pass as onSuccess callback
+    loginUser(e, () => navigate("/"));
+  };
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-xs">
         <form
-          onSubmit={loginUser}
+          onSubmit={handleLogin}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
           <div className="mb-4">

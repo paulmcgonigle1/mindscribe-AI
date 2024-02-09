@@ -6,7 +6,7 @@ import {
 } from "react-icons/hi";
 import { Popover, Transition, Menu } from "@headlessui/react";
 import classNames from "classnames";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 useNavigate;
 export default function Header() {
@@ -25,6 +25,7 @@ export default function Header() {
           className="text-sm focus:outline-none active:outline-none h-10 w-[24rem] border border-gray-300 rounded-sm pl-11 pr-4 "
         />
       </div>
+
       <div className="flex items-center gap-2 mr-2">
         <Popover className="relative">
           {({ open }) => (
@@ -146,9 +147,7 @@ export default function Header() {
             </Menu.Items>
           </Transition>
         </Menu>
-        <div>
-          <p>Hello, {user?.name}</p>
-        </div>
+        <div>{user && <p>Hello, {user.username}</p>}</div>
       </div>
     </div>
   );

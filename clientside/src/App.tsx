@@ -8,13 +8,14 @@ import ImprovementsDashboard from "./components/pages/improvementsPage/Improveme
 import HomePage from "./components/pages/homePage/HomePage";
 import LoginPage from "./components/pages/homePage/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
+import AuthContext from "./context/AuthContext";
+import { useContext } from "react";
 // Example authentication check function
-const isAuthenticated = () => {
-  // Replace this with your actual authentication logic
-  // For example, check if a user token exists in local storage
-  return Boolean(localStorage.getItem("userToken"));
-};
+
 function App() {
+  //put exclamation mark here to ensure it wont be undefined.
+  const { user } = useContext(AuthContext)!;
+
   return (
     //Auth Provider now allow the context to be available throughout all the components
     <AuthProvider>
@@ -30,13 +31,7 @@ function App() {
           <Route
             path="home"
             //this needs to be updated so that i can go on home page
-            element={
-              isAuthenticated() ? (
-                <HomePage />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
+            element={user ? <HomePage /> : <Navigate to="/login" replace />}
           ></Route>
         </Routes>
       </BrowserRouter>
