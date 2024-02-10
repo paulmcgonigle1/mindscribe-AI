@@ -7,6 +7,7 @@ interface AuthContextType {
     e: React.FormEvent<HTMLFormElement>,
     onSuccess: any
   ) => Promise<void>;
+  logoutUser: () => void; // Define logoutUser function type
   user: { name?: string; username?: string } | null; // Add a user property to store user information
 }
 // Create context with an initial value of the same type or undefined
@@ -20,10 +21,45 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+type AuthTokens = {
+  access: string;
+  refresh: string;
+} | null;
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  localStorage.getItem("authTokens");
-  let [authTokens, setAuthTokens] = useState<string | null>(null);
-  let [user, setUser] = useState<{ name: string } | null>(null);
+  // Use a function to initialize authTokens state lazily
+  const [authTokens, setAuthTokens] = useState<AuthTokens>(() => {
+    try {
+      // Attempt to get the item from localStorage
+      const item = localStorage.getItem("authTokens");
+      return item ? JSON.parse(item) : null;
+    } catch (error) {
+      // If an error occurs, log it and return null
+      console.error("Error reading authTokens from localStorage:", error);
+      return null;
+    }
+  });
+  let [user, setUser] = useState<{ username: string } | null>(null);
+
+  interface MyTokenPayload {
+    username: string;
+    // include other properties you expect to have
+  }
+
+  useEffect(() => {
+    // If authTokens are present, decode them to set the user (you might already be doing something similar)
+    const token = authTokens?.access; // Assuming authTokens has an 'access' property holding the token string
+    if (token && typeof token === "string") {
+      try {
+        // Assuming you have a function to decode the JWT and extract user info
+        const decodedUser = jwtDecode<MyTokenPayload>(authTokens.access); // Make sure to define or import jwtDecode
+        console.log(decodedUser);
+        setUser({ username: decodedUser.username });
+      } catch (error) {
+        console.error("Error decoding authTokens:", error);
+      }
+    }
+  }, [authTokens]); // Re-run this effect if authTokens change
 
   const loginUser = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -70,8 +106,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  //for logging user out and resettin user and tokens
+  let logoutUser = () => {
+    setAuthTokens(null);
+    setUser(null);
+    localStorage.removeItem("authTokens");
+  };
+
   let contextData: AuthContextType = {
-    loginUser,
+    loginUser: loginUser,
+    logoutUser: logoutUser,
     user: user,
   };
   return (

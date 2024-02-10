@@ -13,8 +13,11 @@ import { useContext } from "react";
 // Example authentication check function
 
 function App() {
-  //put exclamation mark here to ensure it wont be undefined.
-  const { user } = useContext(AuthContext)!;
+  // Correctly handle potentially undefined context
+  const authContext = useContext(AuthContext);
+
+  // This fixed my undefined error
+  const { user } = authContext ?? {};
 
   return (
     //Auth Provider now allow the context to be available throughout all the components

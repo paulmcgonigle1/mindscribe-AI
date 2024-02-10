@@ -41,17 +41,15 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({ item }) => {
 };
 
 export default function Sidebar() {
+  let { user, logoutUser } = useContext(AuthContext)!;
+
   const navigate = useNavigate();
   // const { setAuthTokens, setUser } = useContext(AuthContext); // Assuming your context provides these
 
   const handleLogout = () => {
-    //clear authentication tokens or user info here
-    // if (setAuthTokens && setUser) {
-    //   setAuthTokens(null);
-    //   setUser(null);
-    // }
-
-    //navigate to login page
+    logoutUser();
+    // console.log("user after logout: = ", user);
+    // console.log("authTokens = ", localStorage.getItem("authTokens"));
     navigate("/login");
   };
   return (
