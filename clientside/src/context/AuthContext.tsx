@@ -26,6 +26,10 @@ type AuthTokens = {
   refresh: string;
 } | null;
 
+interface MyTokenPayload {
+  username: string;
+  // include other properties you expect to have
+}
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Use a function to initialize authTokens state lazily
   const [authTokens, setAuthTokens] = useState<AuthTokens>(() => {
@@ -41,11 +45,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
   let [user, setUser] = useState<{ username: string } | null>(null);
 
-  interface MyTokenPayload {
-    username: string;
-    // include other properties you expect to have
-  }
+  let [loading, setLoading] = useState(true);
 
+  //this is called every time this page is refreshed.
   useEffect(() => {
     // If authTokens are present, decode them to set the user (you might already be doing something similar)
     const token = authTokens?.access; // Assuming authTokens has an 'access' property holding the token string
@@ -53,6 +55,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         // Assuming you have a function to decode the JWT and extract user info
         const decodedUser = jwtDecode<MyTokenPayload>(authTokens.access); // Make sure to define or import jwtDecode
+        console.log(
+          "Below is JWT token details after decode -- these can be updated"
+        );
         console.log(decodedUser);
         setUser({ username: decodedUser.username });
       } catch (error) {
@@ -70,7 +75,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    console.log("Form Submitted with:", username, password);
+    console.log(
+      "Form Submitted with username:" + username + " and password: " + password
+    );
     try {
       // example, needs to be updated to a service perhaps
       let response = await fetch("http://127.0.0.1:8000/myapp/api/token/", {
@@ -98,8 +105,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         alert("Something Went Wrong");
       }
 
-      console.log("Login Success", data);
-      console.log("response", response);
+      // console.log("Login Success", data);
+      // console.log("response", response);
       //end of try
     } catch (error) {
       console.error("Login failed:", error);
@@ -113,11 +120,51 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("authTokens");
   };
 
+  let updateToken = async () => {
+    console.log("Update Token Called");
+
+    if (authTokens) {
+      let response = await fetch(
+        "http://127.0.0.1:8000/myapp/api/token/refresh/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ refresh: authTokens.refresh }),
+        }
+      );
+      let data = await response.json();
+      if (response.status === 200) {
+        setAuthTokens(data);
+        console.log("Token updated and refreshed successfully");
+        //using jwt decode to get the access key
+        setUser(jwtDecode(data.access));
+        //setting authJWTTokens in localStorage
+        localStorage.setItem("authTokens", JSON.stringify(data));
+      } else {
+        logoutUser();
+      }
+    } else {
+      console.log("No authTokens available for refresh");
+    }
+  };
+
   let contextData: AuthContextType = {
     loginUser: loginUser,
     logoutUser: logoutUser,
     user: user,
   };
+
+  //for refreshing token every 5 mins
+  useEffect(() => {
+    let interval = setInterval(() => {
+      if (authTokens) {
+        updateToken();
+      }
+    }, 300000); // Refresh every 5 minutes
+    return () => clearInterval(interval);
+  }, [authTokens, loading]); // Consider if `loading` is necessary here
   return (
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
