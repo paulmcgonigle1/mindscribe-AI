@@ -64,7 +64,7 @@ class InsightAdmin(admin.ModelAdmin):
 
 
 # Register each model with its respective admin class
-admin.site.register(User, UserAdmin)
+# admin.site.register(User, UserAdmin)
 admin.site.register(JournalEntry, JournalEntryAdmin)
 admin.site.register(UserImprovement, UserImprovementAdmin)
 admin.site.register(Insight, InsightAdmin)
