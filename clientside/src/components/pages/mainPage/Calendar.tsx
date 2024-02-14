@@ -16,13 +16,14 @@ import {
   set,
   startOfToday,
 } from "date-fns";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Insight, JournalEntry } from "../../../lib/types/types";
 import {
-  getRecentEntries,
+  getJournals,
   getInsightForJournalEntry,
 } from "../../../services/JournalService";
 import ModalComponent from "./ModalComponent";
+import AuthContext from "../../../context/AuthContext";
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
@@ -34,6 +35,7 @@ export default function Example() {
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const [entries, setEntries] = useState<JournalEntry[]>([]);
+  const authContext = useContext(AuthContext);
 
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -56,14 +58,19 @@ export default function Example() {
 
   useEffect(() => {
     const fetchEntries = async () => {
-      try {
-        const response = await getRecentEntries();
+      if (authContext && authContext.authTokens) {
+        try {
+          const journals = await getJournals(authContext.authTokens);
 
-        setEntries(response);
-      } catch (error) {
-        console.error("Error fetching entries:", error);
+          setEntries(journals);
+        } catch (error) {
+          console.error("Error fetching entries:", error);
+        }
+      } else {
+        console.log("Auth context or tokens are undefined/null");
       }
     };
+
     fetchEntries();
   }, []);
 

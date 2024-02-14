@@ -116,6 +116,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   //for logging user out and resettin user and tokens
   let logoutUser = () => {
+    console.log("calling logoutUser in Auth Provider");
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");

@@ -1,4 +1,10 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import Dashboard from "./components/pages/statsPage/StatsDashboard";
 import Layout from "./components/shared/Layout";
 import Products from "./components/pages/statsPage/Products";
@@ -13,6 +19,11 @@ import { useContext } from "react";
 // Example authentication check function
 
 function App() {
+  const ProtectedRoute = () => {
+    const { authTokens } = useContext(AuthContext) ?? {};
+
+    return authTokens ? <Outlet /> : <Navigate to="/login" replace />;
+  };
   // Correctly handle potentially undefined context
   const authContext = useContext(AuthContext);
 
@@ -24,18 +35,15 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<JournalDashboard />} />
-            <Route path="statistics" element={<StatsDashboard />} />
-            <Route path="improvements" element={<ImprovementsDashboard />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<JournalDashboard />} />
+              <Route path="statistics" element={<StatsDashboard />} />
+              <Route path="improvements" element={<ImprovementsDashboard />} />
+            </Route>
           </Route>
-
           <Route path="login" element={<LoginPage />}></Route>
-          <Route
-            path="home"
-            //this needs to be updated so that i can go on home page
-            element={user ? <HomePage /> : <Navigate to="/login" replace />}
-          ></Route>
+          <Route path="home" element={<HomePage />}></Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

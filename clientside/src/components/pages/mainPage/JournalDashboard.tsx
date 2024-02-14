@@ -18,7 +18,7 @@ export default function JournalDashboard() {
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-2/3">
-          {/* <Calendar /> */}
+          <Calendar />
           <RecentJournals />
         </div>
       </div>

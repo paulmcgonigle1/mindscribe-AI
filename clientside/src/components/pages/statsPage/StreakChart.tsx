@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { JournalEntry } from "../../../lib/types/types";
-import { getRecentEntries } from "../../../services/JournalService";
+import { getJournals } from "../../../services/JournalService";
+import AuthContext from "../../../context/AuthContext";
 
 function StreakChart() {
-  const [recentEntries, setRecentEntries] = useState<JournalEntry[]>([]);
+  const [journals, setJournals] = useState<JournalEntry[]>([]);
+  const authContext = useContext(AuthContext);
+
   const [streak, setStreak] = useState(0);
   const [daysStatus, setDaysStatus] = useState<boolean[]>(
     new Array(7).fill(false)
@@ -11,23 +14,28 @@ function StreakChart() {
 
   //useEffect to fetch the recent entries
   useEffect(() => {
-    const fetchEntries = async () => {
-      try {
-        const entries = await getRecentEntries();
-        setRecentEntries(entries);
-      } catch (error) {
-        console.error("Error fetching recent entries:", error);
+    const fetchRecentEntries = async () => {
+      if (authContext && authContext.authTokens) {
+        try {
+          const journals = await getJournals(authContext.authTokens);
+          console.log("Received journals:", journals);
+          setJournals(journals);
+        } catch (error) {
+          console.error("Failed to fetch recent entries:", error);
+        }
+      } else {
+        console.log("Auth context or tokens are undefined/null");
       }
     };
-    fetchEntries();
+    fetchRecentEntries();
   }, []);
   //useEffect to update the streak and daysStatus
   useEffect(() => {
     const last7Days = getLast7Days();
-    const entriesStatus = mapEntriesToDays(recentEntries, last7Days);
+    const entriesStatus = mapEntriesToDays(journals, last7Days);
     setDaysStatus(entriesStatus);
-    setStreak(calculateStreak(recentEntries));
-  }, [recentEntries]);
+    setStreak(calculateStreak(journals));
+  }, [journals]);
 
   //helper function to calculate streak
   const calculateStreak = (entries: JournalEntry[]): number => {
