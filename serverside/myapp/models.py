@@ -38,9 +38,7 @@ default_user_id = 1  # Replace with an actual user ID from your database
 # Model for Journal Entries
 class JournalEntry(models.Model):
     entryID = models.AutoField(primary_key=True)
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="journal_entries"
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="journals")
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     moodRating = models.IntegerField(default=0)

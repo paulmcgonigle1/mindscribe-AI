@@ -1,13 +1,11 @@
-from django.shortcuts import render
 from django.utils import timezone
-from rest_framework import generics
 from .models import JournalEntry, Insight, UserImprovement
 from .serializers import JournalEntrySerializer, InsightSerializer
 from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
-from rest_framework.decorators import action
-
+from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from langchain_app.views import process_entry
 from .improvements import create_tasks_from_insights
 from rest_framework.response import Response
@@ -58,6 +56,17 @@ class DailyInsightsView(APIView):
         insights = Insight.objects.filter(entry__user__id=user_id, timestamp__date=date)
         serialized_insights = InsightSerializer(insights, many=True).data
         return Response(serialized_insights)
+
+
+# following video on auth and tokens etc
+# this gets the journals only for the authenticated user
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def getJournals(request):
+    user = request.user
+    journals = user.journals.all()
+    serializer = JournalEntrySerializer(journals, many=True)
+    return Response(serializer.data)
 
 
 # Getting the emotion statistics

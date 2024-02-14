@@ -9,6 +9,7 @@ interface AuthContextType {
   ) => Promise<void>;
   logoutUser: () => void; // Define logoutUser function type
   user: { name?: string; username?: string } | null; // Add a user property to store user information
+  authTokens: { access: string; refresh?: string } | null; // Assuming this structure, adjust as necessary
 }
 // Create context with an initial value of the same type or undefined
 
@@ -154,6 +155,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loginUser: loginUser,
     logoutUser: logoutUser,
     user: user,
+    authTokens: authTokens,
   };
 
   //for refreshing token every 5 mins

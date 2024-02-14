@@ -8,6 +8,16 @@ export const getRecentEntries = async (): Promise<JournalEntry[]> => {
     return response.data;
   };
 
+  export const getJournals = async (authTokens:{access:string}):Promise<JournalEntry[]> => {
+    const response = await axios.get(`${BASE_URL}/myapp/api/journals/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`, // Use template literal for proper spacing
+      }
+    })
+    return response.data
+  }
+
   export const getInsightForJournalEntry = async (entryId: number): Promise<Insight[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${entryId}/insights/`);
     return response.data;
