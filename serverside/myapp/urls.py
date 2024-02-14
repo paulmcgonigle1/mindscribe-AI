@@ -28,11 +28,11 @@ urlpatterns = [
     #     views.JournalEntryViewSet.as_view({"get": "list"}),
     #     name="user-journal-entries",
     # ),
-    path(
-        "journal-entries/<int:pk>/insights/",
-        views.JournalEntryViewSet.as_view({"get": "insights"}),
-        name="journal-entry-insights",
-    ),
+    # path(
+    #     "journal-entries/<int:pk>/insights/",
+    #     views.JournalEntryViewSet.as_view({"get": "insights"}),
+    #     name="journal-entry-insights",
+    # ),
     path(
         "daily-insights/<int:user_id>/<int:year>/<int:month>/<int:day>/",
         DailyInsightsView.as_view(),
@@ -63,4 +63,9 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/journals/", views.getJournals, name="get_journals"),
     path("api/createjournal/", views.createJournal, name="create_journal"),
+    path(
+        "api/journals/<int:entry_id>/insights/",
+        views.get_insights_for_journal_entry,
+        name="journal_insights",
+    ),
 ]

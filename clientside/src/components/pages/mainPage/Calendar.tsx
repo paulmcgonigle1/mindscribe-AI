@@ -58,9 +58,11 @@ export default function Example() {
 
   useEffect(() => {
     const fetchEntries = async () => {
-      if (authContext && authContext.authTokens) {
+      if (authContext?.authTokens?.access) {
         try {
-          const journals = await getJournals(authContext.authTokens);
+          const journals = await getJournals({
+            access: authContext.authTokens.access,
+          });
 
           setEntries(journals);
         } catch (error) {
@@ -189,22 +191,30 @@ export default function Example() {
 function DayInsights({ entry }: { entry: JournalEntry }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [insight, setInsight] = useState<Insight | null>(null);
+  const authContext = useContext(AuthContext);
 
   //use service to get insight for selectedEntry
 
   const fetchAndSetInsight = async (entryId: number) => {
-    try {
-      const insights = await getInsightForJournalEntry(entryId);
-      // If insights are returned as an array and you want the first one:
-      if (insights.length > 0) {
-        setInsight(insights[0]);
-      } else {
-        // Handle the case where there are no insights
-        console.log(`No insights found for entry ID: ${entryId}`);
-        setInsight(null); // Or however you want to handle this case
+    if (authContext?.authTokens?.access) {
+      try {
+        const insights = await getInsightForJournalEntry(
+          { access: authContext.authTokens.access },
+          entryId
+        );
+        // If insights are returned as an array and you want the first one:
+        if (insights.length > 0) {
+          setInsight(insights[0]);
+        } else {
+          // Handle the case where there are no insights
+          console.log(`No insights found for entry ID: ${entryId}`);
+          setInsight(null); // Or however you want to handle this case
+        }
+      } catch (error) {
+        console.error("Error fetching insights:", error);
       }
-    } catch (error) {
-      console.error("Error fetching insights:", error);
+    } else {
+      console.log("Authentication tokens are not available.");
     }
   };
   //handles click on the entry to get insights for that entry

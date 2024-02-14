@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from .models import JournalEntry, Insight, UserImprovement
 from .serializers import JournalEntrySerializer, InsightSerializer
@@ -66,6 +67,21 @@ def getJournals(request):
     user = request.user
     journals = user.journals.all()
     serializer = JournalEntrySerializer(journals, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_insights_for_journal_entry(request, entry_id):
+    """
+    Retrieve insights for a specific journal entry owned by the authenticated user.
+    """
+    # Ensure the journal entry exists and belongs to the authenticated user
+    journal_entry = get_object_or_404(JournalEntry, pk=entry_id, user=request.user)
+
+    # Fetch insights related to the journal entry
+    insights = Insight.objects.filter(entry=journal_entry)
+    serializer = InsightSerializer(insights, many=True)
     return Response(serializer.data)
 
 

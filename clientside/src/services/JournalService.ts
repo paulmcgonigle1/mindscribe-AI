@@ -35,10 +35,16 @@ export const createEntry = async (authTokens: { access: string }, entry: NewJour
     return response.data;
   }
 
-  export const getInsightForJournalEntry = async (entryId: number): Promise<Insight[]> => {
-    const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${entryId}/insights/`);
+  export const getInsightForJournalEntry = async (authTokens: { access: string }, entryId: number): Promise<Insight[]> => {
+    const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${entryId}/insights/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`, // Include the Authorization header
+      }
+    });
     return response.data;
-  }
+  };
+  
   // export const getEntriesByUser = async (userId: number): Promise<JournalEntry[]> => {
   //   const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);
   //   return response.data;
