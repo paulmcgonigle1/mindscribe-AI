@@ -7,7 +7,7 @@ interface AuthContextType {
     e: React.FormEvent<HTMLFormElement>,
     onSuccess: any
   ) => Promise<void>;
-  logoutUser: () => void; // Define logoutUser function type
+  logoutUser: () => void; // Defining logoutUser function type
   user: { name?: string; username?: string } | null; // Add a user property to store user information
   authTokens: { access: string; refresh?: string } | null; // Assuming this structure, adjust as necessary
 }
@@ -171,7 +171,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     //can update this if needed
     let fourMinutes = 1000 * 60 * 4;
     let interval = setInterval(() => {
-      if (authTokens) {
+      if (authTokens && authTokens.refresh) {
         updateToken();
       }
     }, fourMinutes); // Refresh every 5 minutes
@@ -179,8 +179,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [authTokens, loading]); // Consider if `loading` is necessary here
   return (
     //also adding condition that none of the children render out before loading completed
-    <AuthContext.Provider value={contextData}>
-      {loading ? null : children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
 };
