@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-import DashboardStatsGrid from "./DashboardStatsGrid";
 import TransactionChart from "./MoodSection/MoodLineChart";
 import BuyerProfileChart from "./MoodPieChart";
 import RecentOrders from "./EmotionGrid";
@@ -10,29 +9,34 @@ import MoodChart from "./MoodSection/MoodStats";
 import MoodChartBar from "./MoodSection/MoodLineChart";
 import MoodStats from "./MoodSection/MoodStats";
 import MoodAnalytics from "./MoodSection/MoodAnalytics";
-import { getRecentEntries } from "../../../services/JournalService";
+import { getJournals } from "../../../services/JournalService";
 import { JournalEntry } from "../../../lib/types/types";
 import MoodPieChart from "./MoodPieChart";
 import EmotionGrid from "./EmotionGrid";
 import ThemesGrid from "./ThemesGrid";
 import AnalysisDisplay from "./AnalysisSection/AnalysisDisplay";
+import AuthContext from "../../../context/AuthContext";
 export default function StatsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(7); // Default to last 7 days
-  const [entries, setEntries] = useState<JournalEntry[]>([]);
+  const [journals, setJournals] = useState<JournalEntry[]>([]);
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchEntries = async () => {
-      try {
-        //const userId = 1;
-        const userEntries = await getRecentEntries(); //this needs to be updated to get entries for the user
-        setEntries(userEntries);
-      } catch (error) {
-        console.error("Error fetching recent entries:", error);
+    const fetchRecentEntries = async () => {
+      if (authContext && authContext.authTokens) {
+        try {
+          const journals = await getJournals(authContext.authTokens);
+          console.log("Received journals:", journals);
+          setJournals(journals);
+        } catch (error) {
+          console.error("Failed to fetch recent entries:", error);
+        }
+      } else {
+        console.log("Auth context or tokens are undefined/null");
       }
     };
-    fetchEntries();
-    console.log(entries);
-  }, [selectedPeriod]);
+    fetchRecentEntries();
+  }, []);
 
   const handlePeriodChange = (newPeriod: number) => {
     setSelectedPeriod(newPeriod);
@@ -44,14 +48,14 @@ export default function StatsDashboard() {
       <div className="flex flex-row gap-4 w-full">
         <div className="flex flex-grow min-w-0">
           <MoodAnalytics
-            entries={entries}
+            entries={journals}
             selectedPeriod={selectedPeriod}
             onPeriodChange={handlePeriodChange}
           />
         </div>
         <div className="flex flex-grow min-w-0">
           <MoodPieChart
-            entries={entries}
+            entries={journals}
             selectedPeriod={selectedPeriod}
             onPeriodChange={handlePeriodChange}
           />

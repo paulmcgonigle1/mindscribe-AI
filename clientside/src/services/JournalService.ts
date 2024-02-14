@@ -3,19 +3,35 @@ import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, T
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
-export const getRecentEntries = async (): Promise<JournalEntry[]> => {
-    const response = await axios.get(`${BASE_URL}/myapp/journal-entries/`);
+// export const getRecentEntries = async (): Promise<JournalEntry[]> => {
+//     const response = await axios.get(`${BASE_URL}/myapp/journal-entries/`);
+//     return response.data;
+//   };
+
+  export const getJournals = async (authTokens:{access:string}):Promise<JournalEntry[]> => {
+    const response = await axios.get(`${BASE_URL}/myapp/api/journals/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`, // Use template literal for proper spacing
+      }
+    })
+    if (response.status === 401) {
+      // You could throw a specific error for this case
+      throw new Error('Unauthorized');
+    } else if (response.status !== 200) {
+      throw new Error(`Received non-200 status code: ${response.status}`);
+    }
     return response.data;
-  };
+  }
 
   export const getInsightForJournalEntry = async (entryId: number): Promise<Insight[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${entryId}/insights/`);
     return response.data;
   }
-  export const getEntriesByUser = async (userId: number): Promise<JournalEntry[]> => {
-    const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);
-    return response.data;
-  }
+  // export const getEntriesByUser = async (userId: number): Promise<JournalEntry[]> => {
+  //   const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);
+  //   return response.data;
+  // }
 
   export const createEntry = async (entry: NewJournalEntry): Promise<NewJournalEntry> => {
     const response = await axios.post(`${BASE_URL}/myapp/journal-entries/`, entry);

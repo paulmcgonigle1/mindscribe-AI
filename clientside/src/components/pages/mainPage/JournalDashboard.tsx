@@ -1,5 +1,4 @@
 import { useState } from "react";
-import DashboardStatsGrid from "../statsPage/DashboardStatsGrid";
 import JournalSection from "./JournalSection";
 import MoodRating from "./MoodRating";
 import RecentJournals from "./RecentJournals";
@@ -20,6 +19,7 @@ export default function JournalDashboard() {
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-2/3">
           <Calendar />
+          <RecentJournals />
         </div>
       </div>
     </div>

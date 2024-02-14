@@ -3,15 +3,19 @@ from .views import (
     JournalEntryViewSet,
     DailyInsightsView,
     get_emotion_statistics,
+    getJournals,
 )  # Import your views here
-
+from .authviews import MyTokenObtainPairView, getRoutes
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
 )
 from rest_framework.routers import DefaultRouter
 from . import views
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 router = DefaultRouter()
 router.register(r"journal-entries", views.JournalEntryViewSet, basename="journalentry")
@@ -51,4 +55,11 @@ urlpatterns = [
     ),
     path("themes/<int:user_id>/", views.get_theme_statistics, name="theme-list-create"),
     path("analyze-data/<int:user_id>/", views.analyze_data, name="analyze-data"),
+    ###################################################
+    # WORKING WITH AUTH AND LOGIN ETC
+    # pointing to api folder
+    path("", getRoutes),
+    path("api/token/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/journals/", views.getJournals, name="get_journals"),
 ]
