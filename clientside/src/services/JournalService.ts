@@ -8,6 +8,17 @@ const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django
 //     return response.data;
 //   };
 
+export const createEntry = async (authTokens: { access: string }, entry: NewJournalEntry): Promise<NewJournalEntry> => {
+  const response = await axios.post(`${BASE_URL}/myapp/api/createjournal/`, entry, {
+    headers:{
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${authTokens.access}`, // Include the Authorization header
+    }
+  });
+  return response.data;
+};
+
+
   export const getJournals = async (authTokens:{access:string}):Promise<JournalEntry[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/api/journals/`, {
       headers: {
@@ -32,11 +43,6 @@ const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django
   //   const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);
   //   return response.data;
   // }
-
-  export const createEntry = async (entry: NewJournalEntry): Promise<NewJournalEntry> => {
-    const response = await axios.post(`${BASE_URL}/myapp/journal-entries/`, entry);
-    return response.data;
-  };
 
 
   export const getInsightbyDay = async (date: string, userId: number): Promise<Insight[]> => {

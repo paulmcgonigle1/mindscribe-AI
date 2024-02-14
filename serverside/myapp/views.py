@@ -22,21 +22,21 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
     serializer_class = JournalEntrySerializer
     queryset = JournalEntry.objects.all()
 
-    def create(self, request, *args, **kwargs):
-        response = super(JournalEntryViewSet, self).create(request, *args, **kwargs)
-        print("Response: ", response.data)
-        if response.status_code == status.HTTP_201_CREATED:
-            journal_entry_id = response.data.get("entryID")
-            journal_entry = JournalEntry.objects.get(entryID=journal_entry_id)
-            process_entry(journal_entry)
-        return response
+    # def create(self, request, *args, **kwargs):
+    #     response = super(JournalEntryViewSet, self).create(request, *args, **kwargs)
+    #     print("Response: ", response.data)
+    #     if response.status_code == status.HTTP_201_CREATED:
+    #         journal_entry_id = response.data.get("entryID")
+    #         journal_entry = JournalEntry.objects.get(entryID=journal_entry_id)
+    #         process_entry(journal_entry)
+    #     return response
 
-    def get_queryset(self):
-        user_id = self.kwargs.get("user_id")  # Access user_id from URL parameters
-        if user_id is not None:
-            return JournalEntry.objects.filter(user=user_id)
-        print("Got journal Entries")
-        return JournalEntry.objects.all()
+    # def get_queryset(self):
+    #     user_id = self.kwargs.get("user_id")  # Access user_id from URL parameters
+    #     if user_id is not None:
+    #         return JournalEntry.objects.filter(user=user_id)
+    #     print("Got journal Entries")
+    #     return JournalEntry.objects.all()
 
     # get insights for a particular journal entry
     @action(detail=True, methods=["get"])
@@ -67,6 +67,26 @@ def getJournals(request):
     journals = user.journals.all()
     serializer = JournalEntrySerializer(journals, many=True)
     return Response(serializer.data)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def createJournal(request):
+    data = request.data.copy()
+    # Setting the user ID in the data to the current authenticated user's ID
+    data["user"] = request.user.id
+    serializer = JournalEntrySerializer(data=data)
+    if serializer.is_valid():
+        # Save the journal entry with the validated data
+        serializer.save()
+        # Optional: this is using my AI Model to process and extract
+        process_entry(serializer.instance)
+        # Return the created journal entry data with a 201 Created response
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        # If the data is not valid, return the errors with a 400 Bad Request response
+        print(serializer.errors)  # Debugging line to print errors
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Getting the emotion statistics

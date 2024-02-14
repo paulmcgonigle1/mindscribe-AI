@@ -23,11 +23,11 @@ router.register(r"journal-entries", views.JournalEntryViewSet, basename="journal
 urlpatterns = [
     path("", include(router.urls)),
     # Define the URL pattern for the MoodEntryListCreate view
-    path(
-        "journal-entries/user/<int:user_id>/",
-        views.JournalEntryViewSet.as_view({"get": "list"}),
-        name="user-journal-entries",
-    ),
+    # path(
+    #     "journal-entries/user/<int:user_id>/",
+    #     views.JournalEntryViewSet.as_view({"get": "list"}),
+    #     name="user-journal-entries",
+    # ),
     path(
         "journal-entries/<int:pk>/insights/",
         views.JournalEntryViewSet.as_view({"get": "insights"}),
@@ -62,4 +62,5 @@ urlpatterns = [
     path("api/token/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/journals/", views.getJournals, name="get_journals"),
+    path("api/createjournal/", views.createJournal, name="create_journal"),
 ]
