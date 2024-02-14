@@ -15,7 +15,7 @@ const RecentJournals: React.FC = () => {
       if (authTokens) {
         try {
           const journals = await getJournals(authTokens);
-          console.log("Received journals:", journals);
+          // console.log("Received journals:", journals);
           setJournals(journals);
         } catch (error) {
           //this will log you out if you are unauthorized

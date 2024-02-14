@@ -56,10 +56,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         // Assuming you have a function to decode the JWT and extract user info
         const decodedUser = jwtDecode<MyTokenPayload>(authTokens.access); // Make sure to define or import jwtDecode
-        console.log(
-          "Below is JWT token details after decode -- these can be updated"
-        );
-        console.log(decodedUser);
+        // console.log(
+        //   "Below is JWT token details after decode -- these can be updated"
+        // );
+        // console.log(decodedUser);
         setUser({ username: decodedUser.username });
       } catch (error) {
         console.error("Error decoding authTokens:", error);
@@ -76,9 +76,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    console.log(
-      "Form Submitted with username:" + username + " and password: " + password
-    );
+    // console.log(
+    //   "Form Submitted with username:" + username + " and password: " + password
+    // );
     try {
       // example, needs to be updated to a service perhaps
       let response = await fetch("http://127.0.0.1:8000/myapp/api/token/", {
@@ -147,6 +147,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         logoutUser();
       }
+      //sets loading false if
+      if (loading) {
+        setLoading(false);
+      }
     } else {
       console.log("No authTokens available for refresh");
     }
@@ -161,14 +165,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   //for refreshing token every 5 mins
   useEffect(() => {
+    if (loading) {
+      updateToken();
+    }
+    //can update this if needed
+    let fourMinutes = 1000 * 60 * 4;
     let interval = setInterval(() => {
       if (authTokens) {
         updateToken();
       }
-    }, 300000); // Refresh every 5 minutes
+    }, fourMinutes); // Refresh every 5 minutes
     return () => clearInterval(interval);
   }, [authTokens, loading]); // Consider if `loading` is necessary here
   return (
-    <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
+    //also adding condition that none of the children render out before loading completed
+    <AuthContext.Provider value={contextData}>
+      {loading ? null : children}
+    </AuthContext.Provider>
   );
 };
