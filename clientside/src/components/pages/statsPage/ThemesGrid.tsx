@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+
 import { getThemes } from "../../../services/JournalService";
 import { ThemeData } from "../../../lib/types/types";
-import { HiOutlinePlusCircle } from "react-icons/hi";
 import {
-  FaFaceGrinBeam,
-  FaFaceGrimace,
-  FaFaceMeh /* other icons */,
-  FaFaceFlushed,
   FaFaceGrinBeamSweat,
-  FaFaceRollingEyes,
-  FaFaceGrinTongue,
-  FaFaceFrownOpen,
-  FaFaceLaughSquint,
-  FaBook,
   FaGraduationCap,
   FaBed,
   FaHandshake,
@@ -24,11 +14,12 @@ import {
   FaFire,
   FaHouse,
 } from "react-icons/fa6";
+import AuthContext from "../../../context/AuthContext";
 
 type themeIconMapType = {
   [key: string]: JSX.Element;
 };
-
+//this is the ones ive set and a default one for now
 const themeIconMap: themeIconMapType = {
   college: <FaGraduationCap className="w-8 h-8 text-yellow-400" />,
   friendship: <FaHandshake className="w-8 h-8 text-red-400" />,
@@ -50,22 +41,25 @@ type ThemeGridProps = {
 
 function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
   const [themes, setThemes] = useState<ThemeData[]>([]);
+  const { authTokens } = useContext(AuthContext) ?? {};
 
-  const userId = 1;
   useEffect(() => {
     const fetchThemes = async () => {
-      try {
-        //const userId = 1;
-        const userThemes = await getThemes(userId, selectedPeriod);
-        console.log(userThemes); //this needs to be updated to get entries for the user
-        setThemes(userThemes);
-      } catch (error) {
-        console.error("Error fetching themes:", error);
+      if (authTokens?.access) {
+        try {
+          //const userId = 1;
+          const userThemes = await getThemes(authTokens, selectedPeriod);
+          console.log(userThemes); //this needs to be updated to get entries for the user
+          setThemes(userThemes);
+        } catch (error) {
+          console.error("Error fetching themes:", error);
+        }
       }
     };
     fetchThemes();
   }, [selectedPeriod]);
 
+  //this just displays the common themes as emojis in a nice layout.
   return (
     <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
       <h1 className="text-xl mb-4 ">Common themes</h1>

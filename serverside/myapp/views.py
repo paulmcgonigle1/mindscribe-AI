@@ -106,10 +106,14 @@ def createJournal(request):
 
 
 # Getting the emotion statistics
-def get_emotion_statistics(request, user_id):
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_emotion_statistics(request):
+
     # Get 'days' from request query parameters, default to 7 if not provided
     days = request.GET.get("days", 7)
-
+    # get the logged in user
+    user = request.user
     try:
         # Convert days to integer
         days = int(days)
@@ -121,7 +125,7 @@ def get_emotion_statistics(request, user_id):
     start_date = end_date - timedelta(days=days)
 
     insights = Insight.objects.filter(
-        entry__user__id=user_id, timestamp__range=(start_date, end_date)
+        entry__user__id=user.id, timestamp__range=(start_date, end_date)
     )
 
     emotion_counts = {}
@@ -152,22 +156,32 @@ def get_emotion_statistics(request, user_id):
     return JsonResponse(sorted_limited_emotion_data, safe=False)
 
 
-def get_theme_statistics(request, user_id):
-    # Get 'days' from request query parameters, default to 7 if not provided
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_theme_statistics(request):
+
+    # getting 'days' from request query parameters, default to 7 if not provided
     days = request.GET.get("days", 7)
 
     try:
-        # Convert days to integer
+        # convert days to integer
         days = int(days)
     except ValueError:
-        # Handle the case where 'days' is not a valid integer
+        # handling the case where 'days' is not a valid integer
         return JsonResponse({"error": "Invalid 'days' parameter"}, status=400)
+
+    # Use the logged-in user from the request
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "User not authenticated"}, status=401)
+
+    # Since we're past the authentication check, request.user can safely be used.
+    user = request.user  # Directly use the user object
 
     end_date = timezone.now()
     start_date = end_date - timedelta(days=days)
 
     insights = Insight.objects.filter(
-        entry__user__id=user_id, timestamp__range=(start_date, end_date)
+        entry__user__id=user.id, timestamp__range=(start_date, end_date)
     )
 
     theme_counts = {}

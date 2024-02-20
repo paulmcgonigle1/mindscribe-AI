@@ -17,6 +17,26 @@ export const createEntry = async (authTokens: { access: string }, entry: NewJour
   });
   return response.data;
 };
+//this gets the common themes for the logged user
+export const getThemes = async (authTokens: { access: string }, days: number): Promise<ThemeData[]> => {
+  const response = await axios.get(`${BASE_URL}/myapp/themes/?days=${days}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });  
+  return response.data;
+}   
+export const getEmotions = async (authTokens: { access: string }, days: number): Promise<EmotionData[]> => {
+  const response = await axios.get(`${BASE_URL}/myapp/emotions/?days=${days}`,{
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });  
+  return response.data;
+}   
+
 export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   try {
     const response = await axios.get(`${BASE_URL}/myapp/create-improvements/`,  { // Note the method change to POST
@@ -68,6 +88,7 @@ export const getImprovements = async (authTokens: { access: string }): Promise<I
     return response.data;
   }
 
+
   export const getInsightForJournalEntry = async (authTokens: { access: string }, entryId: number): Promise<Insight[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${entryId}/insights/`, {
       headers: {
@@ -92,14 +113,7 @@ export const getImprovements = async (authTokens: { access: string }): Promise<I
 
  
 
-export const getEmotions = async (userId: number, days: number): Promise<EmotionData[]> => {
-    const response = await axios.get(`${BASE_URL}/myapp/emotions/${userId}/?days=${days}`);  
-    return response.data;
-}   
-export const getThemes = async (userId: number, days: number): Promise<ThemeData[]> => {
-  const response = await axios.get(`${BASE_URL}/myapp/themes/${userId}/?days=${days}`);  
-  return response.data;
-}   
+
 
 export const getAnalysisData = async (userId: number): Promise<MyAnalysisData> => {
   const response = await axios.get(`${BASE_URL}/myapp/analyze-data/${userId}/`);

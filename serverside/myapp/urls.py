@@ -22,17 +22,6 @@ router.register(r"journal-entries", views.JournalEntryViewSet, basename="journal
 
 urlpatterns = [
     path("", include(router.urls)),
-    # Define the URL pattern for the MoodEntryListCreate view
-    # path(
-    #     "journal-entries/user/<int:user_id>/",
-    #     views.JournalEntryViewSet.as_view({"get": "list"}),
-    #     name="user-journal-entries",
-    # ),
-    # path(
-    #     "journal-entries/<int:pk>/insights/",
-    #     views.JournalEntryViewSet.as_view({"get": "insights"}),
-    #     name="journal-entry-insights",
-    # ),
     path(
         "daily-insights/<int:user_id>/<int:year>/<int:month>/<int:day>/",
         DailyInsightsView.as_view(),
@@ -49,11 +38,11 @@ urlpatterns = [
         name="get-improvements",
     ),
     path(
-        "emotions/<int:user_id>/",
+        "emotions/",
         views.get_emotion_statistics,
         name="emotion-list-create",
     ),
-    path("themes/<int:user_id>/", views.get_theme_statistics, name="theme-list-create"),
+    path("themes/", views.get_theme_statistics, name="theme-list-create"),
     path("analyze-data/<int:user_id>/", views.analyze_data, name="analyze-data"),
     ###################################################
     # WORKING WITH AUTH AND LOGIN ETC
