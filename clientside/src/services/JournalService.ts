@@ -17,6 +17,39 @@ export const createEntry = async (authTokens: { access: string }, entry: NewJour
   });
   return response.data;
 };
+export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/myapp/create-improvements/`,  { // Note the method change to POST
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`,
+      }
+    });
+    return {
+      message: response.data.message,
+      tasks: response.data.tasks,
+      createdAt: response.data.createdAt,
+    };
+  } catch (error) {
+    // Log error or handle it as needed
+    console.error("Failed to create improvements:", error);
+    throw new Error("Error creating improvements");
+  }
+};
+ 
+export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
+  const response = await axios.get(`${BASE_URL}/myapp/get-improvements/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  return {
+      message: response.data.message,
+      tasks: response.data.tasks,
+      createdAt: response.data.createdAt,
+  };
+} 
 
 
   export const getJournals = async (authTokens:{access:string}):Promise<JournalEntry[]> => {
@@ -57,23 +90,7 @@ export const createEntry = async (authTokens: { access: string }, entry: NewJour
     return response.data;
   }
 
-  export const createImprovements = async (userId: number): Promise<ImprovementData> => {
-    const response = await axios.get(`${BASE_URL}/myapp/create-improvements/${userId}/`);
-    return {
-      message: response.data.message,
-        tasks: response.data.tasks,
-        createdAt: response.data.createdAt,
-    };
-    
-}
-export const getImprovements = async (userId: number): Promise<ImprovementData> => {
-    const response = await axios.get(`${BASE_URL}/myapp/get-improvements/${userId}/`);
-    return {
-        message: response.data.message,
-        tasks: response.data.tasks,
-        createdAt: response.data.createdAt,
-    };
-} 
+ 
 
 export const getEmotions = async (userId: number, days: number): Promise<EmotionData[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/emotions/${userId}/?days=${days}`);  

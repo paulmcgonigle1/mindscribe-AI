@@ -39,12 +39,12 @@ urlpatterns = [
         name="daily-insights",
     ),
     path(
-        "create-improvements/<int:user_id>/",
+        "create-improvements/",
         CreateImprovementWithTasksAndMessage.as_view(),
         name="create-improvements",
     ),
     path(
-        "get-improvements/<int:user_id>/",
+        "get-improvements/",
         GetRecentImprovements.as_view(),
         name="get-improvements",
     ),

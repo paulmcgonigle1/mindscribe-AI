@@ -1,5 +1,9 @@
+import logging
 import re
 from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action, api_view, permission_classes
+
 from django.utils import timezone
 from .models import (
     JournalEntry,
@@ -23,29 +27,24 @@ from langchain_app.views import (
 from rest_framework.response import Response
 from .analysis import perform_mood_and_emotion_analysis
 
+logger = logging.getLogger(__name__)
+
 
 class GetRecentImprovements(APIView):
-    def get(self, request, user_id):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user  # Use the authenticated user
         try:
-            # Assuming 'recommendation' is the type for mental health plans
-            latest_improvement = UserImprovement.objects.filter(user_id=user_id).latest(
+            latest_improvement = UserImprovement.objects.filter(user=user).latest(
                 "timestamp"
             )
-            # # Fetch only the last 8 tasks, for the demo purposes
-            # last_5_tasks = latest_improvement.actionable_tasks.all().order_by(
-            #     "created_at"
-            # )[:5]
-
-            # tasks = ActionableTaskSerializer(
-            #     latest_improvement.actionable_tasks.all(), many=True
-            # ).data
             tasks = ActionableTaskSerializer(
                 latest_improvement.actionable_tasks.all().order_by("created_at")[:6],
                 many=True,
             ).data
-            # tasks = ActionableTaskSerializer(tasks, many=True).data
 
-            # Return the serialized tasks
             return Response(
                 {
                     "message": latest_improvement.message_of_the_day,
@@ -55,7 +54,6 @@ class GetRecentImprovements(APIView):
             )
 
         except UserImprovement.DoesNotExist:
-            # Handle the case where no plan exists for the user
             return Response(
                 {"error": "No mental health plan found for this user"},
                 status=status.HTTP_404_NOT_FOUND,
@@ -63,24 +61,27 @@ class GetRecentImprovements(APIView):
 
 
 user_name = "paul"
+style = "Marcus Aurelius"
 
 
 class CreateImprovementWithTasksAndMessage(APIView):
-    def get(self, request, user_id):
-        # Get today's date
+
+    def get(self, request):
+        print(request)
+        user = request.user  # Directly use the user object
+
         today = timezone.now().date()
 
         # Fetch today's insights for the user
-        insights = Insight.objects.filter(
-            entry__user__id=user_id, timestamp__date=today
-        )
+
+        insights = Insight.objects.filter(entry__user=user, timestamp__date=today)
         serialized_insights = InsightSerializer(insights, many=True).data
 
         # Create tasks and parse from today's insights
         print("Creating tasks from insights")
-        mental_health_tasks = create_tasks_from_insights(serialized_insights, user_id)
+        mental_health_tasks = create_tasks_from_insights(serialized_insights, user.id)
         print("Now creating message of the day")
-        message_of_the_day = create_message_of_the_day()
+        message_of_the_day = create_message_of_the_day(user.id, user_name, style)
         return Response({"message": message_of_the_day, "tasks": mental_health_tasks})
 
 
@@ -90,15 +91,20 @@ def create_tasks_from_insights(insights, user_id):
 
     # Get unstructured tasks from OpenAI
     unstructured_tasks = interact_with_llm(prompt)
-    print("Unstructured Tasks" + unstructured_tasks)
+    print("Unstructured Tasks : " + unstructured_tasks)
     # Parse the raw plan into distinct tasks
     mental_health_tasks = parse_raw_response_with_tasks(unstructured_tasks)
 
-    # getting the user_ID to pass through so it can save to ActionableTask
-    user = User.objects.get(id=user_id)
-    user_improvement, created = UserImprovement.objects.get_or_create(
-        user=user,
+    print(
+        "Mental Health Tasks after parsing:\n"
+        + "\n".join(str(task) for task in mental_health_tasks)
     )
+
+    user = User.objects.get(id=user_id)  # Make sure this user exists
+
+    # getting the user_ID to pass through so it can save to ActionableTask
+
+    user_improvement, created = UserImprovement.objects.get_or_create(user=user)
     # Set the default values outside of get_or_create
     user_improvement.message_of_the_day = "Your default quote or logic to set it"
     user_improvement.additional_info = "Default notes or logic to set them"
@@ -122,37 +128,47 @@ def format_insights_for_prompt(insights):
 def create_structured_prompt_with_insights(formatted_insights):
     user_name = "paul"
     prompt = (
-        "I am creating a list 5 of distinct and actionable tasks for improving mood and mental health of user\n . "
-        "Each task should be clearly numbered with an explanation of what to do and how it relates to that insight.\n\n"
-        "User's insights from today:\n"
-        f"{formatted_insights} and user name: {user_name} . mention in each task explanation the user name and how the task relates to insight\n"
-        "List of actionable tasks:"
+        "I am an AI creating a list of 5 distinct and actionable tasks for improving the mood and mental health of a user named Paul. "
+        "Please format each task with a clear 'Task:' label followed by the task itself, and an 'Explanation:' label followed by a brief explanation of how it relates to the user's insights. "
+        "Begin each new task on a new line.\n\n"
+        "User's insights from today are as follows:\n"
+        f"{formatted_insights}\n\n"
+        "Please generate the list of actionable tasks."
     )
     return prompt
 
 
 def parse_raw_response_with_tasks(raw_plan):
-    # Adjusted regex pattern to handle variable whitespace and line breaks
-    pattern = re.compile(r"Task:\s*(.+?)\s*Explanation:\s*(.+?)(?= Task:|$)", re.DOTALL)
-    tasks_with_explanations = pattern.findall(raw_plan)
+    # Split the tasks using the 'Task:' delimiter, ignoring the first split if it's empty
+    raw_tasks = [task for task in raw_plan.split("Task:") if task.strip()]
 
-    parsed_tasks = [
-        {"task": task.strip(), "explanation": explanation.strip()}
-        for task, explanation in tasks_with_explanations
-    ]
+    parsed_tasks = []
+    for raw_task in raw_tasks:
+        # Split each task into task and explanation parts
+        parts = raw_task.strip().split("Explanation:", 1)
+        if len(parts) == 2:
+            task, explanation = parts
+            parsed_tasks.append(
+                {"task": task.strip(), "explanation": explanation.strip()}
+            )
+
     return parsed_tasks
 
 
 def save_tasks_to_database(parsed_tasks, user_improvement):
     print("Parsed tasks: ", parsed_tasks)
-    for task in parsed_tasks:
-        try:
-            print("Saving Task:", task, "To Database")
-            actionable_insight = ActionableTask(
-                improvement=user_improvement,
-                content=task["task"],
-                explanation=task["explanation"],
-            )
-            actionable_insight.save()
-        except Exception as e:
-            print("Error saving task:", e)
+    if parsed_tasks:
+        for task in parsed_tasks:
+            try:
+                print("Saving Task:", task, "To Database")
+                actionable_insight = ActionableTask(
+                    improvement=user_improvement,
+                    content=task["task"],
+                    explanation=task["explanation"],
+                )
+                actionable_insight.save()
+            except Exception as e:
+                print(f"Error saving task: {e}, Task Data: {task}")
+
+    else:
+        print("No tasks were parsed")

@@ -47,10 +47,26 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "myapp.middleware.RequestLoggingMiddleware",
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
-
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "": {  # This means all loggers
+#             "handlers": ["console"],
+#             "level": "DEBUG",
+#             "propagate": True,
+#         },
+#     },
+# }
 ROOT_URLCONF = "serverside.urls"
 
 TEMPLATES = [

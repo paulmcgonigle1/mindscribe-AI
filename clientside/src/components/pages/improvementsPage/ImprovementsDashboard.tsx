@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Summary from "../mainPage/Summary";
 import Improvements_Analysis from "./Improvements_Message";
 import ActionableTasks from "./ActionableTasksView";
@@ -8,6 +8,7 @@ import {
   getImprovements,
 } from "../../../services/JournalService";
 import Improvements_Message from "./Improvements_Message";
+import AuthContext from "../../../context/AuthContext";
 
 function ImprovementsDashboard() {
   const [improvementData, setImprovementData] = useState<ImprovementData>({
@@ -15,34 +16,37 @@ function ImprovementsDashboard() {
     tasks: [],
     createdAt: null,
   });
-  const userId = 1;
-
+  const { authTokens } = useContext(AuthContext) ?? {};
   const handleCreateImprovements = async () => {
-    try {
-      const response = await createImprovements(userId);
-      console.log("Received mental health plan:", response);
-      setImprovementData({
-        message: response.message,
-        tasks: response.tasks,
-        createdAt: response.createdAt,
-      });
-    } catch (error) {
-      console.error("Error creating mental health plan:", error);
-    }
-  };
-  //gets most recent mental health plan
-  useEffect(() => {
-    const fetchImprovements = async () => {
+    if (authTokens?.access) {
       try {
-        const response = await getImprovements(userId);
-        console.log("Most recent improvements plan:", response);
+        const response = await createImprovements(authTokens);
+        console.log("Received mental health plan:", response);
         setImprovementData({
           message: response.message,
           tasks: response.tasks,
           createdAt: response.createdAt,
         });
       } catch (error) {
-        console.error("Error fetching improvement health plan:", error);
+        console.error("Error creating mental health plan:", error);
+      }
+    }
+  };
+  //gets most recent mental health plan
+  useEffect(() => {
+    const fetchImprovements = async () => {
+      if (authTokens?.access) {
+        try {
+          const response = await getImprovements(authTokens);
+          console.log("Most recent improvements plan:", response);
+          setImprovementData({
+            message: response.message,
+            tasks: response.tasks,
+            createdAt: response.createdAt,
+          });
+        } catch (error) {
+          console.error("Error fetching improvement health plan:", error);
+        }
       }
     };
     fetchImprovements();
