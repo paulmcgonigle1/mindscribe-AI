@@ -36,6 +36,18 @@ export const getEmotions = async (authTokens: { access: string }, days: number):
   });  
   return response.data;
 }   
+export const saveTask = async (authTokens: { access: string }, taskId: number): Promise<any> => {
+  // Assuming you want to set the inProgress status to true for this task
+  const response = await axios.patch(`${BASE_URL}/myapp/api/savetask/${taskId}/`, {
+    inProgress: true,
+  },{
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });  
+  return response.data;
+};
 
 export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   try {
@@ -56,6 +68,8 @@ export const createImprovements = async (authTokens: { access: string }): Promis
     throw new Error("Error creating improvements");
   }
 };
+
+
  
 export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   const response = await axios.get(`${BASE_URL}/myapp/get-improvements/`, {

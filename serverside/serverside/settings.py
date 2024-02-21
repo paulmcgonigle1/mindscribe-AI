@@ -97,10 +97,23 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# WHEN UPDATING TO POSTGRES
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "",
+#         "USER": "",
+#         "PASSWORD": "",
+#         "HOST": "",
+#         "PORT": "",
+#     }
+# }
+
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         # DELETE FOR PRODUCTION
-        # "rest_framework.permissions.IsAuthenticated", this should NOT be used in production
+        # "rest_framework.permissions.IsAuthenticated",  # this should NOT be used in production
         "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (

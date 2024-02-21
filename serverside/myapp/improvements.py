@@ -172,3 +172,19 @@ def save_tasks_to_database(parsed_tasks, user_improvement):
 
     else:
         print("No tasks were parsed")
+
+
+# @permission_classes([IsAuthenticated])
+@api_view(["PATCH"])
+def update_task_status(request, task_id):
+    try:
+        task = ActionableTask.objects.get(taskId=task_id)
+    except ActionableTask.DoesNotExist:
+        return Response({"message": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # Assuming request.data contains {'inProgress': True} or similar
+    serializer = ActionableTaskSerializer(task, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

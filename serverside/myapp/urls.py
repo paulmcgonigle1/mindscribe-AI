@@ -9,6 +9,7 @@ from .authviews import MyTokenObtainPairView, getRoutes
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
+    update_task_status,
 )
 from rest_framework.routers import DefaultRouter
 from . import views
@@ -57,4 +58,6 @@ urlpatterns = [
         views.get_insights_for_journal_entry,
         name="journal_insights",
     ),
+    # for updating/saving task to 'in progress'
+    path("api/savetask/<int:task_id>/", update_task_status, name="update_task_status"),
 ]

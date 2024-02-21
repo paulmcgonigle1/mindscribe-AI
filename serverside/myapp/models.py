@@ -7,34 +7,6 @@ from django.utils import timezone
 default_user_id = 1  # Replace with an actual user ID from your database
 
 
-# inherits AbstractUser --djangos built-in user model providing authentication fields
-# class User(AbstractUser):
-#     # Additional fields go here
-
-#     # overriding the groups and user_permissions from 'AbstarctUser' to resolve conflicts
-
-#     groups = models.ManyToManyField(
-#         Group,
-#         verbose_name=_("groups"),
-#         blank=True,
-#         help_text=_(
-#             "The groups this user belongs to. A user will get all permissions granted to each of their groups."
-#         ),
-#         related_name="custom_user_groups",  # Unique related_name
-#         related_query_name="user",
-#     )
-#     user_permissions = models.ManyToManyField(
-#         Permission,
-#         verbose_name=_("user permissions"),
-#         blank=True,
-#         help_text=_("Specific permissions for this user."),
-#         related_name="custom_user_permissions",  # Unique related_name
-#         related_query_name="user",
-#     )
-#     # if no additional fields are added , use pass
-#     pass
-
-
 # Model for Journal Entries
 class JournalEntry(models.Model):
     entryID = models.AutoField(primary_key=True)
@@ -69,22 +41,20 @@ class ActionableTask(models.Model):
     )
     content = models.TextField(help_text="The actionable task text.")
     explanation = models.TextField(null=True)
+
+    # below two are for tracking whether saved
     isCompleted = models.BooleanField(
         default=False, help_text="Whether the user has completed this action."
     )
+    inProgress = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
-
-    relevance = models.IntegerField(
-        default=0,
-        help_text="Relevance score of the insight based on user's current context.",
-    )
 
     def __str__(self):
         return f"Actionable Insight {self.taskId} for Improvement Plan {self.improvement.improvementId}"
 
     class Meta:
         ordering = [
-            "relevance",
+            "inProgress",
         ]  # Orders by most recent and then by relevance
 
 

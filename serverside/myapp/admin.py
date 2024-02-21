@@ -49,7 +49,7 @@ class UserImprovementAdmin(admin.ModelAdmin):
 
 
 class ActionableTaskAdmin(admin.ModelAdmin):
-    list_display = ("content", "isCompleted", "explanation")
+    list_display = ("content", "isCompleted", "inProgress", "explanation")
     list_filter = ("content",)
 
 
@@ -59,8 +59,6 @@ class InsightAdmin(admin.ModelAdmin):
         "keywords",
         "timestamp",
     ]  # Update these fields based on your current model
-
-    # list_filter = ("sentimentScore",)
 
 
 # Register each model with its respective admin class
