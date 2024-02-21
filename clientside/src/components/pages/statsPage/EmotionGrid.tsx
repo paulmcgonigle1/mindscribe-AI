@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getEmotions } from "../../../services/JournalService";
 import { EmotionData } from "../../../lib/types/types";
@@ -14,6 +14,7 @@ import {
   FaFaceFrownOpen,
   FaFaceLaughSquint,
 } from "react-icons/fa6";
+import AuthContext from "../../../context/AuthContext";
 
 type EmotionIconMapType = {
   [key: string]: JSX.Element;
@@ -39,16 +40,18 @@ type EmotionGridProps = {
 function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
   const [emotions, setEmotions] = useState<EmotionData[]>([]);
 
-  const userId = 1;
+  const { authTokens } = useContext(AuthContext) ?? {};
   useEffect(() => {
     const fetchEmotions = async () => {
-      try {
-        //const userId = 1;
-        const userEmotions = await getEmotions(userId, selectedPeriod);
-        console.log(userEmotions); //this needs to be updated to get entries for the user
-        setEmotions(userEmotions);
-      } catch (error) {
-        console.error("Error fetching emotions:", error);
+      if (authTokens?.access) {
+        try {
+          //const userId = 1;
+          const userEmotions = await getEmotions(authTokens, selectedPeriod);
+          console.log(userEmotions); //this needs to be updated to get entries for the user
+          setEmotions(userEmotions);
+        } catch (error) {
+          console.error("Error fetching emotions: ", error);
+        }
       }
     };
     fetchEmotions();

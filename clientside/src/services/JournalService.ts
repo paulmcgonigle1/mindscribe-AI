@@ -8,6 +8,70 @@ const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django
 //     return response.data;
 //   };
 
+export const createEntry = async (authTokens: { access: string }, entry: NewJournalEntry): Promise<NewJournalEntry> => {
+  const response = await axios.post(`${BASE_URL}/myapp/api/createjournal/`, entry, {
+    headers:{
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${authTokens.access}`, // Include the Authorization header
+    }
+  });
+  return response.data;
+};
+//this gets the common themes for the logged user
+export const getThemes = async (authTokens: { access: string }, days: number): Promise<ThemeData[]> => {
+  const response = await axios.get(`${BASE_URL}/myapp/themes/?days=${days}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });  
+  return response.data;
+}   
+export const getEmotions = async (authTokens: { access: string }, days: number): Promise<EmotionData[]> => {
+  const response = await axios.get(`${BASE_URL}/myapp/emotions/?days=${days}`,{
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });  
+  return response.data;
+}   
+
+export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/myapp/create-improvements/`,  { // Note the method change to POST
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`,
+      }
+    });
+    return {
+      message: response.data.message,
+      tasks: response.data.tasks,
+      createdAt: response.data.createdAt,
+    };
+  } catch (error) {
+    // Log error or handle it as needed
+    console.error("Failed to create improvements:", error);
+    throw new Error("Error creating improvements");
+  }
+};
+ 
+export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
+  const response = await axios.get(`${BASE_URL}/myapp/get-improvements/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  return {
+      message: response.data.message,
+      tasks: response.data.tasks,
+      createdAt: response.data.createdAt,
+  };
+} 
+
+
   export const getJournals = async (authTokens:{access:string}):Promise<JournalEntry[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/api/journals/`, {
       headers: {
@@ -24,19 +88,21 @@ const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django
     return response.data;
   }
 
-  export const getInsightForJournalEntry = async (entryId: number): Promise<Insight[]> => {
-    const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${entryId}/insights/`);
+
+  export const getInsightForJournalEntry = async (authTokens: { access: string }, entryId: number): Promise<Insight[]> => {
+    const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${entryId}/insights/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`, // Include the Authorization header
+      }
+    });
     return response.data;
-  }
+  };
+  
   // export const getEntriesByUser = async (userId: number): Promise<JournalEntry[]> => {
   //   const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);
   //   return response.data;
   // }
-
-  export const createEntry = async (entry: NewJournalEntry): Promise<NewJournalEntry> => {
-    const response = await axios.post(`${BASE_URL}/myapp/journal-entries/`, entry);
-    return response.data;
-  };
 
 
   export const getInsightbyDay = async (date: string, userId: number): Promise<Insight[]> => {
@@ -45,32 +111,9 @@ const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django
     return response.data;
   }
 
-  export const createImprovements = async (userId: number): Promise<ImprovementData> => {
-    const response = await axios.get(`${BASE_URL}/myapp/create-improvements/${userId}/`);
-    return {
-      message: response.data.message,
-        tasks: response.data.tasks,
-        createdAt: response.data.createdAt,
-    };
-    
-}
-export const getImprovements = async (userId: number): Promise<ImprovementData> => {
-    const response = await axios.get(`${BASE_URL}/myapp/get-improvements/${userId}/`);
-    return {
-        message: response.data.message,
-        tasks: response.data.tasks,
-        createdAt: response.data.createdAt,
-    };
-} 
+ 
 
-export const getEmotions = async (userId: number, days: number): Promise<EmotionData[]> => {
-    const response = await axios.get(`${BASE_URL}/myapp/emotions/${userId}/?days=${days}`);  
-    return response.data;
-}   
-export const getThemes = async (userId: number, days: number): Promise<ThemeData[]> => {
-  const response = await axios.get(`${BASE_URL}/myapp/themes/${userId}/?days=${days}`);  
-  return response.data;
-}   
+
 
 export const getAnalysisData = async (userId: number): Promise<MyAnalysisData> => {
   const response = await axios.get(`${BASE_URL}/myapp/analyze-data/${userId}/`);

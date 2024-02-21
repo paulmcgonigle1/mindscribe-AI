@@ -22,38 +22,27 @@ router.register(r"journal-entries", views.JournalEntryViewSet, basename="journal
 
 urlpatterns = [
     path("", include(router.urls)),
-    # Define the URL pattern for the MoodEntryListCreate view
-    path(
-        "journal-entries/user/<int:user_id>/",
-        views.JournalEntryViewSet.as_view({"get": "list"}),
-        name="user-journal-entries",
-    ),
-    path(
-        "journal-entries/<int:pk>/insights/",
-        views.JournalEntryViewSet.as_view({"get": "insights"}),
-        name="journal-entry-insights",
-    ),
     path(
         "daily-insights/<int:user_id>/<int:year>/<int:month>/<int:day>/",
         DailyInsightsView.as_view(),
         name="daily-insights",
     ),
     path(
-        "create-improvements/<int:user_id>/",
+        "create-improvements/",
         CreateImprovementWithTasksAndMessage.as_view(),
         name="create-improvements",
     ),
     path(
-        "get-improvements/<int:user_id>/",
+        "get-improvements/",
         GetRecentImprovements.as_view(),
         name="get-improvements",
     ),
     path(
-        "emotions/<int:user_id>/",
+        "emotions/",
         views.get_emotion_statistics,
         name="emotion-list-create",
     ),
-    path("themes/<int:user_id>/", views.get_theme_statistics, name="theme-list-create"),
+    path("themes/", views.get_theme_statistics, name="theme-list-create"),
     path("analyze-data/<int:user_id>/", views.analyze_data, name="analyze-data"),
     ###################################################
     # WORKING WITH AUTH AND LOGIN ETC
@@ -62,4 +51,10 @@ urlpatterns = [
     path("api/token/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/journals/", views.getJournals, name="get_journals"),
+    path("api/createjournal/", views.createJournal, name="create_journal"),
+    path(
+        "api/journals/<int:entry_id>/insights/",
+        views.get_insights_for_journal_entry,
+        name="journal_insights",
+    ),
 ]

@@ -1,4 +1,4 @@
-#THIS is the requirements as of 07 February 2024 -- before Q&A
+#THIS is the requirements as of 21 February 2024 after Q&a
 aiohttp==3.9.0
 aiosignal==1.3.1
 annotated-types==0.6.0
@@ -12,7 +12,7 @@ charset-normalizer==3.3.2
 dataclasses-json==0.6.2
 distro==1.8.0
 Django==4.2.7
-django-cors-headers==.3.0
+django-cors-headers==4.3.1
 djangorestframework==3.14.0
 fastavro==1.9.3
 frozenlist==1.4.0
@@ -51,6 +51,7 @@ pytz==2023.3.post1
 PyYAML==6.0.1
 regex==2023.12.25
 requests==2.31.0
+djangorestframework-simplejwt==5.3.1
 rsa==4.9
 scipy==1.11.4
 six==1.16.0

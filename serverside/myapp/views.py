@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from .models import JournalEntry, Insight, UserImprovement
 from .serializers import JournalEntrySerializer, InsightSerializer
@@ -22,21 +23,21 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
     serializer_class = JournalEntrySerializer
     queryset = JournalEntry.objects.all()
 
-    def create(self, request, *args, **kwargs):
-        response = super(JournalEntryViewSet, self).create(request, *args, **kwargs)
-        print("Response: ", response.data)
-        if response.status_code == status.HTTP_201_CREATED:
-            journal_entry_id = response.data.get("entryID")
-            journal_entry = JournalEntry.objects.get(entryID=journal_entry_id)
-            process_entry(journal_entry)
-        return response
+    # def create(self, request, *args, **kwargs):
+    #     response = super(JournalEntryViewSet, self).create(request, *args, **kwargs)
+    #     print("Response: ", response.data)
+    #     if response.status_code == status.HTTP_201_CREATED:
+    #         journal_entry_id = response.data.get("entryID")
+    #         journal_entry = JournalEntry.objects.get(entryID=journal_entry_id)
+    #         process_entry(journal_entry)
+    #     return response
 
-    def get_queryset(self):
-        user_id = self.kwargs.get("user_id")  # Access user_id from URL parameters
-        if user_id is not None:
-            return JournalEntry.objects.filter(user=user_id)
-        print("Got journal Entries")
-        return JournalEntry.objects.all()
+    # def get_queryset(self):
+    #     user_id = self.kwargs.get("user_id")  # Access user_id from URL parameters
+    #     if user_id is not None:
+    #         return JournalEntry.objects.filter(user=user_id)
+    #     print("Got journal Entries")
+    #     return JournalEntry.objects.all()
 
     # get insights for a particular journal entry
     @action(detail=True, methods=["get"])
@@ -69,11 +70,50 @@ def getJournals(request):
     return Response(serializer.data)
 
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_insights_for_journal_entry(request, entry_id):
+    """
+    Retrieve insights for a specific journal entry owned by the authenticated user.
+    """
+    # Ensure the journal entry exists and belongs to the authenticated user
+    journal_entry = get_object_or_404(JournalEntry, pk=entry_id, user=request.user)
+
+    # Fetch insights related to the journal entry
+    insights = Insight.objects.filter(entry=journal_entry)
+    serializer = InsightSerializer(insights, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def createJournal(request):
+    data = request.data.copy()
+    # Setting the user ID in the data to the current authenticated user's ID
+    data["user"] = request.user.id
+    serializer = JournalEntrySerializer(data=data)
+    if serializer.is_valid():
+        # Save the journal entry with the validated data
+        serializer.save()
+        # Optional: this is using my AI Model to process and extract
+        process_entry(serializer.instance)
+        # Return the created journal entry data with a 201 Created response
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        # If the data is not valid, return the errors with a 400 Bad Request response
+        print(serializer.errors)  # Debugging line to print errors
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 # Getting the emotion statistics
-def get_emotion_statistics(request, user_id):
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_emotion_statistics(request):
+
     # Get 'days' from request query parameters, default to 7 if not provided
     days = request.GET.get("days", 7)
-
+    # get the logged in user
+    user = request.user
     try:
         # Convert days to integer
         days = int(days)
@@ -85,7 +125,7 @@ def get_emotion_statistics(request, user_id):
     start_date = end_date - timedelta(days=days)
 
     insights = Insight.objects.filter(
-        entry__user__id=user_id, timestamp__range=(start_date, end_date)
+        entry__user__id=user.id, timestamp__range=(start_date, end_date)
     )
 
     emotion_counts = {}
@@ -116,22 +156,32 @@ def get_emotion_statistics(request, user_id):
     return JsonResponse(sorted_limited_emotion_data, safe=False)
 
 
-def get_theme_statistics(request, user_id):
-    # Get 'days' from request query parameters, default to 7 if not provided
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_theme_statistics(request):
+
+    # getting 'days' from request query parameters, default to 7 if not provided
     days = request.GET.get("days", 7)
 
     try:
-        # Convert days to integer
+        # convert days to integer
         days = int(days)
     except ValueError:
-        # Handle the case where 'days' is not a valid integer
+        # handling the case where 'days' is not a valid integer
         return JsonResponse({"error": "Invalid 'days' parameter"}, status=400)
+
+    # Use the logged-in user from the request
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "User not authenticated"}, status=401)
+
+    # Since we're past the authentication check, request.user can safely be used.
+    user = request.user  # Directly use the user object
 
     end_date = timezone.now()
     start_date = end_date - timedelta(days=days)
 
     insights = Insight.objects.filter(
-        entry__user__id=user_id, timestamp__range=(start_date, end_date)
+        entry__user__id=user.id, timestamp__range=(start_date, end_date)
     )
 
     theme_counts = {}

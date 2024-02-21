@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { createEntry } from "../../../services/JournalService";
 import { NewJournalEntry } from "../../../lib/types/types";
+import AuthContext from "../../../context/AuthContext";
 
 interface JournalSectionProps {
   moodRating: number | null;
@@ -8,6 +9,7 @@ interface JournalSectionProps {
 export default function JournalSection({ moodRating }: JournalSectionProps) {
   const [entryText, setEntryText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { authTokens } = useContext(AuthContext) ?? {};
 
   const handleSubmit = async () => {
     //checks for missing moodRating
@@ -22,16 +24,15 @@ export default function JournalSection({ moodRating }: JournalSectionProps) {
       return;
     }
 
-    if (entryText && moodRating != null) {
+    if (entryText && moodRating != null && authTokens?.access) {
       setIsLoading(true);
       try {
         const newEntry: NewJournalEntry = {
-          user: 1, // Provide the user information here
           content: entryText,
           moodRating: moodRating,
         };
 
-        const response = await createEntry(newEntry);
+        const response = await createEntry(authTokens, newEntry);
         console.log("Entry created:", response);
         // Call the createEntry function with the newEntry object
         setEntryText("");
