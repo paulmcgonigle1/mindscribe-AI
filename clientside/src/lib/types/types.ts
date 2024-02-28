@@ -30,6 +30,11 @@ export type  ImprovementData = {
 
   createdAt: string | null;
 }
+export type  Settings = {
+  preferred_type: string;
+  preferred_style: string;
+}
+
 export type Task = {
   taskId: number;
   content: string;

@@ -1,7 +1,11 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from .models import JournalEntry, Insight, UserImprovement
-from .serializers import JournalEntrySerializer, InsightSerializer
+from .models import JournalEntry, Insight, UserImprovement, UserSettings
+from .serializers import (
+    JournalEntrySerializer,
+    InsightSerializer,
+    UserSettingsSerializer,
+)
 from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
@@ -38,6 +42,25 @@ class DailyInsightsView(APIView):
         insights = Insight.objects.filter(entry__user__id=user_id, timestamp__date=date)
         serialized_insights = InsightSerializer(insights, many=True).data
         return Response(serialized_insights)
+
+
+# functionality with my settings /preferences
+@api_view(["GET", "PATCH"])
+@permission_classes([IsAuthenticated])
+def user_settings(request):
+    user = request.user
+    settings, created = UserSettings.objects.get_or_create(user=user)
+
+    if request.method == "GET":
+        serializer = UserSettingsSerializer(settings)
+        return Response(serializer.data)
+
+    elif request.method == "PATCH":
+        serializer = UserSettingsSerializer(settings, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
 
 
 # following video on auth and tokens etc

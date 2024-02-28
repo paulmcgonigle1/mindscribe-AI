@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -97,6 +97,18 @@ export const getImprovements = async (authTokens: { access: string }): Promise<I
       createdAt: response.data.createdAt,
   };
 } 
+export const getSettings = async (authTokens: { access: string }): Promise<Settings> => {
+  const response = await axios.get(`${BASE_URL}/myapp/settings/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  return {
+    preferred_type: response.data.preferred_type,
+    preferred_style: response.data.preferred_style,
+  };
+} 
 
 export const getTrackedTasks = async (authTokens: { access: string }): Promise<Task[]> => {
   
@@ -159,5 +171,3 @@ export const getAnalysisData = async (userId: number): Promise<MyAnalysisData> =
   const response = await axios.get(`${BASE_URL}/myapp/analyze-data/${userId}/`);
   return response.data;
 }
-
-// Add more functions as needed for other API calls

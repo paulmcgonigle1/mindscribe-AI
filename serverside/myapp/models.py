@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission, User
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 default_user_id = 1  # Replace with an actual user ID from your database
 
@@ -78,3 +80,36 @@ class Insight(models.Model):
             return f"Insight {self.insightID} for Entry {self.entry.entryID}"
         else:
             return f"Insight {self.insightID} with no associated entry"
+
+
+class UserSettings(models.Model):
+    MESSAGE_TYPES = [
+        ("poem", "Poem"),
+        ("story", "Story"),
+        ("quote", "Quote"),
+        ("motivation", "Motivation"),
+    ]
+    MESSAGE_STYLES = [
+        ("stoic", "Stoic"),
+        ("funny", "Funny"),
+        ("deep", "Deep"),
+        ("insightful", "Insightful"),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="settings")
+    preferred_message_types = models.CharField(
+        max_length=50, choices=MESSAGE_TYPES, default="motivation"
+    )
+    preferred_message_styles = models.CharField(
+        max_length=50, choices=MESSAGE_STYLES, default="insightful"
+    )
+    # Add other settings fields as needed
+
+    def __str__(self):
+        return f"Settings for {self.user.username}"
+
+
+@receiver(post_save, sender=User)
+def create_user_settings(sender, instance, created, **kwargs):
+    if created:
+        UserSettings.objects.create(user=instance)

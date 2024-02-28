@@ -51,6 +51,7 @@ urlpatterns = [
         views.get_emotion_statistics,
         name="emotion-list-create",
     ),
+    path("settings/", views.user_settings, name="user-settings"),
     path("themes/", views.get_theme_statistics, name="theme-list-create"),
     path("analyze-data/<int:user_id>/", views.analyze_data, name="analyze-data"),
     ###################################################
