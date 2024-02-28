@@ -10,6 +10,8 @@ from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
     update_task_status,
+    get_tasks_in_progress,
+    update_task_completetion_status,
 )
 from rest_framework.routers import DefaultRouter
 from . import views
@@ -38,6 +40,12 @@ urlpatterns = [
         GetRecentImprovements.as_view(),
         name="get-improvements",
     ),
+    # gets all of the tracked tasks
+    path(
+        "get-tracked-tasks/",
+        get_tasks_in_progress,
+        name="get_tasks_in_progress",
+    ),
     path(
         "emotions/",
         views.get_emotion_statistics,
@@ -60,4 +68,10 @@ urlpatterns = [
     ),
     # for updating/saving task to 'in progress'
     path("api/savetask/<int:task_id>/", update_task_status, name="update_task_status"),
+    # for setting task as complete
+    path(
+        "api/complete-task/<int:task_id>/",
+        update_task_completetion_status,
+        name="update_task_completetion_status",
+    ),
 ]

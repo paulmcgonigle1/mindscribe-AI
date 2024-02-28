@@ -188,3 +188,24 @@ def update_task_status(request, task_id):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# makes the task status completed
+@api_view(["PATCH"])
+def update_task_completetion_status(request, task_id):
+
+    task = ActionableTask.objects.get(taskId=task_id)
+    task.isCompleted = True
+    task.save()
+
+    serializer = ActionableTaskSerializer(task)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_tasks_in_progress(request):
+    today = timezone.now().date()
+    user = request.user  # Directly use the user object
+    tasks = ActionableTask.objects.filter(improvement__user=user, inProgress=True)
+    serializer = ActionableTaskSerializer(tasks, many=True)
+    return Response(serializer.data)

@@ -34,7 +34,9 @@ export type Task = {
   taskId: number;
   content: string;
   explanation: string;
+  isCompleted: boolean;
 }
+
 
 export type MoodChartData = {
   date: string;

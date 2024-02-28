@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -48,6 +48,19 @@ export const saveTask = async (authTokens: { access: string }, taskId: number): 
   });  
   return response.data;
 };
+//set to complete
+export const updateTaskCompletionStatus = async (authTokens: { access: string }, taskId: number): Promise<any> => {
+  // Assuming you want to set the inProgress status to true for this task
+  const response = await axios.patch(`${BASE_URL}/myapp/api/complete-task/${taskId}/`, {
+    isCompleted: true,
+  },{
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });  
+  return response.data;
+};
 
 export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   try {
@@ -83,6 +96,19 @@ export const getImprovements = async (authTokens: { access: string }): Promise<I
       tasks: response.data.tasks,
       createdAt: response.data.createdAt,
   };
+} 
+
+export const getTrackedTasks = async (authTokens: { access: string }): Promise<Task[]> => {
+  
+  const response = await axios.get(`${BASE_URL}/myapp/get-tracked-tasks/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  console.log(response)
+  return response.data;
+  
 } 
 
 
