@@ -1,8 +1,7 @@
 import { useState } from "react";
 import JournalSection from "./JournalSection";
 import MoodRating from "./MoodRating";
-import RecentJournals from "./RecentJournals";
-import Summary from "./Summary";
+
 import Calendar from "./Calendar";
 export default function JournalDashboard() {
   const [moodRating, setMoodRating] = useState<number | null>(null);
@@ -19,7 +18,7 @@ export default function JournalDashboard() {
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-2/3">
           <Calendar />
-          <RecentJournals />
+          {/* <RecentJournals /> */}
         </div>
       </div>
     </div>

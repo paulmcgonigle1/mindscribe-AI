@@ -27,12 +27,16 @@ class UserImprovement(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="improvement_plans"
     )
+    date = models.DateField(default=timezone.now)  # Store just the date part
     timestamp = models.DateTimeField(auto_now_add=True)
     message_of_the_day = models.TextField(blank=True, null=True)
     additional_info = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"Improvement Plan {self.improvementId} for {self.user.username}"
+
+    class Meta:
+        unique_together = ("user", "date")  # Ensure one entry per user per day
 
 
 # Actionable insights instead of user improvements

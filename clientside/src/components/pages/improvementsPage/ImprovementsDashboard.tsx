@@ -52,21 +52,21 @@ function ImprovementsDashboard() {
     fetchImprovements();
   }, []);
   return (
-    <div className="flex-column gap-4 p-4 md:p-8">
-      {/* <DashboardStatsGrid /> */}
+    <div className="md:p-8">
       <button
         onClick={handleCreateImprovements}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Create Improvements
       </button>
-      <div className="flex flex-row gap-4 w-full px-4">
-        <Improvements_Message improvementData={improvementData} />
-      </div>
-
-      <div className="flex flex-row gap-4 w-full px-4">
-        <div className="flex flex-1 min-w-0">
-          <ActionableTasks improvementData={improvementData} />
+      <div className=" m-2">
+        <div className="flex flex-col sm:flex-row gap-4 w-full px-4">
+          <div className="hidden xl:block sm:max-w-xs md:max-w-sm lg:max-w-md">
+            <Improvements_Message improvementData={improvementData} />
+          </div>
+          <div className="flex-1">
+            <ActionableTasks improvementData={improvementData} />
+          </div>
         </div>
       </div>
     </div>
