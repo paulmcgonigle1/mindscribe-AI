@@ -32,11 +32,10 @@ class GetRecentImprovements(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = request.user  # Use the authenticated user
+        user = request.user
+        today = timezone.now().date()
         try:
-            latest_improvement = UserImprovement.objects.filter(user=user).latest(
-                "timestamp"
-            )
+            latest_improvement = UserImprovement.objects.get(user=user, date=today)
             tasks = ActionableTaskSerializer(
                 latest_improvement.actionable_tasks.all().order_by("created_at")[:6],
                 many=True,
@@ -55,10 +54,6 @@ class GetRecentImprovements(APIView):
                 {"error": "No mental health plan found for this user"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-
-user_name = "paul"
-style = "Marcus Aurelius"
 
 
 class CreateImprovementWithTasksAndMessage(APIView):
@@ -83,10 +78,12 @@ class CreateImprovementWithTasksAndMessage(APIView):
 
 
 def create_tasks_from_insights(insights, user_id):
+    # this turns my extracted insights into readable strings
     formatted_insights = format_insights_for_prompt(insights)
-    prompt = create_structured_prompt_with_insights(formatted_insights)
+    # this then uses these in a prompt with GPT
+    prompt = prompt_with_insights(formatted_insights)
 
-    # Get unstructured tasks from OpenAI
+    # Get the unstructured tasks from OpenAI
     unstructured_tasks = interact_with_llm(prompt)
     print("Unstructured Tasks : " + unstructured_tasks)
     # Parse the raw plan into distinct tasks
@@ -98,14 +95,25 @@ def create_tasks_from_insights(insights, user_id):
     )
 
     user = User.objects.get(id=user_id)  # Make sure this user exists
+    today = timezone.now().date()  # Get today's date
 
-    # getting the user_ID to pass through so it can save to ActionableTask
+    user_improvement, created = UserImprovement.objects.get_or_create(
+        user=user,
+        date=today,
+        defaults={
+            "message_of_the_day": "Your default quote or logic to set it",
+            "additional_info": "Default notes or logic to set them",
+        },
+    )
+    if not created:
+        # If fetching an existing record, you might want to update it or leave as is based on your logic
+        user_improvement.message_of_the_day = "Your updated quote or logic to set it"
+        user_improvement.additional_info = "Updated notes or logic to set them"
+        user_improvement.save()
 
-    user_improvement, created = UserImprovement.objects.get_or_create(user=user)
-    # Set the default values outside of get_or_create
-    user_improvement.message_of_the_day = "Your default quote or logic to set it"
-    user_improvement.additional_info = "Default notes or logic to set them"
-    user_improvement.save()
+    save_tasks_to_database(mental_health_tasks, user_improvement)
+
+    # user_improvement.save()
 
     # print("User improvement: ", user_improvement)
 
@@ -122,8 +130,8 @@ def format_insights_for_prompt(insights):
     return formatted_insights
 
 
-def create_structured_prompt_with_insights(formatted_insights):
-    user_name = "paul"
+def prompt_with_insights(formatted_insights):
+
     prompt = (
         "I am an AI creating a list of 5 distinct and actionable tasks for improving the mood and mental health of a user named Paul. "
         "Please format each task with a clear 'Task:' label followed by the task itself, and an 'Explanation:' label followed by a brief explanation of how it relates to the user's insights. "
