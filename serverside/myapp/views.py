@@ -11,8 +11,9 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from langchain_app.views import process_entry
-from .improvements import create_tasks_from_insights
+
+# from langchain_app.views import process_entry
+from .improvements import create_tasks_from_insights, process_entry
 from rest_framework.response import Response
 from datetime import timedelta  # Will be used for date range queries
 import logging

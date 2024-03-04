@@ -5,6 +5,7 @@ from .models import (
     UserImprovement,
     Insight,
     ActionableTask,
+    UserSettings,
 )
 
 
@@ -61,9 +62,14 @@ class InsightAdmin(admin.ModelAdmin):
     ]  # Update these fields based on your current model
 
 
+class SettingsAdmin(admin.ModelAdmin):
+    list_display = ("preferred_message_types", "preferred_message_styles")
+
+
 # Register each model with its respective admin class
 # admin.site.register(User, UserAdmin)
 admin.site.register(JournalEntry, JournalEntryAdmin)
 admin.site.register(UserImprovement, UserImprovementAdmin)
 admin.site.register(Insight, InsightAdmin)
 admin.site.register(ActionableTask, ActionableTaskAdmin)
+admin.site.register(UserSettings)
