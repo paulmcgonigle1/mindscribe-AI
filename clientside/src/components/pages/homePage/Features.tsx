@@ -1,6 +1,5 @@
 import { Image } from "../atoms/Image";
 import { Text } from "../atoms/Text";
-import { ServiceTexts } from "../atoms/DataLists";
 import GroupOfPlus from "../../assets/plusGroup.png";
 import { Card } from "../atoms/Card";
 import { useCallback } from "react";
@@ -11,6 +10,31 @@ import Icon4 from "../../../assets/journaling.png";
 
 import { Fade } from "react-awesome-reveal";
 
+const ServiceTexts = {
+  firstText: "Features",
+  secondText: "We Offer Various features Services",
+  cards: [
+    {
+      firstText: "Analysis",
+      secondText:
+        "Built Wicket longer admire do barton vantity itself do in it.",
+    },
+    {
+      firstText: "Statistics",
+      secondText: "engrossed listening. Park gate sell they west hard for the.",
+    },
+    {
+      firstText: "Actionable Tasks",
+      secondText:
+        "barton vantity itself do in it.Preferred to men it engrossed listening.",
+    },
+    {
+      firstText: "Journaling",
+      secondText:
+        "We deliver outsourced aviation services for military customers.",
+    },
+  ],
+};
 const Features = () => {
   const renderServiceIcon = useCallback((element: number) => {
     switch (element) {

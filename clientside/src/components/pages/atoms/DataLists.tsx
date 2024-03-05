@@ -37,32 +37,6 @@ export const HeroTexts = {
   secondButton: "Play Demo",
 };
 
-export const ServiceTexts = {
-  firstText: "CATEGORY",
-  secondText: "We Offer Best Services",
-  cards: [
-    {
-      firstText: "Analysis",
-      secondText:
-        "Built Wicket longer admire do barton vantity itself do in it.",
-    },
-    {
-      firstText: "Best Flight",
-      secondText: "engrossed listening. Park gate sell they west hard for the.",
-    },
-    {
-      firstText: "Local Events",
-      secondText:
-        "barton vantity itself do in it.Preferred to men it engrossed listening.",
-    },
-    {
-      firstText: "Customizition",
-      secondText:
-        "We deliver outsourced aviation services for military customers.",
-    },
-  ],
-};
-
 export const TopDestinationTexts = {
   firstText: "Top selling",
   secondText: "Top Destinations",
