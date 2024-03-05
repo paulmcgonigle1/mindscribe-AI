@@ -81,7 +81,7 @@ def create_tasks_from_insights(insights, user_id):
     # this turns my extracted insights into readable strings
     formatted_insights = format_insights_for_prompt(insights)
     # this then uses these in a prompt with GPT
-    prompt = prompt_with_insights(formatted_insights)
+    prompt = prompt_with_insights(formatted_insights, user_id)
 
     # Get the unstructured tasks from OpenAI
     unstructured_tasks = interact_with_llm(prompt)
@@ -94,7 +94,7 @@ def create_tasks_from_insights(insights, user_id):
         + "\n".join(str(task) for task in mental_health_tasks)
     )
 
-    user = User.objects.get(id=user_id)  # Make sure this user exists
+    user = User.objects.get(id=user_id)
     today = timezone.now().date()  # Get today's date
 
     user_improvement, created = UserImprovement.objects.get_or_create(
@@ -106,16 +106,10 @@ def create_tasks_from_insights(insights, user_id):
         },
     )
     if not created:
-        # If fetching an existing record, you might want to update it or leave as is based on your logic
+        # I
         user_improvement.message_of_the_day = "Your updated quote or logic to set it"
         user_improvement.additional_info = "Updated notes or logic to set them"
         user_improvement.save()
-
-    save_tasks_to_database(mental_health_tasks, user_improvement)
-
-    # user_improvement.save()
-
-    # print("User improvement: ", user_improvement)
 
     save_tasks_to_database(mental_health_tasks, user_improvement)
 
@@ -130,15 +124,17 @@ def format_insights_for_prompt(insights):
     return formatted_insights
 
 
-def prompt_with_insights(formatted_insights):
+def prompt_with_insights(formatted_insights, user_id):
+    user = User.objects.get(id=user_id)
 
     prompt = (
-        "I am an AI creating a list of 5 distinct and actionable tasks for improving the mood and mental health of a user named Paul. "
-        "Please format each task with a clear 'Task:' label followed by the task itself, and an 'Explanation:' label followed by a brief explanation of how it relates to the user's insights. "
+        f"I am an AI creating a list of and actionable tasks for improving my mental health, my name is {user.first_name}"
+        "Format each task with a clear 'Task:' label followed by the task itself, and an 'Explanation:' label followed by a brief explanation of how it relates to the user's insights. "
         "Begin each new task on a new line.\n\n"
-        "User's insights from today are as follows:\n"
+        "User's insights from today are as follows, dont mention these in the response:\n"
         f"{formatted_insights}\n\n"
-        "Please generate the list of actionable tasks."
+        "Please generate the list of 5 actionable tasks, do not mention the number of the task ."
+        "Again make sure they are formated like this 'Task: lorem upsum \n Explanation: lorem epsum lorem epsum' \n"
     )
     return prompt
 
@@ -161,11 +157,11 @@ def parse_raw_response_with_tasks(raw_plan):
 
 
 def save_tasks_to_database(parsed_tasks, user_improvement):
-    print("Parsed tasks: ", parsed_tasks)
+    # print("Parsed tasks: ", parsed_tasks)
     if parsed_tasks:
         for task in parsed_tasks:
             try:
-                print("Saving Task:", task, "To Database")
+                # print("Saving Task:", task, "To Database")
                 actionable_insight = ActionableTask(
                     improvement=user_improvement,
                     content=task["task"],
@@ -181,7 +177,7 @@ def save_tasks_to_database(parsed_tasks, user_improvement):
 
 # @permission_classes([IsAuthenticated])
 @api_view(["PATCH"])
-def update_task_status(request, task_id):
+def save_unsave_task(request, task_id):
     try:
         task = ActionableTask.objects.get(taskId=task_id)
     except ActionableTask.DoesNotExist:
@@ -222,16 +218,12 @@ llm = ChatOpenAI(
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
 
-user_id = 1
-user_name = "paul"
-style = "Marcus Aurelius"
-
 
 # Extracts properties from journal to DB
 def process_entry(journal_entry):
     # Create a dictionary with the required inputs
     inputs = {
-        "user": user_name,  # The name of the user
+        "user": "paul",  # The name of the user
         "input": journal_entry.content,  # The content of the journal entry
     }
 
@@ -282,8 +274,8 @@ def create_message_of_the_day(user):
     # prompt with values from database
 
     prompt = (
-        f"Generate a {preferred_type} in the style of {preferred_style} "
-        f"as a personal message to {user.username} to help them with their day.\n\n"
+        f"Generate a quick and short {preferred_type} in the style of {preferred_style} "
+        f"as a personal message to {user.first_name} to help them with their day.\n\n"
     )
 
     # Generate the message using your LLM interaction function

@@ -36,7 +36,7 @@ class UserImprovement(models.Model):
         return f"Improvement Plan {self.improvementId} for {self.user.username}"
 
     class Meta:
-        unique_together = ("user", "date")  # Ensure one entry per user per day
+        unique_together = ("user", "date")
 
 
 # Actionable insights instead of user improvements

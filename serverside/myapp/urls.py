@@ -9,7 +9,7 @@ from .authviews import MyTokenObtainPairView, getRoutes
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
-    update_task_status,
+    save_unsave_task,
     get_tasks_in_progress,
     update_task_completetion_status,
 )
@@ -68,7 +68,7 @@ urlpatterns = [
         name="journal_insights",
     ),
     # for updating/saving task to 'in progress'
-    path("api/savetask/<int:task_id>/", update_task_status, name="update_task_status"),
+    path("api/savetask/<int:task_id>/", save_unsave_task, name="update_task_status"),
     # for setting task as complete
     path(
         "api/complete-task/<int:task_id>/",

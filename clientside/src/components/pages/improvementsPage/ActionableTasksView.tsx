@@ -29,9 +29,9 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
 
   return (
     <div className="flex flex-wrap gap-4">
-      {improvementData.tasks.map((task) => (
+      {improvementData.tasks.map((task, index) => (
         <TaskCard
-          key={task.taskId}
+          key={task.taskId || index}
           task={task}
           onReadMore={handleReadMore}
           onSave={() => handleSaveTask(task.taskId)} // Pass taskId to handleSaveTask

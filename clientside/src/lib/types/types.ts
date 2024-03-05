@@ -24,23 +24,26 @@ export type Insight = {
   key_themes: string | null;  
 };
 
+//being returned in the improvements dashboard
 export type  ImprovementData = {
   message: string;
   tasks: Task[];
-
   createdAt: string | null;
+}
+//individual tasks including ID
+export type Task = {
+  taskId: number;
+  content: string;
+  explanation: string;
+  inProgress:boolean;
+  isCompleted: boolean;
 }
 export type  Settings = {
   preferred_type: string;
   preferred_style: string;
 }
 
-export type Task = {
-  taskId: number;
-  content: string;
-  explanation: string;
-  isCompleted: boolean;
-}
+
 
 
 export type MoodChartData = {
