@@ -41,18 +41,35 @@ const TrackTasks = () => {
 
   return (
     <div className="p-4">
-      {/* Your popover content here */}
-
       {inProgressTasks.map((task) => (
-        <div key={task.taskId} className="mb-4">
-          <p>{task.content}</p>
-          <TaskProgressBar percentage={calculateTaskProgress(task)} />
-          <input
-            type="checkbox"
-            checked={task.isCompleted}
-            onChange={(e) => handleTaskCompletionChange(task, e.target.checked)}
-            className="form-checkbox h-5 w-5 text-blue-600"
-          />
+        <div
+          key={task.taskId}
+          className={`mb-4 p-4 rounded ${
+            task.isCompleted ? "bg-green-100" : "bg-white"
+          } flex justify-between items-center`}
+        >
+          <div>
+            <p>{task.content}</p>
+            {/* <TaskProgressBar percentage={calculateTaskProgress(task)} /> */}
+          </div>
+          <div className="flex items-center">
+            <button
+              onClick={() =>
+                handleTaskCompletionChange(task, !task.isCompleted)
+              }
+              className="mr-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none"
+            >
+              Finished
+            </button>
+            <input
+              type="checkbox"
+              checked={task.isCompleted}
+              onChange={(e) =>
+                handleTaskCompletionChange(task, e.target.checked)
+              }
+              className="form-checkbox h-5 w-5 text-blue-600"
+            />
+          </div>
         </div>
       ))}
     </div>

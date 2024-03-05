@@ -8,7 +8,7 @@ interface TaskCardProps {
 }
 
 function TaskCard({ task, onReadMore, onSave }: TaskCardProps) {
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(task.inProgress);
 
   // Function to handle save click
   const handleSave = async () => {
@@ -40,6 +40,7 @@ function TaskCard({ task, onReadMore, onSave }: TaskCardProps) {
         Read more
         {/* SVG arrow icon here */}
       </button>
+      {/* SAVE BUTTON*/}
       <button
         onClick={handleSave}
         className={`mt-4 sm:mt-0 sm:ml-4 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white ${
