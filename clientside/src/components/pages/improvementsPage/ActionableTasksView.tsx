@@ -20,9 +20,9 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
   };
 
   //this is savin task (adding to InProgress)
-  const handleSaveTask = async (taskId: number) => {
+  const handleSaveTask = async (taskId: number, state: boolean) => {
     if (authTokens?.access) {
-      const response = await saveTask(authTokens, taskId);
+      const response = await saveTask(authTokens, taskId, state);
       console.log(response);
     }
   };
@@ -34,7 +34,8 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
           key={task.taskId || index}
           task={task}
           onReadMore={handleReadMore}
-          onSave={() => handleSaveTask(task.taskId)} // Pass taskId to handleSaveTask
+          onSave={() => handleSaveTask(task.taskId, true)} // Pass taskId to handleSaveTask
+          onUnsave={() => handleSaveTask(task.taskId, false)} // Assuming you have a handleUnsaveTask function
         />
       ))}
       <TaskModal

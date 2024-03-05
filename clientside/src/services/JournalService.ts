@@ -36,10 +36,10 @@ export const getEmotions = async (authTokens: { access: string }, days: number):
   });  
   return response.data;
 }   
-export const saveTask = async (authTokens: { access: string }, taskId: number): Promise<any> => {
+export const saveTask = async (authTokens: { access: string }, taskId: number, state: boolean): Promise<any> => {
   // Assuming you want to set the inProgress status to true for this task
   const response = await axios.patch(`${BASE_URL}/myapp/api/savetask/${taskId}/`, {
-    inProgress: true,
+    inProgress: state,
   },{
     headers:{
       'Content-Type': 'application/json',

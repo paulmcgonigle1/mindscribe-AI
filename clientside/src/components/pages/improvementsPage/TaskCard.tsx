@@ -5,21 +5,26 @@ interface TaskCardProps {
   task: Task;
   onReadMore: (task: Task) => void;
   onSave: (taskId: number) => void;
+  onUnsave: (taskId: number) => void;
 }
 
-function TaskCard({ task, onReadMore, onSave }: TaskCardProps) {
+function TaskCard({ task, onReadMore, onSave, onUnsave }: TaskCardProps) {
   const [isSaved, setIsSaved] = useState(task.inProgress);
 
   // Function to handle save click
-  const handleSave = async () => {
+  const handleSaveToggle = async () => {
     try {
-      // Await the onSave operation to complete, which is passed down from parent
-      await onSave(task.taskId);
-      // Only set to saved if onSave succeeds without throwing an error
-      setIsSaved(true);
+      if (isSaved) {
+        //if the task is currently saved, then call the unsave
+        await onUnsave(task.taskId);
+      } else {
+        await onSave(task.taskId);
+      }
+
+      setIsSaved(!isSaved);
     } catch (error) {
-      console.error("Failed to save task:", error);
-      // Handle error case here, maybe notify the user that save failed
+      console.error("Failed to toggle save state :", error);
+      // maybe notify the user that save failed
     }
   };
 
@@ -42,13 +47,12 @@ function TaskCard({ task, onReadMore, onSave }: TaskCardProps) {
       </button>
       {/* SAVE BUTTON*/}
       <button
-        onClick={handleSave}
-        className={`mt-4 sm:mt-0 sm:ml-4 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white ${
-          isSaved ? "bg-gray-400" : "bg-green-700"
-        } rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300`}
-        disabled={isSaved}
+        onClick={handleSaveToggle}
+        className={`... ${
+          isSaved ? "bg-red-600" : "bg-green-700"
+        } mt-4 sm:mt-0 sm:ml-4 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded`}
       >
-        {isSaved ? "Saved" : "Save Task"}
+        {isSaved ? "Unsave Task" : "Save Task"}
       </button>
     </div>
   );
