@@ -54,12 +54,14 @@ def user_settings(request):
 
     if request.method == "GET":
         serializer = UserSettingsSerializer(settings)
+        print(Response(serializer.data))
         return Response(serializer.data)
 
     elif request.method == "PATCH":
         serializer = UserSettingsSerializer(settings, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            print(Response(serializer.data))
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
 

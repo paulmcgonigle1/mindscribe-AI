@@ -22,7 +22,7 @@ class InsightSerializer(serializers.ModelSerializer):
 class UserSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserSettings
-        fields = ["preferred_message_types", "preferred_message_styles"]
+        fields = "__all__"
 
 
 class ActionableTaskSerializer(serializers.ModelSerializer):

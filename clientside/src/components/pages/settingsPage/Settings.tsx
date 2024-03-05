@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import AuthContext from "../../../context/AuthContext";
-import { getSettings, getTrackedTasks } from "../../../services/JournalService";
+import {
+  getSettings,
+  getTrackedTasks,
+  updateSettings,
+} from "../../../services/JournalService";
 
 function Settings() {
   const [settings, setSettings] = useState({
-    preferred_type: "motivation",
-    preferred_style: "insightful",
+    preferred_type: "",
+    preferred_style: "",
   });
+
   const { authTokens } = useContext(AuthContext) ?? {};
+
+  console.log("Current settings:", settings);
 
   useEffect(() => {
     // fetch settings logic
@@ -28,13 +35,29 @@ function Settings() {
     fetchSettings();
   }, [authTokens]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Submit settings logic...
+
+    // fixes auth token error
+    if (!authTokens?.access) {
+      console.error("No authentication token available.");
+      return;
+    }
+
+    try {
+      // Call the updateSettings function, passing the auth tokens and the current settings state.
+      const response = await updateSettings(authTokens, settings);
+      console.log("Settings updated successfully:", response);
+      // Optionally, you could refresh the settings from the server again here, or handle any post-update logic.
+    } catch (error) {
+      console.error("Error updating settings:", error);
+    }
   };
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
+    console.log(`Updating setting: ${name} to ${value}`); // Add this line
+
     setSettings((prevSettings) => ({
       ...prevSettings,
       [name]: value,
@@ -48,14 +71,14 @@ function Settings() {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
-            htmlFor="preferred_message_types"
+            htmlFor="preferred_type"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             Preferred Message Type
           </label>
           <select
-            id="preferred_message_types"
-            name="preferred_message_types"
+            id="preferred_type"
+            name="preferred_type"
             value={settings.preferred_type}
             onChange={handleChange}
             className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -68,14 +91,14 @@ function Settings() {
         </div>
         <div className="mb-6">
           <label
-            htmlFor="preferred_message_styles"
+            htmlFor="preferred_style"
             className="block text-gray-700 text-sm font-bold mb-2"
           >
             Preferred Message Style
           </label>
           <select
-            id="preferred_message_styles"
-            name="preferred_message_styles"
+            id="preferred_style"
+            name="preferred_style"
             value={settings.preferred_style}
             onChange={handleChange}
             className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

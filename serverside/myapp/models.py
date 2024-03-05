@@ -101,10 +101,10 @@ class UserSettings(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="settings")
-    preferred_message_types = models.CharField(
+    preferred_type = models.CharField(
         max_length=50, choices=MESSAGE_TYPES, default="motivation"
     )
-    preferred_message_styles = models.CharField(
+    preferred_style = models.CharField(
         max_length=50, choices=MESSAGE_STYLES, default="insightful"
     )
     # Add other settings fields as needed

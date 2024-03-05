@@ -111,6 +111,19 @@ export const getSettings = async (authTokens: { access: string }): Promise<Setti
     preferred_style: response.data.preferred_style,
   };
 } 
+//for updating our settings at the moment
+export const updateSettings = async (authTokens: { access: string }, newSettings:Settings): Promise<Settings> => {
+  const response = await axios.patch(`${BASE_URL}/myapp/settings/`, newSettings, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  return {
+    preferred_type: response.data.preferred_type,
+    preferred_style: response.data.preferred_style,
+  };
+} 
 
 export const getTrackedTasks = async (authTokens: { access: string }): Promise<Task[]> => {
   

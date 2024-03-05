@@ -269,8 +269,8 @@ def interact_with_llm(prompt):
 
 def create_message_of_the_day(user):
     settings = user.settings
-    preferred_type = settings.preferred_message_types
-    preferred_style = settings.preferred_message_styles
+    preferred_type = settings.preferred_type
+    preferred_style = settings.preferred_style
     # prompt with values from database
 
     prompt = (
