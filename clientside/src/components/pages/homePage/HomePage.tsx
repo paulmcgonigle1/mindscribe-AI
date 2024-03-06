@@ -24,10 +24,18 @@ const HomePage: React.FC<HomePageProps> = () => {
           </p>
           <div className="flex flex-col items-start space-y-4">
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/sign-up", { state: { isLogin: true } })}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Login to Start
+            </button>
+            <button
+              onClick={() =>
+                navigate("/sign-up", { state: { isLogin: false } })
+              }
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Signup
             </button>
             <p className="text-gray-500">
               Discover insights, track your mood, and get personalized tasks to

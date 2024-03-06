@@ -1,15 +1,22 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
 
-// Define a type for  context state
 interface AuthContextType {
   loginUser: (
     e: React.FormEvent<HTMLFormElement>,
     onSuccess: any
   ) => Promise<void>;
   logoutUser: () => void; // Defining logoutUser function type
-  user: { name?: string; username?: string } | null; // Add a user property to store user information
-  authTokens: { access: string; refresh?: string } | null; // Assuming this structure, adjust as necessary
+  registerUser: (
+    userData: {
+      username: string;
+      email: string;
+      password: string;
+    },
+    onSuccess: () => void
+  ) => Promise<void>;
+  user: { name?: string; username?: string } | null; // Auser property to store user information
+  authTokens: { access: string; refresh?: string } | null; //]adjust as necessary
 }
 // Create context with an initial value of the same type or undefined
 
@@ -76,9 +83,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    // console.log(
-    //   "Form Submitted with username:" + username + " and password: " + password
-    // );
+    console.log(
+      "Form Submitted with username:" + username + " and password: " + password
+    );
     try {
       // example, needs to be updated to a service perhaps
       let response = await fetch("http://127.0.0.1:8000/myapp/api/token/", {
@@ -103,7 +110,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         //for working with login
         onSuccess(); // Execute the callback after successful login
       } else {
-        alert("Something Went Wrong");
+        alert("Something Went Wrong in authcontext");
       }
 
       // console.log("Login Success", data);
@@ -120,6 +127,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
+  };
+  //to register a user
+  const registerUser = async (
+    userData: { username: string; email: string; password: string },
+    onSuccess: () => void
+  ) => {
+    try {
+      //
+      let response = await fetch("http://127.0.0.1:8000/myapp/api/signup/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+      if (response.ok) {
+        onSuccess();
+      } else {
+        console.error("signup has failed");
+      }
+    } catch (error) {
+      console.error("An error occured during the signup", error);
+    }
   };
 
   let updateToken = async () => {
@@ -159,6 +189,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   let contextData: AuthContextType = {
     loginUser: loginUser,
     logoutUser: logoutUser,
+    registerUser: registerUser,
     user: user,
     authTokens: authTokens,
   };

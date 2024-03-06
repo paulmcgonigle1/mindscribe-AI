@@ -17,6 +17,7 @@ import { AuthProvider } from "./context/AuthContext";
 import AuthContext from "./context/AuthContext";
 import { useContext } from "react";
 import Settings from "./components/pages/settingsPage/Settings";
+import SignupPage from "./components/pages/homePage/SignupPage";
 // Example authentication check function
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
             </Route>
           </Route>
           <Route path="login" element={<LoginPage />}></Route>
+          <Route path="sign-up" element={<SignupPage />}></Route>
           <Route path="home" element={<HomePage />}></Route>
         </Routes>
       </BrowserRouter>
