@@ -42,6 +42,7 @@ class UserImprovementAdmin(admin.ModelAdmin):
     list_display = (
         "improvementId",
         "user",
+        "date",
         "timestamp",
         "message_of_the_day",
         "additional_info",
