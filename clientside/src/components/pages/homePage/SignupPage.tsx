@@ -25,7 +25,7 @@ function SignupPage() {
     // Adjust registerUser to match your implementation
     registerUser(
       event,
-      () => navigate("/"),
+      () => navigate("/multi-step-form"),
       (errorData: ErrorData) => {
         setErrors(errorData); // Update the state with the returned errors
       }
