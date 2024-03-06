@@ -11,15 +11,25 @@ function SignupPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState(""); // Add email state
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [errors, setErrors] = useState<ErrorData>({});
+
   const [isLogin, setIsLogin] = useState(initialState); //sets the toggle between sign up or login
   const navigate = useNavigate();
   const { registerUser, loginUser } = useContext(AuthContext)!; // Adjust according to your context
-
-  const handleSignup = async (f: React.FormEvent<HTMLFormElement>) => {
-    f.preventDefault(); // Prevent default form submission
+  interface ErrorData {
+    [key: string]: string[]; // Dynamic keys with array of error messages
+  }
+  const handleSignup = async (event: any) => {
     // Here you will call your context or service to register the user
     // Adjust registerUser to match your implementation
-    await registerUser({ username, email, password }, () => navigate("/"));
+    registerUser(
+      event,
+      () => navigate("/"),
+      (errorData: ErrorData) => {
+        setErrors(errorData); // Update the state with the returned errors
+      }
+    );
   };
   //setting whether the form is login or sign-up mode
   const toggleForm = () => {
@@ -144,35 +154,80 @@ function SignupPage() {
                             </h4>
                           </div>
                           {/* Sign Up Form */}
-                          <form>
+                          <form onSubmit={handleSignup}>
                             <p className="mb-4">Please register an account</p>
                             {/* <!--Username input--> */}
-                            <TEInput
+                            <label
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                              htmlFor="username"
+                            >
+                              Username
+                            </label>
+                            <input
                               type="text"
-                              label="Username"
+                              value={username}
+                              name="username"
                               className="mb-4"
-                            ></TEInput>
+                              onChange={(e) => setUsername(e.target.value)}
+                            ></input>
+                            <label
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                              htmlFor="email"
+                            >
+                              Email
+                            </label>
+                            <input
+                              type="email"
+                              value={email}
+                              name="email"
+                              className="mb-4"
+                              onChange={(e) => setEmail(e.target.value)}
+                            ></input>
 
                             {/* <!--Password input--> */}
-                            <TEInput
+                            <label
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                              htmlFor="password"
+                            >
+                              Password
+                            </label>
+                            <input
                               type="password"
-                              label="Password"
+                              name="password"
                               className="mb-4"
-                            ></TEInput>
+                              placeholder="****"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                            ></input>
 
-                            <TEInput
-                              type="text"
-                              label="email"
-                              placeholder="email address"
-                              className="mb-4 bg-red-100"
-                            ></TEInput>
+                            {/* <!--Password input--> */}
+                            <label
+                              className="block text-gray-700 text-sm font-bold mb-2"
+                              htmlFor="password2"
+                            >
+                              Verify Password
+                            </label>
+                            <input
+                              type="password"
+                              name="password2"
+                              className="mb-4"
+                              placeholder="****"
+                              value={password2}
+                              onChange={(e) => setPassword2(e.target.value)}
+                            ></input>
+                            {errors.non_field_errors &&
+                              errors.non_field_errors.map((message, index) => (
+                                <p key={index} className="error">
+                                  {message}
+                                </p>
+                              ))}
 
                             {/* <!--Submit button--> */}
                             <div className="mb-12 pb-1 pt-1 text-center">
                               <TERipple rippleColor="light" className="w-full">
                                 <button
                                   className="mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
-                                  type="button"
+                                  type="submit"
                                   style={{
                                     background:
                                       "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
