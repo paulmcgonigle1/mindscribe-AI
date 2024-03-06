@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import RegisterSerializer
 
 
 # got these from django simplejwt docs
@@ -31,3 +32,17 @@ def getRoutes(request):
         "/api/token/refresh",
     ]
     return Response(routes)
+
+
+@api_view(["POST"])
+def register(request):
+    if request.method == "POST":
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(
+                    {"message": "User created successfully"},
+                    status=status.HTTP_201_CREATED,
+                )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

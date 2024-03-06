@@ -5,7 +5,7 @@ from .views import (
     get_emotion_statistics,
     getJournals,
 )  # Import your views here
-from .authviews import MyTokenObtainPairView, getRoutes
+from .authviews import MyTokenObtainPairView, getRoutes, register
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
@@ -60,6 +60,7 @@ urlpatterns = [
     path("", getRoutes),
     path("api/token/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/register/", register, name="register"),
     path("api/journals/", views.getJournals, name="get_journals"),
     path("api/createjournal/", views.createJournal, name="create_journal"),
     path(
