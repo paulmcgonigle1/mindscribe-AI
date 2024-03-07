@@ -64,7 +64,11 @@ class InsightAdmin(admin.ModelAdmin):
 
 
 class SettingsAdmin(admin.ModelAdmin):
-    list_display = ("preferred_message_types", "preferred_message_styles")
+    list_display = (
+        "is_peronsalized_complete",
+        "preferred_message_types",
+        "preferred_message_styles",
+    )
 
 
 # Register each model with its respective admin class

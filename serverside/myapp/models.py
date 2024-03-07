@@ -101,6 +101,7 @@ class UserSettings(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="settings")
+    is_peronsalized_complete = models.BooleanField(default=False)
     preferred_type = models.CharField(
         max_length=50, choices=MESSAGE_TYPES, default="motivation"
     )
