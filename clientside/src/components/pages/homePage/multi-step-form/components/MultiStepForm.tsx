@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import StepA from "./StepA";
 import StepB from "./StepB";
 import StepC from "./StepC";
 import StepD from "./StepD";
 import StepFinal from "./StepFinal";
-
-// This is the parent component.
-// This component will control and manage steps and data
-
-// Step A: Customer Identity Info
-// Step B: Customer Business Info
-// Step C: Customer Financial Info
-// Step D: Confirm Form  Data
-
-// Step Final: Succes Result
+import AuthContext from "../../../../../context/AuthContext";
+import {
+  updatePreferances,
+  updateSettings,
+} from "../../../../../services/JournalService";
 
 const initialFormData = {
   firstName: "",
   lastName: "",
-  businessName: "",
-  businessCity: "",
-  businessWebsite: "",
-  businessEmail: "",
-  incomePerMonth: 0,
-  taxPercantage: 0,
+  preferred_type: "",
+  preferred_style: "",
+  responseType: "",
   agreeToTerms: "", //changed this from false
 };
 
@@ -31,6 +23,8 @@ const stepsArray = ["A", "B", "C", "D"];
 interface MultiStepFormProps {
   showStepNumber: boolean;
 }
+const { authTokens } = useContext(AuthContext) ?? {};
+
 const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
   const [step, setStep] = useState("A");
   const [formData, setFormData] = useState(initialFormData);
@@ -50,32 +44,56 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
   };
 
   // We need a method to update our formData
-  const handleChangeInput = (event: any) => {
-    const fieldName = event.target.name;
-    let fieldValue;
-    if (fieldName === "agreeToTerms") {
-      fieldValue = event.target.checked;
+  const handleChangeInput = (nameOrEvent: any, value?: any) => {
+    let fieldName: string;
+    let fieldValue: any;
+
+    // Check if the first argument is an event
+    if (typeof nameOrEvent === "object" && nameOrEvent.target) {
+      fieldName = nameOrEvent.target.name;
+      fieldValue =
+        nameOrEvent.target.type === "checkbox"
+          ? nameOrEvent.target.checked
+          : nameOrEvent.target.value;
     } else {
-      fieldValue = event.target.value;
+      // Handle manual updates (e.g., from a button click)
+      fieldName = nameOrEvent;
+      fieldValue = value;
     }
-    setFormData({
-      ...formData,
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [fieldName]: fieldValue,
-    });
+    }));
   };
 
   // We need a method to do final operation
-  const handleSubmitFormData = () => {
+  const handleSubmitFormData = async () => {
     // Here You can do final Validation and then Submit Your form
     if (!formData.agreeToTerms) {
       alert("Error!!!!!!   You must agree to Terms of Services!!!!");
     } else {
-      setStep("Final");
+      // fixes auth token error
+      if (!authTokens?.access) {
+        console.error("No authentication token available.");
+        return;
+      }
+      console.log("About to update preferences from my service.");
+
+      try {
+        // Call the updateSettings function, passing the auth tokens and the current settings state.
+        const response = await updatePreferances(authTokens, formData);
+        console.log("Settings updated successfully:", response);
+        setStep("Final");
+        // Optionally, you could refresh the settings from the server again here, or handle any post-update logic.
+      } catch (error) {
+        console.error("Error updating settings:", error);
+      }
     }
   };
 
   useEffect(() => {
-    console.log(formData);
+    console.log("Form Data at beginning: ", formData);
   }, [formData]);
 
   // Section for render StepNumbers

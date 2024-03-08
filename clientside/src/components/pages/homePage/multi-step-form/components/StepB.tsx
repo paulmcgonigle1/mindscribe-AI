@@ -1,11 +1,11 @@
 type StepBProp = {
   formData: {
-    businessName: string;
-    businessCity: string;
-    businessWebsite: string;
-    businessEmail: string;
+    preferred_type: string;
+    preferred_style: string;
   };
-  handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeInput: (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => void;
   handlePrevStep: () => void;
   handleNextStep: () => void;
 };
@@ -19,48 +19,48 @@ const StepB: React.FC<StepBProp> = ({
   return (
     <div>
       <h1 className="mt-2 text-xl font-bold text-blue-900">
-        Step B: Customer Business Info
+        Step B: Motivational Daily Messages
       </h1>
 
       <div className="my-2">
-        <label>Business Name</label>
-        <input
-          type="text"
-          name="businessName"
-          value={formData.businessName}
+        <label
+          htmlFor="preferred_type"
+          className="block text-gray-700 text-sm font-bold mb-2"
+        >
+          Preferred Message Type
+        </label>
+        <select
+          id="preferred_type"
+          name="preferred_type"
+          value={formData.preferred_type}
           onChange={(e) => handleChangeInput(e)}
-          className="w-full outline-none border border-gray-400 px-2 py-1 rounded-lg focus:border-blue-600"
-        />
+          className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        >
+          <option value="poem">Poem</option>
+          <option value="story">Story</option>
+          <option value="quote">Quote</option>
+          <option value="motivation">Motivation</option>
+        </select>
       </div>
       <div className="my-2">
-        <label>Business City</label>
-        <input
-          type="text"
-          name="businessCity"
-          value={formData.businessCity}
+        <label
+          htmlFor="preferred_style"
+          className="block text-gray-700 text-sm font-bold mb-2"
+        >
+          Preferred Message Style
+        </label>
+        <select
+          id="preferred_style"
+          name="preferred_style"
+          value={formData.preferred_style}
           onChange={(e) => handleChangeInput(e)}
-          className="w-full outline-none border border-gray-400 px-2 py-1 rounded-lg focus:border-blue-600"
-        />
-      </div>
-      <div className="my-2">
-        <label>Business Website</label>
-        <input
-          type="text"
-          name="businessWebsite"
-          value={formData.businessWebsite}
-          onChange={(e) => handleChangeInput(e)}
-          className="w-full outline-none border border-gray-400 px-2 py-1 rounded-lg focus:border-blue-600"
-        />
-      </div>
-      <div className="my-2">
-        <label>Business Email</label>
-        <input
-          type="email"
-          name="businessEmail"
-          value={formData.businessEmail}
-          onChange={(e) => handleChangeInput(e)}
-          className="w-full outline-none border border-gray-400 px-2 py-1 rounded-lg focus:border-blue-600"
-        />
+          className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        >
+          <option value="stoic">Stoic</option>
+          <option value="funny">Funny</option>
+          <option value="deep">Deep</option>
+          <option value="insightful">Insightful</option>
+        </select>
       </div>
 
       <div className="my-2 flex justify-between items-center">

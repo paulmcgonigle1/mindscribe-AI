@@ -16,11 +16,9 @@ const StepA: React.FC<StepAProp> = ({
 }) => {
   return (
     <div>
-      <h1 className="mt-2 text-xl font-bold text-blue-900">
-        Step A: Customer Identity Info
-      </h1>
+      <h1 className="mt-2 text-xl font-bold text-blue-900">Step A: Name</h1>
       <div className="my-2">
-        <label>Fisrst name</label>
+        <label>First name</label>
         <input
           type="text"
           name="firstName"

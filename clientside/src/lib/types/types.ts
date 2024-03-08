@@ -41,6 +41,17 @@ export type Task = {
 export type  Settings = {
   preferred_type: string;
   preferred_style: string;
+  isPersonalized: boolean;
+}
+
+export type Preferences = {
+  firstName: string;
+  lastName: string;
+  preferred_type: string;
+  preferred_style: string;
+  responseType: string;
+  agreeToTerms: string;
+  
 }
 
 

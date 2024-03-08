@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -109,6 +109,7 @@ export const getSettings = async (authTokens: { access: string }): Promise<Setti
   return {
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
+    isPersonalized: response.data.is_peronsalized_complete
   };
 } 
 //for updating our settings at the moment
@@ -122,8 +123,27 @@ export const updateSettings = async (authTokens: { access: string }, newSettings
   return {
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
+    isPersonalized: response.data.is_peronsalized_complete
   };
 } 
+
+export const updatePreferances= async (authTokens: { access: string }, newPreferences:Preferences): Promise<Preferences> => {
+ const response = await axios.patch(`${BASE_URL}/myapp/preferences/`, newPreferences, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${authTokens.access}`, 
+  }
+ });
+ return {
+
+  firstName: response.data.firstName,
+    lastName: response.data.lastName,
+    preferred_type: response.data.preferred_type,
+    preferred_style: response.data.preferred_style,
+    responseType: response.data.responseType,
+    agreeToTerms: response.data.agreeToTerms
+
+ }}
 
 export const getTrackedTasks = async (authTokens: { access: string }): Promise<Task[]> => {
   

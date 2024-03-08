@@ -11,6 +11,7 @@ function Settings() {
   const [settings, setSettings] = useState({
     preferred_type: "",
     preferred_style: "",
+    isPersonalized: false,
   });
 
   const { authTokens } = useContext(AuthContext) ?? {};
