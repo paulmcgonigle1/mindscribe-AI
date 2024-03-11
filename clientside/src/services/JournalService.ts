@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -36,6 +36,31 @@ export const getEmotions = async (authTokens: { access: string }, days: number):
   });  
   return response.data;
 }   
+export const saveTask = async (authTokens: { access: string }, taskId: number, state: boolean): Promise<any> => {
+  // Assuming you want to set the inProgress status to true for this task
+  const response = await axios.patch(`${BASE_URL}/myapp/api/savetask/${taskId}/`, {
+    inProgress: state,
+  },{
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });  
+  return response.data;
+};
+//set to complete
+export const updateTaskCompletionStatus = async (authTokens: { access: string }, taskId: number): Promise<any> => {
+  // Assuming you want to set the inProgress status to true for this task
+  const response = await axios.patch(`${BASE_URL}/myapp/api/complete-task/${taskId}/`, {
+    isCompleted: true,
+  },{
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });  
+  return response.data;
+};
 
 export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   try {
@@ -45,7 +70,9 @@ export const createImprovements = async (authTokens: { access: string }): Promis
         'Authorization': `Bearer ${authTokens.access}`,
       }
     });
+    
     return {
+    
       message: response.data.message,
       tasks: response.data.tasks,
       createdAt: response.data.createdAt,
@@ -56,6 +83,8 @@ export const createImprovements = async (authTokens: { access: string }): Promis
     throw new Error("Error creating improvements");
   }
 };
+
+
  
 export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   const response = await axios.get(`${BASE_URL}/myapp/get-improvements/`, {
@@ -69,6 +98,65 @@ export const getImprovements = async (authTokens: { access: string }): Promise<I
       tasks: response.data.tasks,
       createdAt: response.data.createdAt,
   };
+} 
+export const getSettings = async (authTokens: { access: string }): Promise<Settings> => {
+  const response = await axios.get(`${BASE_URL}/myapp/settings/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  return {
+    preferred_type: response.data.preferred_type,
+    preferred_style: response.data.preferred_style,
+    is_personalised: response.data.is_personalised
+  };
+} 
+//for updating our settings at the moment
+export const updateSettings = async (authTokens: { access: string }, newSettings:Settings): Promise<Settings> => {
+  const response = await axios.patch(`${BASE_URL}/myapp/settings/`, newSettings, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  return {
+    preferred_type: response.data.preferred_type,
+    preferred_style: response.data.preferred_style,
+    is_personalised: response.data.is_is_personalised
+  };
+} 
+
+export const updatePreferances= async (authTokens: { access: string }, newPreferences:Preferences): Promise<Preferences> => {
+  console.log(newPreferences)
+ const response = await axios.patch(`${BASE_URL}/myapp/preferences/`, newPreferences, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${authTokens.access}`, 
+  }
+ });
+ return {
+
+  firstName: response.data.firstName,
+    lastName: response.data.lastName,
+    preferred_type: response.data.preferred_type,
+    preferred_style: response.data.preferred_style,
+    responseType: response.data.responseType,
+    agreeToTerms: response.data.is_personalised
+
+ }}
+
+export const getTrackedTasks = async (authTokens: { access: string }): Promise<Task[]> => {
+  
+  const response = await axios.get(`${BASE_URL}/myapp/get-tracked-tasks/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  console.log(response)
+  return response.data;
+  
 } 
 
 
@@ -119,5 +207,3 @@ export const getAnalysisData = async (userId: number): Promise<MyAnalysisData> =
   const response = await axios.get(`${BASE_URL}/myapp/analyze-data/${userId}/`);
   return response.data;
 }
-
-// Add more functions as needed for other API calls

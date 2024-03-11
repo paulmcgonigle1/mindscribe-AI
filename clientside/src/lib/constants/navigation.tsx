@@ -28,13 +28,6 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     path: "/improvements",
     icon: <HiOutlineAnnotation />,
   },
-
-  {
-    key: "chatbot",
-    label: "Chatbot",
-    path: "/chatbot",
-    icon: <HiOutlineAnnotation />,
-  },
 ];
 
 export const DASHBOARD_SIDEBAR_BOTTOM_LINKS = [

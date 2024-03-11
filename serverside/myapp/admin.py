@@ -1,10 +1,10 @@
 from django.contrib import admin
 from .models import (
-    User,
     JournalEntry,
     UserImprovement,
     Insight,
     ActionableTask,
+    UserPreferences,
 )
 
 
@@ -41,6 +41,7 @@ class UserImprovementAdmin(admin.ModelAdmin):
     list_display = (
         "improvementId",
         "user",
+        "date",
         "timestamp",
         "message_of_the_day",
         "additional_info",
@@ -49,7 +50,7 @@ class UserImprovementAdmin(admin.ModelAdmin):
 
 
 class ActionableTaskAdmin(admin.ModelAdmin):
-    list_display = ("content", "isCompleted", "explanation")
+    list_display = ("taskId", "content", "explanation", "isCompleted", "inProgress")
     list_filter = ("content",)
 
 
@@ -60,7 +61,14 @@ class InsightAdmin(admin.ModelAdmin):
         "timestamp",
     ]  # Update these fields based on your current model
 
-    # list_filter = ("sentimentScore",)
+
+class PreferencesAdmin(admin.ModelAdmin):
+    list_display = (
+        "is_personalised",
+        "preferred_type",
+        "preferred_style",
+        "responseType",
+    )
 
 
 # Register each model with its respective admin class
@@ -69,3 +77,4 @@ admin.site.register(JournalEntry, JournalEntryAdmin)
 admin.site.register(UserImprovement, UserImprovementAdmin)
 admin.site.register(Insight, InsightAdmin)
 admin.site.register(ActionableTask, ActionableTaskAdmin)
+admin.site.register(UserPreferences, PreferencesAdmin)

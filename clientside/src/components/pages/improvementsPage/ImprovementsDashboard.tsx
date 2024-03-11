@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import Summary from "../mainPage/Summary";
-import Improvements_Analysis from "./Improvements_Message";
 import ActionableTasks from "./ActionableTasksView";
 import { ImprovementData } from "../../../lib/types/types";
 import {
@@ -16,23 +14,46 @@ function ImprovementsDashboard() {
     tasks: [],
     createdAt: null,
   });
+  const [tasksCreated, setTasksCreated] = useState(false);
+
   const { authTokens } = useContext(AuthContext) ?? {};
   const handleCreateImprovements = async () => {
     if (authTokens?.access) {
       try {
         const response = await createImprovements(authTokens);
-        console.log("Received mental health plan:", response);
-        setImprovementData({
-          message: response.message,
-          tasks: response.tasks,
-          createdAt: response.createdAt,
-        });
+        console.log("Created Improvements plan:", response);
+        setTasksCreated(true);
       } catch (error) {
         console.error("Error creating mental health plan:", error);
       }
     }
   };
-  //gets most recent mental health plan
+
+  //use effect runs when creating new tasks instead of returning the response from create
+  useEffect(() => {
+    if (tasksCreated) {
+      const fetchImprovements = async () => {
+        if (authTokens?.access) {
+          try {
+            const response = await getImprovements(authTokens);
+            console.log("Updated improvements plan:", response);
+            setImprovementData({
+              message: response.message,
+              tasks: response.tasks,
+              createdAt: response.createdAt,
+            });
+          } catch (error) {
+            console.error("Error fetching updated improvement plan:", error);
+          }
+        }
+      };
+
+      fetchImprovements();
+      setTasksCreated(false); // Reset for further creations
+    }
+  }, [tasksCreated, authTokens]); // Runs whenever tasksCreated changes
+
+  //gets most recent improvements
   useEffect(() => {
     const fetchImprovements = async () => {
       if (authTokens?.access) {
@@ -52,21 +73,21 @@ function ImprovementsDashboard() {
     fetchImprovements();
   }, []);
   return (
-    <div className="flex-column gap-4 p-4 md:p-8">
-      {/* <DashboardStatsGrid /> */}
+    <div className="md:p-8">
       <button
         onClick={handleCreateImprovements}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Create Improvements
       </button>
-      <div className="flex flex-row gap-4 w-full px-4">
-        <Improvements_Message improvementData={improvementData} />
-      </div>
-
-      <div className="flex flex-row gap-4 w-full px-4">
-        <div className="flex flex-1 min-w-0">
-          <ActionableTasks improvementData={improvementData} />
+      <div className=" m-2">
+        <div className="flex flex-col sm:flex-row gap-4 w-full px-4">
+          <div className="hidden xl:block sm:max-w-xs md:max-w-sm lg:max-w-md">
+            <Improvements_Message improvementData={improvementData} />
+          </div>
+          <div className="flex-1">
+            <ActionableTasks improvementData={improvementData} />
+          </div>
         </div>
       </div>
     </div>

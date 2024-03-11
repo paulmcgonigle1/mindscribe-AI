@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ImprovementData, Task } from "../../../lib/types/types";
 import TaskCard from "./TaskCard";
 import TaskModal from "./TaskModal";
-
+import { saveTask } from "../../../services/JournalService";
+import AuthContext from "../../../context/AuthContext";
 interface ImprovementsMessageProps {
   improvementData: ImprovementData; // Define the type based on your actual type definitions
 }
 function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const { authTokens } = useContext(AuthContext) ?? {};
+
   //handles clicking on read more button
   const handleReadMore = (task: Task) => {
     setSelectedTask(task);
@@ -16,10 +19,24 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
     setSelectedTask(null);
   };
 
+  //this is savin task (adding to InProgress)
+  const handleSaveTask = async (taskId: number, state: boolean) => {
+    if (authTokens?.access) {
+      const response = await saveTask(authTokens, taskId, state);
+      console.log(response);
+    }
+  };
+
   return (
     <div className="flex flex-wrap gap-4">
-      {improvementData.tasks.map((task) => (
-        <TaskCard key={task.taskId} task={task} onReadMore={handleReadMore} />
+      {improvementData.tasks.map((task, index) => (
+        <TaskCard
+          key={task.taskId || index}
+          task={task}
+          onReadMore={handleReadMore}
+          onSave={() => handleSaveTask(task.taskId, true)} // Pass taskId to handleSaveTask
+          onUnsave={() => handleSaveTask(task.taskId, false)} // Assuming you have a handleUnsaveTask function
+        />
       ))}
       <TaskModal
         task={selectedTask}

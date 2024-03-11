@@ -3,11 +3,13 @@ import {
   HiOutlineBell,
   HiOutlineChatAlt,
   HiOutlineSearch,
+  HiChevronDoubleDown,
 } from "react-icons/hi";
 import { Popover, Transition, Menu } from "@headlessui/react";
 import classNames from "classnames";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
+import TrackTasks from "../pages/trackTasksPage/TrackTasks";
 useNavigate;
 export default function Header() {
   let { user } = useContext(AuthContext)!;
@@ -24,6 +26,43 @@ export default function Header() {
           placeholder="Search .... "
           className="text-sm focus:outline-none active:outline-none h-10 w-[24rem] border border-gray-300 rounded-sm pl-11 pr-4 "
         />
+      </div>
+      {/* //this is the popover for tracking tasks in our website*/}
+      <div className=" w-full max-w-sm px-4">
+        <Popover className="relative">
+          {({ open }) => (
+            <>
+              <Popover.Button
+                className={`
+                ${open ? "text-white" : "text-white/90"}
+                group inline-flex items-center rounded-md bg-green-700 px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
+              >
+                <span>Track Tasks</span>
+                <HiChevronDoubleDown
+                  className={`${open ? "text-white-300" : "text-white-300/70"}
+                  ml-2 h-5 w-5 transition duration-150 ease-in-out group-hover:text-blue-300/80`}
+                  aria-hidden="true"
+                />
+              </Popover.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
+                  {/* this is where my track tasks are being displayed */}
+                  <div className="bg-gray-50 overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
+                    <TrackTasks />
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </>
+          )}
+        </Popover>
       </div>
 
       <div className="flex items-center gap-2 mr-2">

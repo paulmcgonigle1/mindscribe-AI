@@ -16,6 +16,9 @@ import LoginPage from "./components/pages/homePage/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
 import AuthContext from "./context/AuthContext";
 import { useContext } from "react";
+import Settings from "./components/pages/settingsPage/Settings";
+import SignupPage from "./components/pages/homePage/SignupPage";
+import Questionnaire from "./components/pages/homePage/multi-step-form/page";
 // Example authentication check function
 
 function App() {
@@ -40,9 +43,12 @@ function App() {
               <Route index element={<JournalDashboard />} />
               <Route path="statistics" element={<StatsDashboard />} />
               <Route path="improvements" element={<ImprovementsDashboard />} />
+              <Route path="settings" element={<Settings />}></Route>
             </Route>
           </Route>
           <Route path="login" element={<LoginPage />}></Route>
+          <Route path="multi-step-form" element={<Questionnaire />}></Route>
+          <Route path="sign-up" element={<SignupPage />}></Route>
           <Route path="home" element={<HomePage />}></Route>
         </Routes>
       </BrowserRouter>

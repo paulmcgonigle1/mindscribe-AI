@@ -50,7 +50,7 @@ export default function Sidebar() {
     logoutUser();
     // console.log("user after logout: = ", user);
     // console.log("authTokens = ", localStorage.getItem("authTokens"));
-    navigate("/login");
+    navigate("/sign-up", { state: { isLogin: true } });
   };
   return (
     <div className="bg-neutral-900 w-60 p-3 flex flex-col text-white">

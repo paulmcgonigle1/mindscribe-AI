@@ -1,14 +1,20 @@
+import json
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from .models import JournalEntry, Insight, UserImprovement
-from .serializers import JournalEntrySerializer, InsightSerializer
+from .models import JournalEntry, Insight, UserImprovement, UserPreferences
+from .serializers import (
+    JournalEntrySerializer,
+    InsightSerializer,
+    UserPreferencesSerializer,
+)
 from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from langchain_app.views import process_entry
-from .improvements import create_tasks_from_insights
+
+# from langchain_app.views import process_entry
+from .improvements import create_tasks_from_insights, process_entry
 from rest_framework.response import Response
 from datetime import timedelta  # Will be used for date range queries
 import logging
@@ -23,28 +29,9 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
     serializer_class = JournalEntrySerializer
     queryset = JournalEntry.objects.all()
 
-    # def create(self, request, *args, **kwargs):
-    #     response = super(JournalEntryViewSet, self).create(request, *args, **kwargs)
-    #     print("Response: ", response.data)
-    #     if response.status_code == status.HTTP_201_CREATED:
-    #         journal_entry_id = response.data.get("entryID")
-    #         journal_entry = JournalEntry.objects.get(entryID=journal_entry_id)
-    #         process_entry(journal_entry)
-    #     return response
-
-    # def get_queryset(self):
-    #     user_id = self.kwargs.get("user_id")  # Access user_id from URL parameters
-    #     if user_id is not None:
-    #         return JournalEntry.objects.filter(user=user_id)
-    #     print("Got journal Entries")
-    #     return JournalEntry.objects.all()
-
     # get insights for a particular journal entry
     @action(detail=True, methods=["get"])
     def insights(self, request, pk=None):
-        """
-        Retrieve insights for a specific journal entry.
-        """
         journal_entry = self.get_object()
         insights = Insight.objects.filter(entry=journal_entry)
         serializer = InsightSerializer(insights, many=True)
@@ -57,6 +44,83 @@ class DailyInsightsView(APIView):
         insights = Insight.objects.filter(entry__user__id=user_id, timestamp__date=date)
         serialized_insights = InsightSerializer(insights, many=True).data
         return Response(serialized_insights)
+
+
+# functionality with my settings /preferences
+@api_view(["GET", "PATCH"])
+@permission_classes([IsAuthenticated])
+def user_settings(request):
+    user = request.user
+    settings, created = UserPreferences.objects.get_or_create(user=user)
+
+    if request.method == "GET":
+        serializer = UserPreferencesSerializer(settings)
+        print(Response(serializer.data))
+        return Response(serializer.data)
+
+    elif request.method == "PATCH":
+        serializer = UserPreferencesSerializer(
+            settings, data=request.data, partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            print(Response(serializer.data))
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+
+@api_view(["GET", "PATCH"])
+@permission_classes([IsAuthenticated])
+def update_preferences(request):
+    print("entered the update_preferences")
+    logger.debug("Entered the update_preferences FUNCTION but not the try")
+
+    try:
+        # Parse the request body to JSON
+        data = json.loads(request.body)
+        print("data:", data)
+        logger.info("data: %s", data)
+        logger.debug("Entered the update_preferences")
+
+        # Assuming the user's ID is sent in the request
+        user = request.user
+
+        user_settings, created = UserPreferences.objects.get_or_create(user=user)
+
+        # Update the User model fields
+        user.first_name = data.get("firstName", user.first_name)
+        user.last_name = data.get("lastName", user.last_name)
+        user.save()
+
+        # Update the UserSettings model fields
+        user_settings.preferred_type = data.get(
+            "preferred_type", user_settings.preferred_type
+        )
+        user_settings.preferred_style = data.get(
+            "preferred_style", user_settings.preferred_style
+        )
+        user_settings.responseType = data.get(
+            "responseType", user_settings.responseType
+        )
+        user_settings.is_personalised = data.get(
+            "agreeToTerms", user_settings.is_personalised
+        )
+        user_settings.save()
+
+        # Prepare and return the response
+        response_data = {
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "preferred_type": user_settings.preferred_type,
+            "preferred_style": user_settings.preferred_style,
+            "responseType": user_settings.responseType,
+            "agreeToTerms": user_settings.is_personalised,
+        }
+
+        return JsonResponse(response_data, status=200)
+    except Exception as e:
+        # Handle exceptions/errors
+        return JsonResponse({"error": str(e)}, status=400)
 
 
 # following video on auth and tokens etc
