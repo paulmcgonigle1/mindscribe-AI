@@ -1,10 +1,11 @@
+import json
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from .models import JournalEntry, Insight, UserImprovement, UserSettings
+from .models import JournalEntry, Insight, UserImprovement, UserPreferences
 from .serializers import (
     JournalEntrySerializer,
     InsightSerializer,
-    UserSettingsSerializer,
+    UserPreferencesSerializer,
 )
 from django.http import JsonResponse
 from rest_framework import viewsets, status
@@ -50,20 +51,76 @@ class DailyInsightsView(APIView):
 @permission_classes([IsAuthenticated])
 def user_settings(request):
     user = request.user
-    settings, created = UserSettings.objects.get_or_create(user=user)
+    settings, created = UserPreferences.objects.get_or_create(user=user)
 
     if request.method == "GET":
-        serializer = UserSettingsSerializer(settings)
+        serializer = UserPreferencesSerializer(settings)
         print(Response(serializer.data))
         return Response(serializer.data)
 
     elif request.method == "PATCH":
-        serializer = UserSettingsSerializer(settings, data=request.data, partial=True)
+        serializer = UserPreferencesSerializer(
+            settings, data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             print(Response(serializer.data))
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
+
+
+@api_view(["GET", "PATCH"])
+@permission_classes([IsAuthenticated])
+def update_preferences(request):
+    print("entered the update_preferences")
+    logger.debug("Entered the update_preferences FUNCTION but not the try")
+
+    try:
+        # Parse the request body to JSON
+        data = json.loads(request.body)
+        print("data:", data)
+        logger.info("data: %s", data)
+        logger.debug("Entered the update_preferences")
+
+        # Assuming the user's ID is sent in the request
+        user = request.user
+
+        user_settings, created = UserPreferences.objects.get_or_create(user=user)
+
+        # Update the User model fields
+        user.first_name = data.get("firstName", user.first_name)
+        user.last_name = data.get("lastName", user.last_name)
+        user.save()
+
+        # Update the UserSettings model fields
+        user_settings.preferred_type = data.get(
+            "preferred_type", user_settings.preferred_type
+        )
+        user_settings.preferred_style = data.get(
+            "preferred_style", user_settings.preferred_style
+        )
+        user_settings.responseType = data.get(
+            "responseType", user_settings.responseType
+        )
+        user_settings.is_personalised = data.get(
+            "agreeToTerms", user_settings.is_personalised
+        )
+        user_settings.save()
+
+        # Prepare and return the response
+        response_data = {
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "preferred_type": user_settings.preferred_type,
+            "preferred_style": user_settings.preferred_style,
+            "responseType": user_settings.responseType,
+            "agreeToTerms": user_settings.is_personalised,
+        }
+
+        return JsonResponse(response_data, status=200)
+    except Exception as e:
+        # Handle exceptions/errors
+        return JsonResponse({"error": str(e)}, status=400)
 
 
 # following video on auth and tokens etc

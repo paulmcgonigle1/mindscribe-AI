@@ -41,7 +41,7 @@ export type Task = {
 export type  Settings = {
   preferred_type: string;
   preferred_style: string;
-  isPersonalized: boolean;
+  is_personalised: boolean;
 }
 
 export type Preferences = {
@@ -50,7 +50,7 @@ export type Preferences = {
   preferred_type: string;
   preferred_style: string;
   responseType: string;
-  agreeToTerms: string;
+  agreeToTerms: boolean;
   
 }
 

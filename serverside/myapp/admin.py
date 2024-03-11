@@ -1,11 +1,10 @@
 from django.contrib import admin
 from .models import (
-    User,
     JournalEntry,
     UserImprovement,
     Insight,
     ActionableTask,
-    UserSettings,
+    UserPreferences,
 )
 
 
@@ -63,11 +62,12 @@ class InsightAdmin(admin.ModelAdmin):
     ]  # Update these fields based on your current model
 
 
-class SettingsAdmin(admin.ModelAdmin):
+class PreferencesAdmin(admin.ModelAdmin):
     list_display = (
-        "is_peronsalized_complete",
-        "preferred_message_types",
-        "preferred_message_styles",
+        "is_personalised",
+        "preferred_type",
+        "preferred_style",
+        "responseType",
     )
 
 
@@ -77,4 +77,4 @@ admin.site.register(JournalEntry, JournalEntryAdmin)
 admin.site.register(UserImprovement, UserImprovementAdmin)
 admin.site.register(Insight, InsightAdmin)
 admin.site.register(ActionableTask, ActionableTaskAdmin)
-admin.site.register(UserSettings)
+admin.site.register(UserPreferences, PreferencesAdmin)

@@ -109,7 +109,7 @@ export const getSettings = async (authTokens: { access: string }): Promise<Setti
   return {
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
-    isPersonalized: response.data.is_peronsalized_complete
+    is_personalised: response.data.is_personalised
   };
 } 
 //for updating our settings at the moment
@@ -123,11 +123,12 @@ export const updateSettings = async (authTokens: { access: string }, newSettings
   return {
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
-    isPersonalized: response.data.is_peronsalized_complete
+    is_personalised: response.data.is_is_personalised
   };
 } 
 
 export const updatePreferances= async (authTokens: { access: string }, newPreferences:Preferences): Promise<Preferences> => {
+  console.log(newPreferences)
  const response = await axios.patch(`${BASE_URL}/myapp/preferences/`, newPreferences, {
   headers: {
     'Content-Type': 'application/json',
@@ -141,7 +142,7 @@ export const updatePreferances= async (authTokens: { access: string }, newPrefer
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
     responseType: response.data.responseType,
-    agreeToTerms: response.data.agreeToTerms
+    agreeToTerms: response.data.is_personalised
 
  }}
 

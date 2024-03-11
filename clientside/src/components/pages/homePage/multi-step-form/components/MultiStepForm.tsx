@@ -5,10 +5,7 @@ import StepC from "./StepC";
 import StepD from "./StepD";
 import StepFinal from "./StepFinal";
 import AuthContext from "../../../../../context/AuthContext";
-import {
-  updatePreferances,
-  updateSettings,
-} from "../../../../../services/JournalService";
+import { updatePreferances } from "../../../../../services/JournalService";
 
 const initialFormData = {
   firstName: "",
@@ -16,18 +13,18 @@ const initialFormData = {
   preferred_type: "",
   preferred_style: "",
   responseType: "",
-  agreeToTerms: "", //changed this from false
+  agreeToTerms: false, //changed this from false
 };
 
 const stepsArray = ["A", "B", "C", "D"];
 interface MultiStepFormProps {
   showStepNumber: boolean;
 }
-const { authTokens } = useContext(AuthContext) ?? {};
 
 const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
   const [step, setStep] = useState("A");
   const [formData, setFormData] = useState(initialFormData);
+  const { authTokens } = useContext(AuthContext) ?? {};
 
   // We need a method to go to next step
   const handleNextStep = () => {
@@ -69,26 +66,31 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
 
   // We need a method to do final operation
   const handleSubmitFormData = async () => {
-    // Here You can do final Validation and then Submit Your form
-    if (!formData.agreeToTerms) {
-      alert("Error!!!!!!   You must agree to Terms of Services!!!!");
-    } else {
-      // fixes auth token error
-      if (!authTokens?.access) {
-        console.error("No authentication token available.");
-        return;
-      }
-      console.log("About to update preferences from my service.");
+    console.log("inside handle submit");
 
-      try {
-        // Call the updateSettings function, passing the auth tokens and the current settings state.
-        const response = await updatePreferances(authTokens, formData);
-        console.log("Settings updated successfully:", response);
-        setStep("Final");
-        // Optionally, you could refresh the settings from the server again here, or handle any post-update logic.
-      } catch (error) {
-        console.error("Error updating settings:", error);
-      }
+    // Check if terms are agreed
+    if (formData.agreeToTerms !== true) {
+      // Assuming "Yes" means agreed
+      alert("Error!!!!!!   You must agree to Terms of Services!!!!");
+      return; // This stops the execution of the rest of the function
+    }
+
+    // Proceed only if the auth token exists
+    if (!authTokens?.access) {
+      console.error("No authentication token available.");
+      return; // Stops execution if no auth token
+    }
+
+    console.log("About to update preferences from my service.");
+
+    try {
+      // Call the updateSettings function, passing the auth tokens and the current settings state.
+      const response = await updatePreferances(authTokens, formData);
+      console.log("Settings updated successfully:", response);
+      setStep("Final"); // Proceed to the final step
+      // Optionally, you could refresh the settings from the server again here, or handle any post-update logic.
+    } catch (error) {
+      console.error("Error updating settings:", error);
     }
   };
 

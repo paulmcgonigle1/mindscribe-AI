@@ -86,7 +86,7 @@ class Insight(models.Model):
             return f"Insight {self.insightID} with no associated entry"
 
 
-class UserSettings(models.Model):
+class UserPreferences(models.Model):
     MESSAGE_TYPES = [
         ("poem", "Poem"),
         ("story", "Story"),
@@ -101,7 +101,7 @@ class UserSettings(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="settings")
-    is_peronsalized_complete = models.BooleanField(default=False)
+    is_personalised = models.BooleanField(default=False)
     preferred_type = models.CharField(
         max_length=50, choices=MESSAGE_TYPES, default="motivation"
     )
@@ -109,12 +109,13 @@ class UserSettings(models.Model):
         max_length=50, choices=MESSAGE_STYLES, default="insightful"
     )
     # Add other settings fields as needed
+    responseType = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Settings for {self.user.username}"
+        return f"Preferences for {self.user.username}"
 
 
 @receiver(post_save, sender=User)
-def create_user_settings(sender, instance, created, **kwargs):
+def create_user_preferences(sender, instance, created, **kwargs):
     if created:
-        UserSettings.objects.create(user=instance)
+        UserPreferences.objects.create(user=instance)

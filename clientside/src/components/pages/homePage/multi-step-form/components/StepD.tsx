@@ -8,7 +8,7 @@ type StepDProp = {
     preferred_type: string;
     preferred_style: string;
     responseType: string;
-    agreeToTerms: string;
+    agreeToTerms: boolean;
   };
   handleChangeInput: (fieldName: string, value: string | boolean) => void;
   handlePrevStep: () => void;
@@ -27,7 +27,7 @@ const StepD: React.FC<StepDProp> = ({
   const toggleTermsModal = () => setShowTermsModal(!showTermsModal);
 
   const handleAgreeToTermsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleChangeInput(e.target.name, e.target.checked ? "Yes" : "No");
+    handleChangeInput(e.target.name, e.target.checked);
   };
   return (
     <div>
@@ -66,7 +66,7 @@ const StepD: React.FC<StepDProp> = ({
           type="checkbox"
           name="agreeToTerms"
           id="agreeToTerms"
-          checked={formData.agreeToTerms === "Yes"}
+          checked={formData.agreeToTerms === true}
           onChange={handleAgreeToTermsChange}
           className="w-4 h-4 mr-2 accent-pink-500"
         />

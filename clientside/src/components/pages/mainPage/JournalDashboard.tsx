@@ -22,9 +22,9 @@ export default function JournalDashboard() {
         try {
           const response = await getSettings(authTokens);
           console.log("Settings for this user here:", response);
-          setIsPersonalized(response.isPersonalized);
+          setIsPersonalized(response.is_personalised);
           //control modal based on true or false
-          setShowQuestionnaireModal(!response.isPersonalized);
+          setShowQuestionnaireModal(!response.is_personalised);
         } catch (error) {
           console.error("Error fetching tracked tasks plan:", error);
         }

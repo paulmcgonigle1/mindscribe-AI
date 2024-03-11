@@ -3,7 +3,7 @@ from .models import (
     ActionableTask,
     Insight,
     JournalEntry,
-    UserSettings,
+    UserPreferences,
 )  # Import other models as needed
 
 from django.contrib.auth.models import User
@@ -22,9 +22,9 @@ class InsightSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class UserSettingsSerializer(serializers.ModelSerializer):
+class UserPreferencesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserSettings
+        model = UserPreferences
         fields = "__all__"
 
 
