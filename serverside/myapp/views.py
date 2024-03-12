@@ -124,7 +124,7 @@ def update_preferences(request):
 
 
 # following video on auth and tokens etc
-# this gets the journals only for the authenticated user
+# this gets the all the journals  -- only for the authenticated user
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def getJournals(request):
@@ -132,6 +132,15 @@ def getJournals(request):
     journals = user.journals.all()
     serializer = JournalEntrySerializer(journals, many=True)
     return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def check_journal_for_today(request):
+    user = request.user
+    today = timezone.now().date()
+    journal_exists = user.journals.filter(timestamp__date=today).exists()
+    return Response({"journal_exists": journal_exists})
 
 
 @api_view(["GET"])

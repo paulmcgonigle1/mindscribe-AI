@@ -46,8 +46,8 @@ function App() {
               <Route path="settings" element={<Settings />}></Route>
             </Route>
           </Route>
-          <Route path="login" element={<LoginPage />}></Route>
-          <Route path="multi-step-form" element={<Questionnaire />}></Route>
+          {/* <Route path="login" element={<LoginPage />}></Route> */}
+          {/* <Route path="multi-step-form" element={<Questionnaire />}></Route> */}
           <Route path="sign-up" element={<SignupPage />}></Route>
           <Route path="home" element={<HomePage />}></Route>
         </Routes>

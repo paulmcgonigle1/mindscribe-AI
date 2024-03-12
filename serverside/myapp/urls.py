@@ -64,6 +64,11 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/register/", register, name="register"),
     path("api/journals/", views.getJournals, name="get_journals"),
+    path(
+        "api/check_journal_for_today/",
+        views.check_journal_for_today,
+        name="check_journal_for_today",
+    ),
     path("api/createjournal/", views.createJournal, name="create_journal"),
     path("api/insightMessage/", createInsightMessage, name="create_journal"),
     path(

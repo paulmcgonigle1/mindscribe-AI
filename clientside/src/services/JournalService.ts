@@ -61,7 +61,7 @@ export const updateTaskCompletionStatus = async (authTokens: { access: string },
   });  
   return response.data;
 };
-
+//create new improvemetns
 export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   try {
     const response = await axios.get(`${BASE_URL}/myapp/create-improvements/`,  { // Note the method change to POST
@@ -179,9 +179,25 @@ export const getTrackedTasks = async (authTokens: { access: string }): Promise<T
   
 } 
 
-
+//get all of the journals for the user
   export const getJournals = async (authTokens:{access:string}):Promise<JournalEntry[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/api/journals/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`, // Use template literal for proper spacing
+      }
+    })
+    if (response.status === 401) {
+      // You could throw a specific error for this case
+      throw new Error('Unauthorized');
+    } else if (response.status !== 200) {
+      throw new Error(`Received non-200 status code: ${response.status}`);
+    }
+    return response.data;
+  }
+  //get all of the journals for the user
+  export const fetchJournalEntryForToday = async (authTokens:{access:string}):Promise<boolean> => {
+    const response = await axios.get(`${BASE_URL}/myapp/api/check_journal_for_today/`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authTokens.access}`, // Use template literal for proper spacing

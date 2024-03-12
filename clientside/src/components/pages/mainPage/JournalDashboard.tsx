@@ -9,6 +9,7 @@ import Questionnaire from "../homePage/multi-step-form/page";
 import Modal from "../../shared/Modal";
 import ChatBot from "../../chatbot/ChatBot";
 import BotResponse from "./BotResponse";
+import JournalEntry from "./JournalEntry";
 export default function JournalDashboard() {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   const { authTokens } = useContext(AuthContext) ?? {};
@@ -40,14 +41,13 @@ export default function JournalDashboard() {
       <div className="flex md:flex-row gap-6">
         <div className="flex-1 flex">
           <div className="flex-1 w-full">
-            <MoodRating setParentMoodRating={setMoodRating} />
-            <JournalSection moodRating={moodRating} />
+            <JournalEntry />
           </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-2/3">
-          <BotResponse />
+          {/* <BotResponse /> */}
           <Calendar />
           {/* <RecentJournals /> */}
         </div>
