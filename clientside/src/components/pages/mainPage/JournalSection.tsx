@@ -5,8 +5,12 @@ import AuthContext from "../../../context/AuthContext";
 
 interface JournalSectionProps {
   moodRating: number | null;
+  onJournalSubmit: () => void;
 }
-export default function JournalSection({ moodRating }: JournalSectionProps) {
+export default function JournalSection({
+  moodRating,
+  onJournalSubmit,
+}: JournalSectionProps) {
   const [entryText, setEntryText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { authTokens } = useContext(AuthContext) ?? {};
@@ -36,6 +40,8 @@ export default function JournalSection({ moodRating }: JournalSectionProps) {
         console.log("Entry created:", response);
         // Call the createEntry function with the newEntry object
         setEntryText("");
+        //now to update the parent that the journal is done
+        onJournalSubmit();
       } catch (error) {
         console.error("Error creating journal entry:", error);
       }
