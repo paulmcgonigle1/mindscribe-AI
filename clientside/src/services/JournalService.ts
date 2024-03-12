@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences, InsightMessage } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -83,7 +83,27 @@ export const createImprovements = async (authTokens: { access: string }): Promis
     throw new Error("Error creating improvements");
   }
 };
-
+// export const generateInsightMessage = async (authTokens: { access: string }): Promise<InsightMessage> => {
+//   try {
+//     const response = await axios.get(`${BASE_URL}/myapp/create-improvements/`,  { // Note the method change to POST
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${authTokens.access}`,
+//       }
+//     });
+    
+//     return {
+    
+//       message: response.data.message,
+//       tasks: response.data.tasks,
+//       createdAt: response.data.createdAt,
+//     };
+//   } catch (error) {
+//     // Log error or handle it as needed
+//     console.error("Failed to create improvements:", error);
+//     throw new Error("Error creating improvements");
+//   }
+// };
 
  
 export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {

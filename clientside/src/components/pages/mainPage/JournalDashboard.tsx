@@ -7,6 +7,8 @@ import { getSettings } from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
 import Questionnaire from "../homePage/multi-step-form/page";
 import Modal from "../../shared/Modal";
+import ChatBot from "../../chatbot/ChatBot";
+import BotResponse from "./BotResponse";
 export default function JournalDashboard() {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   const { authTokens } = useContext(AuthContext) ?? {};
@@ -45,6 +47,7 @@ export default function JournalDashboard() {
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-2/3">
+          <BotResponse />
           <Calendar />
           {/* <RecentJournals /> */}
         </div>

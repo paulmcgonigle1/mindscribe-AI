@@ -53,6 +53,9 @@ export type Preferences = {
   agreeToTerms: boolean;
   
 }
+export type InsightMessage = {
+  message: string;
+}
 
 
 

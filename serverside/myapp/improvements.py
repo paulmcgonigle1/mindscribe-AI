@@ -320,3 +320,12 @@ def interact_with_llm(prompt):
     # print("Response from GPT:", response)
 
     return response.content.strip()
+
+
+def createInsightMessage():
+    print("Interacting with LLM")
+    prompt = ""
+    reponse = "It sounds like you had a day full of ups and downs. Feeling energized, overwhelmed, discouraged, tough, lifted spirits is completely natural. It's great to see themes of learning, friendship, perseverance in your day. Remember, it's okay to have positive, negative days."
+    response = llm.invoke(prompt)
+    # return response.content.strip()
+    return reponse
