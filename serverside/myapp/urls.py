@@ -70,7 +70,7 @@ urlpatterns = [
         name="check_journal_for_today",
     ),
     path("api/createjournal/", views.createJournal, name="create_journal"),
-    path("api/insightMessage/", createInsightMessage, name="create_journal"),
+    path("api/createInsightMessage/", createInsightMessage, name="create_journal"),
     path(
         "api/journals/<int:entry_id>/insights/",
         views.get_insights_for_journal_entry,

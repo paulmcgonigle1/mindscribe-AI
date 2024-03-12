@@ -41,6 +41,7 @@ export default function JournalSection({
         // Call the createEntry function with the newEntry object
         setEntryText("");
         //now to update the parent that the journal is done
+
         onJournalSubmit();
       } catch (error) {
         console.error("Error creating journal entry:", error);

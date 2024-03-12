@@ -222,6 +222,19 @@ export const getTrackedTasks = async (authTokens: { access: string }): Promise<T
     });
     return response.data;
   };
+  //getting insight message for the user to display it in front-end from the bot
+  export const generateInsightMessageFromBot = async (authTokens: { access: string }): Promise<{message:string}> => {
+    const response = await axios.get(`${BASE_URL}/myapp/api/createInsightMessage/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`, // Include the Authorization header
+      }
+    });
+    console.log("API Response:", response); // Temporary logging for debugging
+
+    
+    return response.data;
+  };
   
   // export const getEntriesByUser = async (userId: number): Promise<JournalEntry[]> => {
   //   const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);

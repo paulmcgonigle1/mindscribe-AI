@@ -8,6 +8,7 @@ from langchain.chat_models import ChatOpenAI
 from django.utils import timezone
 from django.db.models import Count
 from django.core.exceptions import MultipleObjectsReturned
+from django.http import JsonResponse
 
 import os
 from .models import (
@@ -322,10 +323,18 @@ def interact_with_llm(prompt):
     return response.content.strip()
 
 
-def createInsightMessage():
-    print("Interacting with LLM")
-    prompt = ""
-    reponse = "It sounds like you had a day full of ups and downs. Feeling energized, overwhelmed, discouraged, tough, lifted spirits is completely natural. It's great to see themes of learning, friendship, perseverance in your day. Remember, it's okay to have positive, negative days."
-    response = llm.invoke(prompt)
+@api_view(["GET"])
+def createInsightMessage(request):
+    today = timezone.now().date()
+    user = request.user  # Directly use the user object
+    print("Now getting Insight Response")
+    insights = "SAD, Failed Swim test, stressed out with college work"
+    prompt = (
+        f"Generate a quick message to help user {user.first_name} "
+        f"to understand their insights as follows: {insights} .\n\n"
+    )
+
+    message = llm.invoke(prompt)
     # return response.content.strip()
-    return reponse
+    print(message)
+    return Response({"message": message.content.strip()})
