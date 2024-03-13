@@ -73,13 +73,13 @@ export default function JournalDashboard() {
               fetchInsightsCallback={fetchInsights} // Pass the fetchInsights function to JournalEntry
             />
           </div>
-          <div className="flex flex-1 md:w-1/2">
+          <div className="flex flex-1">
             <Calendar />
           </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-1 md:w-2/3">
+        <div className="flex-1 ">
           <BotResponse fetchInsightsCallback={fetchInsights} />
           {/* <Calendar /> */}
           {/* <RecentJournals /> */}
