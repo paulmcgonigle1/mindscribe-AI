@@ -29,12 +29,15 @@ export default function JournalDashboard() {
     setHasJournaledToday(false);
   };
 
+  //   async function fetchJournalEntryForToday(authTokens: Auth): Promise<{ journal_exists: boolean }> {
+  //   // Implementation that returns { journal_exists: boolean }
+  // }
   useEffect(() => {
     const checkJournalEntryForToday = async () => {
       if (authTokens?.access) {
         const hasEntry = await fetchJournalEntryForToday(authTokens);
         console.log("The user has journalled today : ", hasEntry);
-        setHasJournaledToday(hasEntry);
+        setHasJournaledToday(hasEntry.journal_exists);
       }
     };
     // indicating whether a journal entry has been made for the current day

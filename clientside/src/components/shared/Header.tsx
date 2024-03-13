@@ -16,17 +16,6 @@ export default function Header() {
   const navigate = useNavigate();
   return (
     <div className="bg-white h-16 px-4 flex justify-between items-center border-b border-gray-200">
-      <div className="relative">
-        <HiOutlineSearch
-          fontSize={20}
-          className="text-gray-400 absolute top-1/2 -translate-y-1/2 left-3"
-        />
-        <input
-          type="text"
-          placeholder="Search .... "
-          className="text-sm focus:outline-none active:outline-none h-10 w-[24rem] border border-gray-300 rounded-sm pl-11 pr-4 "
-        />
-      </div>
       {/* //this is the popover for tracking tasks in our website*/}
       <div className=" w-full max-w-sm px-4">
         <Popover className="relative">

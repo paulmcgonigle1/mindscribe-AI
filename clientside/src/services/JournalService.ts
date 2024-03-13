@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences, InsightMessage } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences, InsightMessage, JournalResponse } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -196,7 +196,7 @@ export const getTrackedTasks = async (authTokens: { access: string }): Promise<T
     return response.data;
   }
   //get all of the journals for the user
-  export const fetchJournalEntryForToday = async (authTokens:{access:string}):Promise<boolean> => {
+  export const fetchJournalEntryForToday = async (authTokens:{access:string}):Promise<JournalResponse> => {
     const response = await axios.get(`${BASE_URL}/myapp/api/check_journal_for_today/`, {
       headers: {
         'Content-Type': 'application/json',
