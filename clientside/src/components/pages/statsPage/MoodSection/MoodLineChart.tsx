@@ -13,7 +13,7 @@ import {
 
 import { JournalEntry, MoodChartData } from "../../../../lib/types/types";
 import { filterEntriesByPeriod } from "../../../../lib/utils/filter-by-period";
-import { moodRatingColors } from "../../../../lib/constants/moodColors";
+import { moodRatingColors } from "../../../../lib/constants/colors";
 
 interface MoodStatsProps {
   entries: JournalEntry[];

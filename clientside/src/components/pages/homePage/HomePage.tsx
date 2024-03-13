@@ -10,7 +10,7 @@ const HomePage: React.FC<HomePageProps> = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="container mx-auto px-4">
+    <div className=" px-28 bg-light-yellow ">
       {/* Main container with grid layout */}
       <div className="pt-40 grid grid-cols-1 md:grid-cols-2 items-center h-[50vh]">
         {/* Text container */}
@@ -18,26 +18,27 @@ const HomePage: React.FC<HomePageProps> = () => {
           <h1 className="text-5xl text-gray-800 font-bold mb-4">
             Welcome to MindScribe
           </h1>
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-lg text-gray-600 mb-6 ">
             Your personal space to reflect, grow, and track your mental health
             journey.
           </p>
+
           <div className="flex flex-col items-start space-y-4">
             <button
               onClick={() => navigate("/sign-up", { state: { isLogin: true } })}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-warm-orange-bright hover:bg-warm-orange-dark text-black font-semibold py-2 px-4 rounded"
             >
-              Login to Start
+              Login
             </button>
             <button
               onClick={() =>
                 navigate("/sign-up", { state: { isLogin: false } })
               }
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className=" bg-warm-orange-bright hover:bg-warm-orange-dark text-black font-semibold py-2 px-4 rounded"
             >
               Signup
             </button>
-            <p className="text-gray-500">
+            <p className="text-gray-500 font-sans">
               Discover insights, track your mood, and get personalized tasks to
               help improve your mental health.
             </p>

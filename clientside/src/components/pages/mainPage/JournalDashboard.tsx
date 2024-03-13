@@ -10,6 +10,7 @@ import Questionnaire from "../homePage/multi-step-form/page";
 import Modal from "../../shared/Modal";
 import BotResponse from "./BotResponse";
 import JournalEntry from "./JournalEntry";
+import StatsDashboard from "../statsPage/StatsDashboard";
 export default function JournalDashboard() {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   const { authTokens } = useContext(AuthContext) ?? {};
@@ -85,6 +86,7 @@ export default function JournalDashboard() {
           {/* <RecentJournals /> */}
         </div>
       </div>
+      <StatsDashboard />
       <Modal
         isOpen={showQuestionnaireModal}
         onClose={() => setShowQuestionnaireModal(false)}

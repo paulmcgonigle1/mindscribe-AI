@@ -2,7 +2,7 @@ import React from "react";
 import { ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
 import { JournalEntry, MoodChartData } from "../../../lib/types/types";
 import { filterEntriesByPeriod } from "../../../lib/utils/filter-by-period";
-import { moodRatingColors } from "../../../lib/constants/moodColors";
+import { moodRatingColors } from "../../../lib/constants/colors";
 interface MoodPieChartProps {
   entries: JournalEntry[];
   selectedPeriod: number;

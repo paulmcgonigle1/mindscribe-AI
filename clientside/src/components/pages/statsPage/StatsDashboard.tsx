@@ -1,20 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import TransactionChart from "./MoodSection/MoodLineChart";
-import BuyerProfileChart from "./MoodPieChart";
-import RecentOrders from "./EmotionGrid";
-import PopularProducts from "./PopularProducts";
 import StreakChart from "./StreakChart";
-import MoodChart from "./MoodSection/MoodStats";
-import MoodChartBar from "./MoodSection/MoodLineChart";
-import MoodStats from "./MoodSection/MoodStats";
+
 import MoodAnalytics from "./MoodSection/MoodAnalytics";
 import { getJournals } from "../../../services/JournalService";
 import { JournalEntry } from "../../../lib/types/types";
 import MoodPieChart from "./MoodPieChart";
 import EmotionGrid from "./EmotionGrid";
 import ThemesGrid from "./ThemesGrid";
-import AnalysisDisplay from "./AnalysisSection/AnalysisDisplay";
 import AuthContext from "../../../context/AuthContext";
 export default function StatsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(7); // Default to last 7 days
@@ -44,7 +37,7 @@ export default function StatsDashboard() {
 
   return (
     <div className="flex flex-col gap-4 m-5">
-      <StreakChart />
+      {/* <StreakChart /> */}
       <div className="flex flex-row gap-4 w-full">
         <div className="flex flex-grow min-w-0">
           <MoodAnalytics

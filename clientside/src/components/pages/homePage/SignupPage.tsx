@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
-import { TEInput, TERipple } from "tw-elements-react";
 import Icon4 from "../../../assets/journaling.png";
 function SignupPage() {
   const location = useLocation(); // Correctly call useLocation
@@ -21,8 +20,6 @@ function SignupPage() {
     [key: string]: string[]; // Dynamic keys with array of error messages
   }
   const handleSignup = async (event: any) => {
-    // Here you will call your context or service to register the user
-    // Adjust registerUser to match your implementation
     registerUser(
       event,
       () => navigate("/multi-step-form"),
@@ -42,11 +39,11 @@ function SignupPage() {
   };
 
   return (
-    <section className="flex  justify-center min-h-screen items-center bg-neutral-200 dark:bg-neutral-700 ">
+    <section className="flex  justify-center min-h-screen items-center bg-light-yellow">
       <div className="container h-full p-10">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="w-full">
-            <div className="block rounded-lg bg-white shadow-lg dark:bg-neutral-800">
+            <div className="block rounded-lg bg-white shadow-lg ">
               <div className="g-0 lg:flex lg:flex-wrap">
                 {/* <!-- Left column container--> */}
                 <div className="px-4 md:px-0 lg:w-6/12">
@@ -54,7 +51,7 @@ function SignupPage() {
                     {/* <!--Logo--> */}
                     <button
                       onClick={() => navigate("/home")}
-                      className="text-xl text-white  bg-blue-500 mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 max-w-max font-medium  leading-normal"
+                      className="text-md text-black  bg-warm-orange-bright mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 max-w-max font-medium  leading-normal"
                     >
                       Return to home
                     </button>
@@ -68,16 +65,18 @@ function SignupPage() {
                               src={Icon4}
                               alt="logo"
                             />
-                            <h4 className="mb-12 mt-1 pb-1 text-xl font-semibold">
-                              Login to your mindscribe account
+                            <h4 className="mb-12 mt-1 pb-1 text-xl text-black ">
+                              Login to your Mindscribe account
                             </h4>
                           </div>
                           {/* Login Form */}
                           <form onSubmit={handleLogin}>
-                            <p className="mb-4">Please Login an account</p>
+                            <p className="mb-4 text-black">
+                              Please Login an account
+                            </p>
                             {/* <!--Username input--> */}
                             <label
-                              className="block text-gray-700 text-sm font-bold mb-2"
+                              className="block text-gray-800 text-sm  mb-2"
                               htmlFor="username"
                             >
                               Username
@@ -92,7 +91,7 @@ function SignupPage() {
 
                             {/* <!--Password input--> */}
                             <label
-                              className="block text-gray-700 text-sm font-bold mb-2"
+                              className="block text-gray-700 text-sm  mb-2"
                               htmlFor="password"
                             >
                               Password
@@ -108,36 +107,34 @@ function SignupPage() {
 
                             {/* <!--Submit button--> */}
                             <div className="mb-12 pb-1 pt-1 text-center">
-                              <TERipple rippleColor="light" className="w-full">
-                                <button
-                                  className="mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
-                                  type="submit"
-                                  style={{
-                                    background:
-                                      "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
-                                  }}
-                                >
-                                  Login
-                                </button>
-                              </TERipple>
+                              <button
+                                className="bg-warm-orange-bright mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs uppercase leading-normal text-black "
+                                type="submit"
+                              >
+                                Login
+                              </button>
 
                               {/* <!--Forgot password link--> */}
 
-                              <a href="#!">Terms and conditions</a>
+                              <a className="text-black" href="#!">
+                                Terms and conditions
+                              </a>
                             </div>
 
                             {/* <!--Register button--> */}
                             <div className="flex items-center justify-between pb-6">
                               {/* <p className="mb-0 mr-2">Have an account?</p> */}
-                              <TERipple rippleColor="light">
-                                <button
-                                  type="button"
-                                  onClick={toggleForm}
-                                  className="inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                                >
-                                  Don't have an account? Sign up.
-                                </button>
-                              </TERipple>
+                              <p className="mb-0 mr-2 text-black">
+                                Don't have an account?
+                              </p>
+
+                              <button
+                                type="button"
+                                onClick={toggleForm}
+                                className="bg-rich-green text-black inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal  "
+                              >
+                                Sign up.
+                              </button>
                             </div>
                           </form>
                         </>
@@ -149,16 +146,18 @@ function SignupPage() {
                               src={Icon4}
                               alt="logo"
                             />
-                            <h4 className="mb-12 mt-1 pb-1 text-xl font-semibold">
+                            <h4 className="mb-12 mt-1 pb-1 text-xl text-black ">
                               Sign-Up to join The Mindscribe Team
                             </h4>
                           </div>
                           {/* Sign Up Form */}
                           <form onSubmit={handleSignup}>
-                            <p className="mb-4">Please register an account</p>
+                            <p className="mb-4 text-black ">
+                              Please register an account
+                            </p>
                             {/* <!--Username input--> */}
                             <label
-                              className="block text-gray-700 text-sm font-bold mb-2"
+                              className="block text-gray-700 text-sm  mb-2"
                               htmlFor="username"
                             >
                               Username
@@ -171,7 +170,7 @@ function SignupPage() {
                               onChange={(e) => setUsername(e.target.value)}
                             ></input>
                             <label
-                              className="block text-gray-700 text-sm font-bold mb-2"
+                              className="block text-gray-700 text-sm  mb-2"
                               htmlFor="email"
                             >
                               Email
@@ -186,7 +185,7 @@ function SignupPage() {
 
                             {/* <!--Password input--> */}
                             <label
-                              className="block text-gray-700 text-sm font-bold mb-2"
+                              className="block text-gray-700 text-sm  mb-2"
                               htmlFor="password"
                             >
                               Password
@@ -202,7 +201,7 @@ function SignupPage() {
 
                             {/* <!--Password input--> */}
                             <label
-                              className="block text-gray-700 text-sm font-bold mb-2"
+                              className="block text-gray-700 text-sm  mb-2"
                               htmlFor="password2"
                             >
                               Verify Password
@@ -224,35 +223,32 @@ function SignupPage() {
 
                             {/* <!--Submit button--> */}
                             <div className="mb-12 pb-1 pt-1 text-center">
-                              <TERipple rippleColor="light" className="w-full">
-                                <button
-                                  className="mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
-                                  type="submit"
-                                  style={{
-                                    background:
-                                      "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
-                                  }}
-                                >
-                                  Sign up
-                                </button>
-                              </TERipple>
+                              <button
+                                className="bg-warm-orange-bright mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-sm  uppercase leading-normal text-black "
+                                type="submit"
+                              >
+                                Sign up
+                              </button>
 
                               {/* <!--Forgot password link--> */}
-                              <a href="#!">Terms and conditions</a>
+                              <a className="text-black" href="#!">
+                                Terms and conditions
+                              </a>
                             </div>
 
                             {/* <!--Register button--> */}
                             <div className="flex items-center justify-between pb-6">
-                              <p className="mb-0 mr-2">Have an account?</p>
-                              <TERipple rippleColor="light">
-                                <button
-                                  type="button"
-                                  onClick={toggleForm}
-                                  className="inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                                >
-                                  Log in.
-                                </button>
-                              </TERipple>
+                              <p className="mb-0 mr-2 text-black">
+                                Have an account?
+                              </p>
+
+                              <button
+                                type="button"
+                                onClick={toggleForm}
+                                className="bg-rich-green text-black inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal  "
+                              >
+                                Log in.
+                              </button>
                             </div>
                           </form>
                         </>
@@ -266,14 +262,14 @@ function SignupPage() {
                   className="flex items-center rounded-b-lg lg:w-6/12 lg:rounded-r-lg lg:rounded-bl-none"
                   style={{
                     background:
-                      "linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)",
+                      "linear-gradient(to right, #F9CC48, #FDDA77, #A9C9FF, #729BFF)",
                   }}
                 >
                   <div className="px-4 py-6 text-white md:mx-6 md:p-12">
-                    <h4 className="mb-6 text-xl font-semibold">
+                    <h4 className="mb-6 text-xl font-semibold text-black">
                       Join us to access the many offered features
                     </h4>
-                    <p className="text-sm">
+                    <p className="text-md text-black">
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                       sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua. Ut enim ad minim veniam, quis nostrud exercitation

@@ -5,20 +5,16 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import Dashboard from "./components/pages/statsPage/StatsDashboard";
 import Layout from "./components/shared/Layout";
-import Products from "./components/pages/statsPage/Products";
 import JournalDashboard from "./components/pages/mainPage/JournalDashboard";
 import StatsDashboard from "./components/pages/statsPage/StatsDashboard";
 import ImprovementsDashboard from "./components/pages/improvementsPage/ImprovementsDashboard";
 import HomePage from "./components/pages/homePage/HomePage";
-import LoginPage from "./components/pages/homePage/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
 import AuthContext from "./context/AuthContext";
 import { useContext } from "react";
 import Settings from "./components/pages/settingsPage/Settings";
 import SignupPage from "./components/pages/homePage/SignupPage";
-import Questionnaire from "./components/pages/homePage/multi-step-form/page";
 // Example authentication check function
 
 function App() {
