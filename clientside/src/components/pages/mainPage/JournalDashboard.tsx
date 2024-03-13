@@ -1,6 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import JournalSection from "./JournalSection";
-import MoodRating from "./MoodRating";
 
 import Calendar from "./Calendar";
 import {
@@ -10,7 +8,6 @@ import {
 import AuthContext from "../../../context/AuthContext";
 import Questionnaire from "../homePage/multi-step-form/page";
 import Modal from "../../shared/Modal";
-import ChatBot from "../../chatbot/ChatBot";
 import BotResponse from "./BotResponse";
 import JournalEntry from "./JournalEntry";
 export default function JournalDashboard() {
@@ -29,9 +26,6 @@ export default function JournalDashboard() {
     setHasJournaledToday(false);
   };
 
-  //   async function fetchJournalEntryForToday(authTokens: Auth): Promise<{ journal_exists: boolean }> {
-  //   // Implementation that returns { journal_exists: boolean }
-  // }
   useEffect(() => {
     const checkJournalEntryForToday = async () => {
       if (authTokens?.access) {
@@ -65,21 +59,24 @@ export default function JournalDashboard() {
   }, [authTokens]);
   return (
     <div className="flex flex-col gap-6 p-4">
-      <div className="flex md:flex-row gap-6">
-        <div className="flex-1 flex">
-          <div className="flex-1 w-full">
+      <div className="flex flex-wrap md:flex-nowrap gap-6">
+        <div className="flex flex-1 md:w-1/2">
+          <div className="flex-1 w-full p-4 min-h-full">
             <JournalEntry
               onJournalSubmit={handleJournalSubmit}
               hasJournaledToday={hasJournaledToday}
               resetJournalState={resetJournalState}
             />
           </div>
+          <div className="flex flex-1 md:w-1/2">
+            <Calendar />
+          </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-2/3">
           <BotResponse />
-          <Calendar />
+          {/* <Calendar /> */}
           {/* <RecentJournals /> */}
         </div>
       </div>

@@ -52,16 +52,18 @@ export default function JournalSection({
   };
   return (
     <>
-      <div className="w-full">
+      <div className="w-full mb-4">
         <textarea
-          className="w-full h-80 p-2 border border-gray-300 rounded-md"
+          className="w-full h-80 p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="Write your journal entry here..."
           value={entryText}
           onChange={(e) => setEntryText(e.target.value)}
         />
+      </div>
+      <div className="text-center">
         <button
           onClick={handleSubmit}
-          className="p-2 bg-blue-500 text-white rounded"
+          className="px-6 py-3 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors disabled:bg-blue-300"
           disabled={isLoading} // disable button while loading
         >
           {isLoading ? "Posting..." : "Post Entry"} {/* Conditional text */}

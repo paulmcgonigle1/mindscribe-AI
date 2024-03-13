@@ -1,5 +1,3 @@
-import { Menu, Transition } from "@headlessui/react";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import {
   add,
@@ -12,26 +10,26 @@ import {
   isSameMonth,
   isToday,
   parse,
-  parseISO,
-  set,
   startOfToday,
 } from "date-fns";
-import { Fragment, useContext, useEffect, useState } from "react";
-import { Insight, JournalEntry } from "../../../lib/types/types";
 import {
-  getJournals,
-  getInsightForJournalEntry,
-} from "../../../services/JournalService";
-import ModalComponent from "./ModalComponent";
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { JournalEntry } from "../../../lib/types/types";
+import { getJournals } from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
-
+import { DayInsights } from "./CalendarDayInsight";
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
   let today = startOfToday();
-  let [selectedDay, setSelectedDay] = useState(today);
+  let [selectedDay, setSelectedDay] = useState<Date | null>(null);
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -52,9 +50,18 @@ export default function Example() {
     setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
   }
 
-  let selectedDayMeetings = entries.filter((entry) =>
-    isSameDay(entry.timestamp, selectedDay)
-  );
+  let selectedDayMeetings = selectedDay
+    ? entries.filter((entry) => isSameDay(entry.timestamp, selectedDay as Date))
+    : [];
+  let colStartClasses = [
+    "",
+    "col-start-2",
+    "col-start-3",
+    "col-start-4",
+    "col-start-5",
+    "col-start-6",
+    "col-start-7",
+  ];
 
   useEffect(() => {
     const fetchEntries = async () => {
@@ -76,245 +83,163 @@ export default function Example() {
     fetchEntries();
   }, []);
 
+  interface CalendarHeaderProps {
+    firstDayCurrentMonth: Date;
+    previousMonth: () => void;
+    nextMonth: () => void; // New callback function for resetting the journal state
+  }
+  const CalendarHeader = ({
+    firstDayCurrentMonth,
+    previousMonth,
+    nextMonth,
+  }: CalendarHeaderProps) => (
+    <div className="flex items-center justify-between">
+      <h2 className="flex-auto text-lg font-medium text-gray-900">
+        {format(firstDayCurrentMonth, "MMMM yyyy")}
+      </h2>
+      <button
+        type="button"
+        onClick={previousMonth}
+        className="flex items-center justify-center p-2 text-gray-500 hover:text-gray-700"
+      >
+        <span className="sr-only">Previous month</span>
+        <FaChevronLeft className="w-5 h-5" aria-hidden="true" />
+      </button>
+      <button
+        onClick={nextMonth}
+        type="button"
+        className="flex items-center justify-center p-2 text-gray-500 hover:text-gray-700"
+      >
+        <span className="sr-only">Next month</span>
+        <FaChevronRight className="w-5 h-5" aria-hidden="true" />
+      </button>
+    </div>
+  );
+
+  // WeekdayHeaders.tsx
+  const WeekdayHeaders = () => (
+    <div className="grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500">
+      <div>S</div>
+      <div>M</div>
+      <div>T</div>
+      <div>W</div>
+      <div>T</div>
+      <div>F</div>
+      <div>S</div>
+    </div>
+  );
+  interface DayGridProps {
+    days: Date[];
+    setSelectedDay: Dispatch<SetStateAction<Date | null>>;
+    selectedDay: Date | null;
+    entries: JournalEntry[];
+  }
+
+  // This is the day grid where you are able to select which day to see entries and insights for that day
+  const DayGrid = ({
+    days,
+    setSelectedDay,
+    selectedDay,
+    entries,
+  }: DayGridProps) => (
+    <div className="grid grid-cols-7 mt-2 text-sm">
+      {days.map((day, dayIdx) => (
+        <div
+          key={day.toString()}
+          className={classNames(
+            dayIdx === 0 && colStartClasses[getDay(day)],
+            "py-1.5"
+          )}
+        >
+          <button
+            type="button"
+            onClick={() => setSelectedDay(day)}
+            className={classNames(
+              "mx-auto flex h-8 w-8 items-center justify-center rounded-full py-1.5",
+              dayIdx === 0 && colStartClasses[getDay(day)],
+              isToday(day) && "text-red-500",
+              isSameMonth(day, firstDayCurrentMonth)
+                ? "text-gray-900"
+                : "text-gray-400",
+              !!selectedDay &&
+                isEqual(day, selectedDay) &&
+                "text-white bg-gray-900 font-semibold",
+              !!selectedDay &&
+                isEqual(day, selectedDay) &&
+                isToday(day) &&
+                "bg-red-500",
+              !selectedDay && "hover:bg-gray-200",
+              entries.some((entry) => isSameDay(entry.timestamp, day)) &&
+                "bg-green-500 text-white"
+            )}
+          >
+            <time dateTime={format(day, "yyyy-MM-dd")}>{format(day, "d")}</time>
+          </button>
+
+          <div className="w-1 h-1 mx-auto mt-1">
+            {entries.some((entry) => isSameDay(entry.timestamp, day)) && (
+              <div className="w-1 h-1 rounded-full bg-sky-500"></div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  interface JournalEntriesProps {
+    selectedDay: Date | null;
+    selectedDayMeetings: JournalEntry[];
+  }
+  // JournalEntries.tsx
+  const JournalEntries = ({
+    selectedDay,
+    selectedDayMeetings,
+  }: JournalEntriesProps) => (
+    <section className="mt-12 md:mt-0 md:pl-14">
+      <h2 className="font-semibold text-gray-900">
+        {selectedDay ? (
+          <>
+            Journal Entries for{" "}
+            <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
+              {format(selectedDay, "MMM dd, yyyy")}
+            </time>
+          </>
+        ) : (
+          "Select a day"
+        )}
+      </h2>
+      <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
+        {selectedDayMeetings.length > 0 ? (
+          selectedDayMeetings.map((entry) => (
+            <DayInsights entry={entry} key={entry.entryID} />
+          ))
+        ) : (
+          <p>No Journal entries for today.</p>
+        )}
+      </ol>
+    </section>
+  );
+
   return (
     <div className="pt-8">
-      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white rounded-xl p-8">
-        <div className="lg:grid lg:grid-cols-2 lg:gap-4 lg:divide-x lg:divide-gray-200">
-          <div className="lg:pr-10">
-            <div className="flex items-center justify-between">
-              <h2 className="flex-auto text-lg font-medium text-gray-900">
-                {format(firstDayCurrentMonth, "MMMM yyyy")}
-              </h2>
-              <button
-                type="button"
-                onClick={previousMonth}
-                className="flex items-center justify-center p-2 text-gray-500 hover:text-gray-700"
-              >
-                <span className="sr-only">Previous month</span>
-                <FaChevronLeft className="w-5 h-5" aria-hidden="true" />
-              </button>
-              <button
-                onClick={nextMonth}
-                type="button"
-                className="flex items-center justify-center p-2 text-gray-500 hover:text-gray-700"
-              >
-                <span className="sr-only">Next month</span>
-                <FaChevronRight className="w-5 h-5" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500">
-              <div>S</div>
-              <div>M</div>
-              <div>T</div>
-              <div>W</div>
-              <div>T</div>
-              <div>F</div>
-              <div>S</div>
-            </div>
-            <div className="grid grid-cols-7 mt-2 text-sm">
-              {days.map((day, dayIdx) => (
-                <div
-                  key={day.toString()}
-                  className={classNames(
-                    dayIdx === 0 && colStartClasses[getDay(day)],
-                    "py-1.5"
-                  )}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setSelectedDay(day)}
-                    className={classNames(
-                      isEqual(day, selectedDay) && "text-white",
-                      !isEqual(day, selectedDay) &&
-                        isToday(day) &&
-                        "text-red-500",
-                      !isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        isSameMonth(day, firstDayCurrentMonth) &&
-                        "text-gray-900",
-                      !isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        !isSameMonth(day, firstDayCurrentMonth) &&
-                        "text-gray-400",
-                      isEqual(day, selectedDay) && isToday(day) && "bg-red-500",
-                      isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        "bg-gray-900",
-                      !isEqual(day, selectedDay) && "hover:bg-gray-200",
-                      (isEqual(day, selectedDay) || isToday(day)) &&
-                        "font-semibold",
-                      entries.some((entry) => isSameDay(entry.timestamp, day))
-                        ? "bg-green-500 text-white"
-                        : "",
-                      "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
-                    )}
-                  >
-                    <time dateTime={format(day, "yyyy-MM-dd")}>
-                      {format(day, "d")}
-                    </time>
-                  </button>
-
-                  <div className="w-1 h-1 mx-auto mt-1">
-                    {entries.some((entry) =>
-                      isSameDay(entry.timestamp, day)
-                    ) && (
-                      <div className="w-1 h-1 rounded-full bg-sky-500"></div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded-xl p-8 max-h-[60vh] overflow-auto">
+        <div className="grid grid-cols-1 xl:grid-cols-2 lg:gap-4 md:gap-3 divide-y md:divide-y-0 lg:divide-x divide-gray-200">
+          <div className="pb-4 md:pb-0 lg:pr-10">
+            <CalendarHeader
+              {...{ firstDayCurrentMonth, previousMonth, nextMonth }}
+            />
+            <WeekdayHeaders />
+            <DayGrid {...{ days, setSelectedDay, selectedDay, entries }} />
           </div>
-          <section className="mt-12 md:mt-0 md:pl-14">
-            <h2 className="font-semibold text-gray-900">
-              Journal Entries for{" "}
-              <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
-                {format(selectedDay, "MMM dd, yyy")}
-              </time>
-            </h2>
-            <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
-              {selectedDayMeetings.length > 0 ? (
-                selectedDayMeetings.map((entry) => (
-                  <DayInsights entry={entry} key={entry.entryID} />
-                ))
-              ) : (
-                <p>No Journal entries for today.</p>
-              )}
-            </ol>
-          </section>
+          <div
+            className={`pt-4 md: pt-0 ${
+              selectedDay ? "block" : "hidden xl:block"
+            }`}
+          >
+            <JournalEntries {...{ selectedDay, selectedDayMeetings }} />
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-function DayInsights({ entry }: { entry: JournalEntry }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [insight, setInsight] = useState<Insight | null>(null);
-  const authContext = useContext(AuthContext);
-
-  //use service to get insight for selectedEntry
-
-  const fetchAndSetInsight = async (entryId: number) => {
-    if (authContext?.authTokens?.access) {
-      try {
-        const insights = await getInsightForJournalEntry(
-          { access: authContext.authTokens.access },
-          entryId
-        );
-        // If insights are returned as an array and you want the first one:
-        if (insights.length > 0) {
-          setInsight(insights[0]);
-        } else {
-          // Handle the case where there are no insights
-          console.log(`No insights found for entry ID: ${entryId}`);
-          setInsight(null); // Or however you want to handle this case
-        }
-      } catch (error) {
-        console.error("Error fetching insights:", error);
-      }
-    } else {
-      console.log("Authentication tokens are not available.");
-    }
-  };
-  //handles click on the entry to get insights for that entry
-  const handleEntryClick = (entry: JournalEntry) => {
-    fetchAndSetInsight(entry.entryID);
-    setIsModalOpen(true);
-    console.log(
-      "Entry " + entry.entryID + " clicked" + entry.content.slice(0, 10)
-    );
-  };
-  //close modal
-  const handleCloseModal = (event: any) => {
-    event.stopPropagation();
-    setIsModalOpen(false);
-  };
-
-  return (
-    <li
-      onClick={() => handleEntryClick(entry)}
-      className="flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100"
-    >
-      <div className="flex-auto">
-        <p className="text-gray-900">Journal Entry: {entry.entryID}</p>
-        <p className="mt-0.5">
-          <time dateTime={new Date(entry.timestamp).toISOString()}>
-            {format(new Date(entry.timestamp), "h:mm a")}
-          </time>{" "}
-          \n - {entry.content}
-        </p>
-        {insight && (
-          <ModalComponent
-            insight={insight}
-            isOpen={isModalOpen}
-            onClose={handleCloseModal}
-          />
-        )}
-      </div>
-
-      <Menu
-        as="div"
-        className="relative opacity-0 focus-within:opacity-100 group-hover:opacity-100"
-      >
-        <div>
-          <Menu.Button className="-m-2 flex items-center rounded-full p-1.5 text-gray-500 hover:text-gray-600">
-            <span className="sr-only">Open options</span>
-            <BsThreeDotsVertical className="w-6 h-6" aria-hidden="true" />
-          </Menu.Button>
-        </div>
-
-        <Transition
-          as={Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <Menu.Items className="absolute right-0 z-10 mt-2 origin-top-right bg-white rounded-md shadow-lg w-36 ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="py-1">
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block px-4 py-2 text-sm"
-                    )}
-                  >
-                    Edit
-                  </a>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block px-4 py-2 text-sm"
-                    )}
-                  >
-                    Cancel
-                  </a>
-                )}
-              </Menu.Item>
-            </div>
-          </Menu.Items>
-        </Transition>
-      </Menu>
-    </li>
-  );
-}
-
-let colStartClasses = [
-  "",
-  "col-start-2",
-  "col-start-3",
-  "col-start-4",
-  "col-start-5",
-  "col-start-6",
-  "col-start-7",
-];

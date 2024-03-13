@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import JournalSection from "./JournalSection";
 import MoodRating from "./MoodRating";
-import AuthContext from "../../../context/AuthContext";
-import { fetchJournalEntryForToday } from "../../../services/JournalService";
 
 interface JournalEntryProps {
   onJournalSubmit: any;
@@ -16,25 +14,41 @@ function JournalEntry({
 }: JournalEntryProps) {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   //   const [hasJournaledToday, setHasJournaledToday] = useState(false);
-  const { authTokens } = useContext(AuthContext) ?? {};
 
   return (
-    <div className={`flex-1 w-full ${hasJournaledToday ? "bg-gray-100" : ""}`}>
+    <div
+      className={`flex-1 w-full h-full rounded-md  ${
+        hasJournaledToday
+          ? "bg-white flex items-center justify-center p-10"
+          : "p-4"
+      }`}
+    >
       {hasJournaledToday ? (
-        <div className="text-center p-4">
-          <p>You've already journaled for today.</p>
+        <div className="text-center space-y-4">
+          <p className="text-lg font-semibold text-gray-700">
+            You've already journaled for today.
+          </p>
+          <p className="text-sm text-gray-500">
+            Reflect on your entry or start fresh?
+          </p>
 
           <button
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="mt-4 px-6 py-3 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
             onClick={resetJournalState}
           >
             Journal Again
+          </button>
+          <p>Or</p>
+          <button
+            className="mt-4 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
+            onClick={resetJournalState}
+          >
+            Get Actionable Insights
           </button>
         </div>
       ) : (
         <>
           <MoodRating setParentMoodRating={setMoodRating} />
-          {/* Ensure JournalSection can call onJournalSubmit upon successful entry submission */}
           <JournalSection
             moodRating={moodRating}
             onJournalSubmit={onJournalSubmit}
