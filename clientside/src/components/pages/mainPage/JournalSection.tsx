@@ -6,10 +6,12 @@ import AuthContext from "../../../context/AuthContext";
 interface JournalSectionProps {
   moodRating: number | null;
   onJournalSubmit: () => void;
+  fetchInsightsCallback: () => void; // Include fetchInsightsCallback in props
 }
 export default function JournalSection({
   moodRating,
   onJournalSubmit,
+  fetchInsightsCallback,
 }: JournalSectionProps) {
   const [entryText, setEntryText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +48,7 @@ export default function JournalSection({
       } catch (error) {
         console.error("Error creating journal entry:", error);
       }
+      fetchInsightsCallback();
 
       setIsLoading(false);
     }

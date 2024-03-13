@@ -57,6 +57,10 @@ export default function JournalDashboard() {
 
     fetchUserSettings();
   }, [authTokens]);
+
+  const fetchInsights = async () => {
+    // Fetch insights logic
+  };
   return (
     <div className="flex flex-col gap-6 p-4">
       <div className="flex flex-wrap md:flex-nowrap gap-6">
@@ -66,6 +70,7 @@ export default function JournalDashboard() {
               onJournalSubmit={handleJournalSubmit}
               hasJournaledToday={hasJournaledToday}
               resetJournalState={resetJournalState}
+              fetchInsightsCallback={fetchInsights} // Pass the fetchInsights function to JournalEntry
             />
           </div>
           <div className="flex flex-1 md:w-1/2">
@@ -75,7 +80,7 @@ export default function JournalDashboard() {
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 md:w-2/3">
-          <BotResponse />
+          <BotResponse fetchInsightsCallback={fetchInsights} />
           {/* <Calendar /> */}
           {/* <RecentJournals /> */}
         </div>

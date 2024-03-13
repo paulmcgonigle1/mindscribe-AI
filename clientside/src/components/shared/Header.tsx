@@ -24,7 +24,7 @@ export default function Header() {
               <Popover.Button
                 className={`
                 ${open ? "text-white" : "text-white/90"}
-                group inline-flex items-center rounded-md bg-green-700 px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
+                group justify-items-end inline-flex items-center rounded-md bg-green-700 px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
               >
                 <span>Track Tasks</span>
                 <HiChevronDoubleDown

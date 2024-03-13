@@ -5,7 +5,10 @@ import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 import { generateInsightMessageFromBot } from "../../services/JournalService";
 
-function ChatBot() {
+interface ChatBotProps {
+  fetchInsightsCallback: () => void; // Define the type of the callback
+}
+function ChatBot({ fetchInsightsCallback }: ChatBotProps) {
   const [messages, setMessages] = useState<string[]>([]);
   const { authTokens } = useContext(AuthContext) ?? {};
 
@@ -21,6 +24,10 @@ function ChatBot() {
       }
     }
   };
+  useEffect(() => {
+    // Call fetchInsightsCallback when the component mounts or when needed
+    fetchInsightsCallback();
+  }, [fetchInsightsCallback]);
 
   return (
     <div className="flex flex-col p-4 max-w-md mx-auto bg-white rounded-lg border shadow-md space-y-4">
