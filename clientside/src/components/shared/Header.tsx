@@ -15,7 +15,7 @@ export default function Header() {
   let { user } = useContext(AuthContext)!;
   const navigate = useNavigate();
   return (
-    <div className="bg-white h-16 px-4 flex justify-between items-center border-b border-gray-200">
+    <div className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200">
       {/* //this is the popover for tracking tasks in our website*/}
       <div className=" w-full max-w-sm px-4">
         <Popover className="relative">
@@ -23,8 +23,8 @@ export default function Header() {
             <>
               <Popover.Button
                 className={`
-                ${open ? "text-white" : "text-white/90"}
-                group justify-items-end inline-flex items-center rounded-md bg-green-700 px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
+                ${open ? "text-black" : "text-black/90"}
+                group justify-items-end inline-flex items-center rounded-md bg-warm-orange px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
               >
                 <span>Track Tasks</span>
                 <HiChevronDoubleDown

@@ -31,18 +31,21 @@ function JournalEntry({
             You've already journaled for today.
           </p>
           <p className="text-sm text-gray-500">
-            Reflect on your entry or start fresh?
+            Want to journal again or start fresh?
           </p>
 
           <button
-            className="mt-4 px-6 py-3 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
+            className="mt-4 px-6 py-3 bg-rich-green text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
             onClick={resetJournalState}
           >
             Journal Again
           </button>
           <p>Or</p>
+          <p className="text-sm text-gray-500">
+            Get actionable insights to start improving?
+          </p>
           <button
-            className="mt-4 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
+            className="mt-4 px-6 py-3 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
             onClick={resetJournalState}
           >
             Get Actionable Insights

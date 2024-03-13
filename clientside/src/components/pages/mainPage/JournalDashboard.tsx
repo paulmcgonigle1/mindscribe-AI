@@ -64,7 +64,16 @@ export default function JournalDashboard() {
   };
   return (
     <div className="flex flex-col gap-6 p-4">
-      <div className="flex flex-wrap md:flex-nowrap gap-6">
+      {/* Journal Page Title and Introduction */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-black mb-2">Journal </h1>
+        <p className="text-md text-gray-700">
+          Welcome to your personal journaling space. Take a moment to reflect on
+          your day, track your mood, and gain insights to foster your
+          well-being.
+        </p>
+      </div>
+      <div className="flex flex-wrap md:flex-nowrap gap-">
         <div className="flex flex-1 md:w-1/2">
           <div className="flex-1 w-full p-4 min-h-full">
             <JournalEntry
