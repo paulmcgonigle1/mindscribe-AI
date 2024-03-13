@@ -8,6 +8,7 @@ from langchain.chat_models import ChatOpenAI
 from django.utils import timezone
 from django.db.models import Count
 from django.core.exceptions import MultipleObjectsReturned
+from django.http import JsonResponse
 
 import os
 from .models import (
@@ -320,3 +321,20 @@ def interact_with_llm(prompt):
     # print("Response from GPT:", response)
 
     return response.content.strip()
+
+
+@api_view(["GET"])
+def createInsightMessage(request):
+    today = timezone.now().date()
+    user = request.user  # Directly use the user object
+    print("Now getting Insight Response")
+    insights = "SAD, Failed Swim test, stressed out with college work"
+    prompt = (
+        f"Generate a quick message to help user {user.first_name} "
+        f"to understand their insights as follows: {insights} .\n\n"
+    )
+
+    message = llm.invoke(prompt)
+    # return response.content.strip()
+    print(message)
+    return Response({"message": message.content.strip()})

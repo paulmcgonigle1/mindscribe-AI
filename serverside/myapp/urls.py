@@ -12,6 +12,7 @@ from .improvements import (
     save_unsave_task,
     get_tasks_in_progress,
     update_task_completetion_status,
+    createInsightMessage,
 )
 from rest_framework.routers import DefaultRouter
 from . import views
@@ -63,7 +64,13 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/register/", register, name="register"),
     path("api/journals/", views.getJournals, name="get_journals"),
+    path(
+        "api/check_journal_for_today/",
+        views.check_journal_for_today,
+        name="check_journal_for_today",
+    ),
     path("api/createjournal/", views.createJournal, name="create_journal"),
+    path("api/createInsightMessage/", createInsightMessage, name="create_journal"),
     path(
         "api/journals/<int:entry_id>/insights/",
         views.get_insights_for_journal_entry,

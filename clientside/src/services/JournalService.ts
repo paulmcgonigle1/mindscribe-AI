@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences, InsightMessage, JournalResponse } from '../lib/types/types';
 
 const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
 
@@ -61,7 +61,7 @@ export const updateTaskCompletionStatus = async (authTokens: { access: string },
   });  
   return response.data;
 };
-
+//create new improvemetns
 export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   try {
     const response = await axios.get(`${BASE_URL}/myapp/create-improvements/`,  { // Note the method change to POST
@@ -83,7 +83,27 @@ export const createImprovements = async (authTokens: { access: string }): Promis
     throw new Error("Error creating improvements");
   }
 };
-
+// export const generateInsightMessage = async (authTokens: { access: string }): Promise<InsightMessage> => {
+//   try {
+//     const response = await axios.get(`${BASE_URL}/myapp/create-improvements/`,  { // Note the method change to POST
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${authTokens.access}`,
+//       }
+//     });
+    
+//     return {
+    
+//       message: response.data.message,
+//       tasks: response.data.tasks,
+//       createdAt: response.data.createdAt,
+//     };
+//   } catch (error) {
+//     // Log error or handle it as needed
+//     console.error("Failed to create improvements:", error);
+//     throw new Error("Error creating improvements");
+//   }
+// };
 
  
 export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
@@ -159,9 +179,25 @@ export const getTrackedTasks = async (authTokens: { access: string }): Promise<T
   
 } 
 
-
+//get all of the journals for the user
   export const getJournals = async (authTokens:{access:string}):Promise<JournalEntry[]> => {
     const response = await axios.get(`${BASE_URL}/myapp/api/journals/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`, // Use template literal for proper spacing
+      }
+    })
+    if (response.status === 401) {
+      // You could throw a specific error for this case
+      throw new Error('Unauthorized');
+    } else if (response.status !== 200) {
+      throw new Error(`Received non-200 status code: ${response.status}`);
+    }
+    return response.data;
+  }
+  //get all of the journals for the user
+  export const fetchJournalEntryForToday = async (authTokens:{access:string}):Promise<JournalResponse> => {
+    const response = await axios.get(`${BASE_URL}/myapp/api/check_journal_for_today/`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authTokens.access}`, // Use template literal for proper spacing
@@ -184,6 +220,19 @@ export const getTrackedTasks = async (authTokens: { access: string }): Promise<T
         'Authorization': `Bearer ${authTokens.access}`, // Include the Authorization header
       }
     });
+    return response.data;
+  };
+  //getting insight message for the user to display it in front-end from the bot
+  export const generateInsightMessageFromBot = async (authTokens: { access: string }): Promise<{message:string}> => {
+    const response = await axios.get(`${BASE_URL}/myapp/api/createInsightMessage/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`, // Include the Authorization header
+      }
+    });
+    console.log("API Response:", response); // Temporary logging for debugging
+
+    
     return response.data;
   };
   

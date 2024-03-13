@@ -25,7 +25,7 @@ function App() {
   const ProtectedRoute = () => {
     const { authTokens } = useContext(AuthContext) ?? {};
 
-    return authTokens ? <Outlet /> : <Navigate to="/login" replace />;
+    return authTokens ? <Outlet /> : <Navigate to="/sign-up" replace />;
   };
   // Correctly handle potentially undefined context
   const authContext = useContext(AuthContext);
@@ -46,8 +46,8 @@ function App() {
               <Route path="settings" element={<Settings />}></Route>
             </Route>
           </Route>
-          <Route path="login" element={<LoginPage />}></Route>
-          <Route path="multi-step-form" element={<Questionnaire />}></Route>
+          {/* <Route path="login" element={<LoginPage />}></Route> */}
+          {/* <Route path="multi-step-form" element={<Questionnaire />}></Route> */}
           <Route path="sign-up" element={<SignupPage />}></Route>
           <Route path="home" element={<HomePage />}></Route>
         </Routes>

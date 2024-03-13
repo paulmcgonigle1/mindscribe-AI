@@ -1,19 +1,43 @@
 import { useContext, useEffect, useState } from "react";
-import JournalSection from "./JournalSection";
-import MoodRating from "./MoodRating";
 
 import Calendar from "./Calendar";
-import { getSettings } from "../../../services/JournalService";
+import {
+  fetchJournalEntryForToday,
+  getSettings,
+} from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
 import Questionnaire from "../homePage/multi-step-form/page";
 import Modal from "../../shared/Modal";
+import BotResponse from "./BotResponse";
+import JournalEntry from "./JournalEntry";
 export default function JournalDashboard() {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   const { authTokens } = useContext(AuthContext) ?? {};
   //this is for handling the first time a user comes on the site to personalize their experience
   const [isPersonalized, setIsPersonalized] = useState(true); // Default to true to avoid flicker
   const [showQuestionnaireModal, setShowQuestionnaireModal] = useState(false);
+  const [hasJournaledToday, setHasJournaledToday] = useState(false);
+  const handleJournalSubmit = () => {
+    setHasJournaledToday(true);
+  };
 
+  // New function to allow journaling again
+  const resetJournalState = () => {
+    setHasJournaledToday(false);
+  };
+
+  useEffect(() => {
+    const checkJournalEntryForToday = async () => {
+      if (authTokens?.access) {
+        const hasEntry = await fetchJournalEntryForToday(authTokens);
+        console.log("The user has journalled today : ", hasEntry);
+        setHasJournaledToday(hasEntry.journal_exists);
+      }
+    };
+    // indicating whether a journal entry has been made for the current day
+
+    checkJournalEntryForToday();
+  }, [authTokens]);
   useEffect(() => {
     // fetch settings logic
 
@@ -33,19 +57,31 @@ export default function JournalDashboard() {
 
     fetchUserSettings();
   }, [authTokens]);
+
+  const fetchInsights = async () => {
+    // Fetch insights logic
+  };
   return (
     <div className="flex flex-col gap-6 p-4">
-      <div className="flex md:flex-row gap-6">
-        <div className="flex-1 flex">
-          <div className="flex-1 w-full">
-            <MoodRating setParentMoodRating={setMoodRating} />
-            <JournalSection moodRating={moodRating} />
+      <div className="flex flex-wrap md:flex-nowrap gap-6">
+        <div className="flex flex-1 md:w-1/2">
+          <div className="flex-1 w-full p-4 min-h-full">
+            <JournalEntry
+              onJournalSubmit={handleJournalSubmit}
+              hasJournaledToday={hasJournaledToday}
+              resetJournalState={resetJournalState}
+              fetchInsightsCallback={fetchInsights} // Pass the fetchInsights function to JournalEntry
+            />
+          </div>
+          <div className="flex flex-1">
+            <Calendar />
           </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-1 md:w-2/3">
-          <Calendar />
+        <div className="flex-1 ">
+          <BotResponse fetchInsightsCallback={fetchInsights} />
+          {/* <Calendar /> */}
           {/* <RecentJournals /> */}
         </div>
       </div>

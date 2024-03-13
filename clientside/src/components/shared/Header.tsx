@@ -16,17 +16,6 @@ export default function Header() {
   const navigate = useNavigate();
   return (
     <div className="bg-white h-16 px-4 flex justify-between items-center border-b border-gray-200">
-      <div className="relative">
-        <HiOutlineSearch
-          fontSize={20}
-          className="text-gray-400 absolute top-1/2 -translate-y-1/2 left-3"
-        />
-        <input
-          type="text"
-          placeholder="Search .... "
-          className="text-sm focus:outline-none active:outline-none h-10 w-[24rem] border border-gray-300 rounded-sm pl-11 pr-4 "
-        />
-      </div>
       {/* //this is the popover for tracking tasks in our website*/}
       <div className=" w-full max-w-sm px-4">
         <Popover className="relative">
@@ -35,7 +24,7 @@ export default function Header() {
               <Popover.Button
                 className={`
                 ${open ? "text-white" : "text-white/90"}
-                group inline-flex items-center rounded-md bg-green-700 px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
+                group justify-items-end inline-flex items-center rounded-md bg-green-700 px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
               >
                 <span>Track Tasks</span>
                 <HiChevronDoubleDown

@@ -53,7 +53,12 @@ export type Preferences = {
   agreeToTerms: boolean;
   
 }
-
+export type InsightMessage = {
+  message: string;
+}
+export type JournalResponse = {
+  journal_exists: boolean;
+}
 
 
 
