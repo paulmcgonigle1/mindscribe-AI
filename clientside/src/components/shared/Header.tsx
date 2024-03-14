@@ -17,7 +17,7 @@ export default function Header() {
   return (
     <div className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200">
       {/* //this is the popover for tracking tasks in our website*/}
-      <div className=" w-full max-w-sm px-4">
+      <div className="flex-grow">
         <Popover className="relative">
           {({ open }) => (
             <>

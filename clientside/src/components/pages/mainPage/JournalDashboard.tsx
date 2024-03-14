@@ -65,17 +65,20 @@ export default function JournalDashboard() {
   return (
     <div className="flex flex-col gap-6 p-4">
       {/* Journal Page Title and Introduction */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-black mb-2">Journal </h1>
-        <p className="text-md text-gray-700">
-          Welcome to your personal journaling space. Take a moment to reflect on
-          your day, track your mood, and gain insights to foster your
-          well-being.
-        </p>
+      <div className="flex  items-center justify-center">
+        <div className=" bg-rich-green p-8 border  rounded-lg flex flex-col items-center justify-center ">
+          <h1 className="text-3xl text-black mb-2 text-left ">Journal </h1>
+          <p className="text-md text-white text-center ">
+            Welcome to your personal journaling space. Take a moment to reflect
+            on your day, track your mood, and gain insights to foster your
+            well-being.
+          </p>
+        </div>
       </div>
+
       <div className="flex flex-wrap md:flex-nowrap gap-">
         <div className="flex flex-1 md:w-1/2">
-          <div className="flex-1 w-full p-4 min-h-full">
+          <div className="flex-1 w-full p-4 min-h-full border border-black">
             <JournalEntry
               onJournalSubmit={handleJournalSubmit}
               hasJournaledToday={hasJournaledToday}
@@ -83,7 +86,7 @@ export default function JournalDashboard() {
               fetchInsightsCallback={fetchInsights} // Pass the fetchInsights function to JournalEntry
             />
           </div>
-          <div className="flex flex-1">
+          <div className="flex flex-1 border border-black p-4 w-full max-h-[50vh]">
             <Calendar />
           </div>
         </div>

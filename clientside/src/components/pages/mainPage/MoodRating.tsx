@@ -9,10 +9,10 @@ export default function MoodRating({ setParentMoodRating }: MoodRatingProps) {
 
   const moods = [
     { rating: 1, face: "😢", label: "awful" }, // Awful
-    { rating: 2, face: "😟", label: "awful" }, // Bad
-    { rating: 3, face: "😐", label: "awful" }, // Meh
-    { rating: 4, face: "🙂", label: "awful" }, // Good
-    { rating: 5, face: "😄", label: "awful" }, // Amazing
+    { rating: 2, face: "😟", label: "Bad" }, // Bad
+    { rating: 3, face: "😐", label: "Meh" }, // Meh
+    { rating: 4, face: "🙂", label: "Good" }, // Good
+    { rating: 5, face: "😄", label: "Amazing" }, // Amazing
   ];
   const handleMoodClick = (rating: number) => {
     setMoodRating(rating);
@@ -21,9 +21,7 @@ export default function MoodRating({ setParentMoodRating }: MoodRatingProps) {
 
   return (
     <>
-      <div className="text-lg font-medium text-center py-4">
-        How are you feeling today?
-      </div>
+      <div className="text-lg text-center pb-4">How are you feeling today?</div>
       <div className="flex justify-center gap-4 mb-6">
         {moods.map((mood) => (
           <button
