@@ -1,51 +1,70 @@
-import React, { useState, useEffect, useContext } from "react";
-import ChatMessages from "./ChatMessages";
+import { useState, useEffect } from "react";
+import ChatMessage from "./ChatMessage";
 import chatbot from "../../assets/chatbot.png"; // Path to your bot's avatar image
+import { Link } from "react-router-dom";
 
 interface ChatBotProps {
   fetchInsightsCallback: () => Promise<void>;
   message: string | null;
 }
 function ChatBot({ fetchInsightsCallback, message }: ChatBotProps) {
-  const [messages, setMessages] = useState<string[]>([]);
-  // const { authTokens } = useContext(AuthContext) ?? {};
+  const [messages, setMessages] = useState<React.ReactNode[]>([]); // Update state to hold React nodes
+  const [hasAdviceBeenAdded, setHasAdviceBeenAdded] = useState<boolean>(false);
 
-  // Effect to update messages state when message prop changes
   useEffect(() => {
-    // Check if message is not null and not an empty string
     if (message) {
-      // Optionally, check for duplicates before adding
-      if (!messages.includes(message)) {
-        setMessages((prevMessages) => [...prevMessages, message]);
+      const newMessages = messages.includes(message)
+        ? [...messages]
+        : [...messages, message];
+
+      if (newMessages.length === 1 && !hasAdviceBeenAdded) {
+        // Create a React node with the message and a Link component
+        const adviceMessage = (
+          <span>
+            Please go to the{" "}
+            <Link to="/improvements" className="text-blue-500 hover:underline">
+              improvements page
+            </Link>{" "}
+            to find out how to improve.
+          </span>
+        );
+
+        newMessages.push(adviceMessage);
+        setHasAdviceBeenAdded(true);
       }
+
+      setMessages(newMessages);
     }
-  }, [message]); // Dependency on message prop
+  }, [message, messages, hasAdviceBeenAdded]);
 
   return (
-    <div className="flex flex-col p-4 max-w-md mx-auto bg-white rounded-lg border shadow-md space-y-4">
-      {messages.length > 0 ? (
-        messages.map((message, index) => (
-          <div key={index} className="flex items-center">
-            <ChatMessages message={message} />
+    <div className="flex flex-col p-4 max-w-xl mx-auto bg-white rounded-lg border shadow-md space-y-4">
+      <div className="overflow-y-auto max-h-[300px] space-y-4">
+        {messages.length > 0 ? (
+          messages.map((message, index) => (
+            <div key={index} className="flex items-center">
+              <ChatMessage message={message} />
+
+              <img
+                src={chatbot}
+                alt="Chat Bot"
+                onClick={() => fetchInsightsCallback().catch(console.error)}
+                className="w-20 h-20 rounded-full ml-4"
+              />
+            </div>
+          ))
+        ) : (
+          <div className="text-center">
+            <p>No insights available yet. Click on the bot to get insights!</p>
             <img
               src={chatbot}
               alt="Chat Bot"
-              onClick={() => fetchInsightsCallback().catch(console.error)} // Make sure the onClick handler calls fetchInsightsCallback
-              className="w-20 h-20 rounded-full ml-4" // Adjusted avatar size and spacing
+              onClick={() => fetchInsightsCallback().catch(console.error)}
+              className="w-20 h-20 rounded-full mx-auto mt-4 cursor-pointer"
             />
           </div>
-        ))
-      ) : (
-        <div className="text-center">
-          <p>No insights available yet. Click on the bot to get insights!</p>
-          <img
-            src={chatbot}
-            alt="Chat Bot"
-            onClick={() => fetchInsightsCallback().catch(console.error)} // Make sure the onClick handler calls fetchInsightsCallback
-            className="w-20 h-20 rounded-full mx-auto mt-4 cursor-pointer" // Added cursor-pointer for better UX
-          />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

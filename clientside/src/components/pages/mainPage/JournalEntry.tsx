@@ -28,7 +28,7 @@ function JournalEntry({
           <p className="text-lg font-semibold text-gray-700">
             You've already journaled for today.
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-md text-gray-500">
             Want to journal again or start fresh?
           </p>
 
@@ -39,7 +39,7 @@ function JournalEntry({
             Journal Again
           </button>
           <p>Or</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-md text-gray-500">
             Get actionable insights to start improving?
           </p>
           <button
