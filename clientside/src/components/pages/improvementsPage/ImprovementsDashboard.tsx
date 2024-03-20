@@ -17,17 +17,17 @@ function ImprovementsDashboard() {
   const [tasksCreated, setTasksCreated] = useState(false);
 
   const { authTokens } = useContext(AuthContext) ?? {};
-  const handleCreateImprovements = async () => {
-    if (authTokens?.access) {
-      try {
-        const response = await createImprovements(authTokens);
-        console.log("Created Improvements plan:", response);
-        setTasksCreated(true);
-      } catch (error) {
-        console.error("Error creating mental health plan:", error);
-      }
-    }
-  };
+  // const handleCreateImprovements = async () => {
+  //   if (authTokens?.access) {
+  //     try {
+  //       const response = await createImprovements(authTokens);
+  //       console.log("Created Improvements plan:", response);
+  //       setTasksCreated(true);
+  //     } catch (error) {
+  //       console.error("Error creating mental health plan:", error);
+  //     }
+  //   }
+  // };
 
   //use effect runs when creating new tasks instead of returning the response from create
   useEffect(() => {
@@ -74,13 +74,13 @@ function ImprovementsDashboard() {
   }, []);
   return (
     <div className="m-4 space-y-2">
-      <button
+      {/* <button
         onClick={handleCreateImprovements}
         className="bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
         aria-label="Create new improvements"
       >
         Create Actionable Tasks
-      </button>
+      </button> */}
 
       <Improvements_Message improvementData={improvementData} />
 

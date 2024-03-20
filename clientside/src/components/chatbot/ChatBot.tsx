@@ -35,7 +35,7 @@ function ChatBot({ fetchInsightsCallback, message }: ChatBotProps) {
 
       setMessages(newMessages);
     }
-  }, [message, messages, hasAdviceBeenAdded]);
+  }, [message, hasAdviceBeenAdded]);
 
   return (
     <div className="flex flex-col p-4 max-w-xl mx-auto bg-white rounded-lg border shadow-md space-y-4">

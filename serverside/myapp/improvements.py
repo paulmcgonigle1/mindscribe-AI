@@ -57,8 +57,12 @@ class GetRecentImprovements(APIView):
 
         except UserImprovement.DoesNotExist:
             return Response(
-                {"error": "No mental health plan found for this user"},
-                status=status.HTTP_404_NOT_FOUND,
+                {
+                    "message": "No Improvements plan exists yet",
+                    "tasks": [],
+                    "created_at": None,
+                },
+                status=200,
             )
 
 
@@ -74,11 +78,11 @@ class CreateImprovementWithTasksAndMessage(APIView):
 
         insights = Insight.objects.filter(entry__user=user, timestamp__date=today)
         serialized_insights = InsightSerializer(insights, many=True).data
-
+        print("creating a new user Improvement message and tasks")
         # Create tasks and parse from today's insights
-        print("Creating tasks from insights")
+        # print("Creating tasks from insights")
         mental_health_tasks = create_tasks_from_insights(serialized_insights, user.id)
-        print("Now creating message of the day")
+        # print("Now creating message of the day")
         message_of_the_day = create_message_of_the_day(user)
         return Response({"message": message_of_the_day, "tasks": mental_health_tasks})
 
@@ -91,14 +95,14 @@ def create_tasks_from_insights(insights, user_id):
 
     # Get the unstructured tasks from OpenAI
     unstructured_tasks = interact_with_llm(prompt)
-    print("Unstructured Tasks : " + unstructured_tasks)
+    # print("Unstructured Tasks : " + unstructured_tasks)
     # Parse the raw plan into distinct tasks
     mental_health_tasks = parse_raw_response_with_tasks(unstructured_tasks)
 
-    print(
-        "Mental Health Tasks after parsing:\n"
-        + "\n".join(str(task) for task in mental_health_tasks)
-    )
+    # print(
+    #     "Mental Health Tasks after parsing:\n"
+    #     + "\n".join(str(task) for task in mental_health_tasks)
+    # )
 
     user = User.objects.get(id=user_id)
 
@@ -167,7 +171,7 @@ def create_message_of_the_day(user):
             user_improvement.message_of_the_day = message
             user_improvement.save()
 
-        print("Message of the day: ", message)
+        # print("Message of the day: ", message)
 
     return message
 

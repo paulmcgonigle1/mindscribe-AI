@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import Calendar from "./Calendar";
 import {
+  createImprovements,
   fetchJournalEntryForToday,
   generateInsightMessageFromBot,
   getSettings,
@@ -21,9 +22,20 @@ export default function JournalDashboard() {
   const [hasJournaledToday, setHasJournaledToday] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  const handleCreateImprovements = async () => {
+    if (authTokens?.access) {
+      try {
+        await createImprovements(authTokens);
+        console.log("Improvements plan created successfuly:");
+      } catch (error) {
+        console.error("Error creating improvments  plan:", error);
+      }
+    }
+  };
   const handleJournalSubmit = async () => {
     await fetchMessage();
     setHasJournaledToday(true);
+    await handleCreateImprovements();
   };
 
   // New function to allow journaling again
@@ -35,7 +47,7 @@ export default function JournalDashboard() {
     const checkJournalEntryForToday = async () => {
       if (authTokens?.access) {
         const hasEntry = await fetchJournalEntryForToday(authTokens);
-        console.log("The user has journalled today : ", hasEntry);
+        // console.log("The user has journalled today : ", hasEntry);
         setHasJournaledToday(hasEntry.journal_exists);
       }
     };
@@ -50,7 +62,7 @@ export default function JournalDashboard() {
       if (authTokens?.access) {
         try {
           const response = await getSettings(authTokens);
-          console.log("Settings for this user here:", response);
+          // console.log("Settings for this user here:", response);
           setIsPersonalized(response.is_personalised);
           //control modal based on true or false
           setShowQuestionnaireModal(!response.is_personalised);
