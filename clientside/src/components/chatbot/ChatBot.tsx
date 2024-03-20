@@ -1,33 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
 import ChatMessages from "./ChatMessages";
 import chatbot from "../../assets/chatbot.png"; // Path to your bot's avatar image
-import axios from "axios";
-import AuthContext from "../../context/AuthContext";
-import { generateInsightMessageFromBot } from "../../services/JournalService";
 
 interface ChatBotProps {
-  fetchInsightsCallback: () => void; // Define the type of the callback
+  fetchInsightsCallback: () => Promise<void>;
+  message: string | null;
 }
-function ChatBot({ fetchInsightsCallback }: ChatBotProps) {
+function ChatBot({ fetchInsightsCallback, message }: ChatBotProps) {
   const [messages, setMessages] = useState<string[]>([]);
-  const { authTokens } = useContext(AuthContext) ?? {};
+  // const { authTokens } = useContext(AuthContext) ?? {};
 
-  const fetchInsights = async () => {
-    if (authTokens?.access) {
-      try {
-        const response = await generateInsightMessageFromBot(authTokens);
-        const insightMessage = response.message; // Accessing the message property
-
-        setMessages((prevMessages) => [...prevMessages, insightMessage]);
-      } catch (error) {
-        console.error("Error fetching insights:", error);
+  // Effect to update messages state when message prop changes
+  useEffect(() => {
+    // Check if message is not null and not an empty string
+    if (message) {
+      // Optionally, check for duplicates before adding
+      if (!messages.includes(message)) {
+        setMessages((prevMessages) => [...prevMessages, message]);
       }
     }
-  };
-  useEffect(() => {
-    // Call fetchInsightsCallback when the component mounts or when needed
-    fetchInsightsCallback();
-  }, [fetchInsightsCallback]);
+  }, [message]); // Dependency on message prop
 
   return (
     <div className="flex flex-col p-4 max-w-md mx-auto bg-white rounded-lg border shadow-md space-y-4">
@@ -38,7 +30,7 @@ function ChatBot({ fetchInsightsCallback }: ChatBotProps) {
             <img
               src={chatbot}
               alt="Chat Bot"
-              onClick={fetchInsights}
+              onClick={() => fetchInsightsCallback().catch(console.error)} // Make sure the onClick handler calls fetchInsightsCallback
               className="w-20 h-20 rounded-full ml-4" // Adjusted avatar size and spacing
             />
           </div>
@@ -49,7 +41,7 @@ function ChatBot({ fetchInsightsCallback }: ChatBotProps) {
           <img
             src={chatbot}
             alt="Chat Bot"
-            onClick={fetchInsights}
+            onClick={() => fetchInsightsCallback().catch(console.error)} // Make sure the onClick handler calls fetchInsightsCallback
             className="w-20 h-20 rounded-full mx-auto mt-4 cursor-pointer" // Added cursor-pointer for better UX
           />
         </div>

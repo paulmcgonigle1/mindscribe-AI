@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import Calendar from "./Calendar";
 import {
   fetchJournalEntryForToday,
+  generateInsightMessageFromBot,
   getSettings,
 } from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
@@ -10,7 +11,7 @@ import Questionnaire from "../homePage/multi-step-form/page";
 import Modal from "../../shared/Modal";
 import BotResponse from "./BotResponse";
 import JournalEntry from "./JournalEntry";
-import StatsDashboard from "../statsPage/StatsDashboard";
+
 export default function JournalDashboard() {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   const { authTokens } = useContext(AuthContext) ?? {};
@@ -18,7 +19,10 @@ export default function JournalDashboard() {
   const [isPersonalized, setIsPersonalized] = useState(true); // Default to true to avoid flicker
   const [showQuestionnaireModal, setShowQuestionnaireModal] = useState(false);
   const [hasJournaledToday, setHasJournaledToday] = useState(false);
-  const handleJournalSubmit = () => {
+  const [message, setMessage] = useState<string | null>(null);
+
+  const handleJournalSubmit = async () => {
+    await fetchMessage();
     setHasJournaledToday(true);
   };
 
@@ -59,8 +63,18 @@ export default function JournalDashboard() {
     fetchUserSettings();
   }, [authTokens]);
 
-  const fetchInsights = async () => {
-    // Fetch insights logic
+  //this needs to be updated to properly handle new message
+  const fetchMessage = async () => {
+    if (authTokens?.access) {
+      try {
+        const response = await generateInsightMessageFromBot(authTokens);
+        const insightMessage = response.message; // Accessing the message property
+
+        setMessage(insightMessage);
+      } catch (error) {
+        console.error("Error fetching insights:", error);
+      }
+    }
   };
   return (
     <div className="flex flex-col gap-6 p-4">
@@ -77,28 +91,26 @@ export default function JournalDashboard() {
       </div>
 
       <div className="flex flex-wrap md:flex-nowrap gap-">
-        <div className="flex flex-1 md:w-1/2">
-          <div className="flex-1 w-full p-4 min-h-full border border-black">
+        <div className="flex flex-1 md:w-1/2 border border-black">
+          <div className="flex-1 w-full m-1 p-4 min-h-full ">
             <JournalEntry
               onJournalSubmit={handleJournalSubmit}
               hasJournaledToday={hasJournaledToday}
               resetJournalState={resetJournalState}
-              fetchInsightsCallback={fetchInsights} // Pass the fetchInsights function to JournalEntry
             />
           </div>
-          <div className="flex flex-1 border border-black p-4 w-full max-h-[50vh]">
+          <div className="flex flex-1 m-2 p-4 w-full max-h-[45vh]">
             <Calendar />
           </div>
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 ">
-          <BotResponse fetchInsightsCallback={fetchInsights} />
-          {/* <Calendar /> */}
-          {/* <RecentJournals /> */}
+          <BotResponse fetchInsightsCallback={fetchMessage} message={message} />
         </div>
       </div>
-      <StatsDashboard />
+      {/* <StatsDashboard /> */}
+
       <Modal
         isOpen={showQuestionnaireModal}
         onClose={() => setShowQuestionnaireModal(false)}

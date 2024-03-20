@@ -2,9 +2,10 @@ import React from "react";
 import ChatBot from "../../chatbot/ChatBot";
 
 interface BotResponseProps {
-  fetchInsightsCallback: () => void; // Callback function to trigger fetchInsights
+  fetchInsightsCallback: () => Promise<void>; // Callback function to trigger fetchInsights
+  message: string | null;
 }
-function BotResponse({ fetchInsightsCallback }: BotResponseProps) {
+function BotResponse({ fetchInsightsCallback, message }: BotResponseProps) {
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden">
       <div className="p-4 border-b">
@@ -17,7 +18,10 @@ function BotResponse({ fetchInsightsCallback }: BotResponseProps) {
         </p>
       </div>
       <div className="p-4">
-        <ChatBot fetchInsightsCallback={fetchInsightsCallback} />
+        <ChatBot
+          fetchInsightsCallback={fetchInsightsCallback}
+          message={message}
+        />
       </div>
     </div>
   );

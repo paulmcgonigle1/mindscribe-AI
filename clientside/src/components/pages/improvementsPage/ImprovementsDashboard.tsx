@@ -73,29 +73,19 @@ function ImprovementsDashboard() {
     fetchImprovements();
   }, []);
   return (
-    <div className="m-4 space-y-4">
+    <div className="m-4 space-y-2">
       <button
         onClick={handleCreateImprovements}
         className="bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
         aria-label="Create new improvements"
       >
-        Create Improvements
+        Create Actionable Tasks
       </button>
-      <div>
-        <h2 className="text-2xl font-semibold">Improvements Page</h2>
-        <p className="text-lg mt-2">
-          This is where you can find things you can do daily, created just for
-          you, for improving your mood.
-        </p>
-        <p className="text-lg mt-1">
-          You can also track whichever tasks you want by clicking 'Save Task'.
-        </p>
-      </div>
+
       <Improvements_Message improvementData={improvementData} />
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1">
-          <ActionableTasks improvementData={improvementData} />
-        </div>
+
+      <div className="flex flex-col md:flex-row gap-6  justify-center items-center w-full px-2 ">
+        <ActionableTasks improvementData={improvementData} />
       </div>
     </div>
   );

@@ -17,7 +17,10 @@ export default {
       'light-blue': '#a8def0', // New lighter blue for secondary buttons/links
       'text-grey': '#333333', // New text color for better readability
       'muted-green': '#98c9a3', // New muted green for active states
-      'rich-green-light': '#a4d4ae'
+      'rich-green-light': '#a4d4ae',
+      'unsave-task': '#64748b',
+      'read-more': '#2dd4bf',
+      'save-task': ' #22c55e'
       },
       fontFamily:{
         sans:['Inter', 'sans-serif'],

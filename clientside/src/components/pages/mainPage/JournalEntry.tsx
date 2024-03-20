@@ -6,13 +6,11 @@ interface JournalEntryProps {
   onJournalSubmit: any;
   hasJournaledToday: boolean;
   resetJournalState: () => void; // New callback function for resetting the journal state
-  fetchInsightsCallback: () => void; // Callback function to trigger fetchInsights
 }
 function JournalEntry({
   onJournalSubmit,
   hasJournaledToday,
   resetJournalState,
-  fetchInsightsCallback,
 }: JournalEntryProps) {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   //   const [hasJournaledToday, setHasJournaledToday] = useState(false);
@@ -57,7 +55,6 @@ function JournalEntry({
           <JournalSection
             moodRating={moodRating}
             onJournalSubmit={onJournalSubmit}
-            fetchInsightsCallback={fetchInsightsCallback} // Pass fetchInsightsCallback to JournalSection
           />
         </>
       )}
