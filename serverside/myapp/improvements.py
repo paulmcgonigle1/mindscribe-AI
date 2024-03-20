@@ -180,6 +180,17 @@ def format_insights_for_prompt(insights):
     return formatted_insights
 
 
+def format_single_insight_for_prompt(insight):
+
+    # Assuming insights have 'moods', 'sentiment', 'keywords', and 'key_themes' fields
+    formatted_insight = (
+        f"Moods: {insight.get('moods', 'No moods available')}, "
+        f"Sentiment: {insight.get('sentiment', 'No sentiment available')}, "
+        f"Themes: {insight.get('key_themes', 'No themes available')}.\n"
+    )
+    return formatted_insight
+
+
 def prompt_with_insights(formatted_insights, user_id):
     user = User.objects.get(id=user_id)
 
@@ -327,11 +338,27 @@ def interact_with_llm(prompt):
 def createInsightMessage(request):
     today = timezone.now().date()
     user = request.user  # Directly use the user object
+    latest_insight = (
+        Insight.objects.filter(entry__user=user, timestamp__date=today)
+        .order_by("-timestamp")
+        .first()
+    )
+    if not latest_insight:
+        return JsonResponse({"message": "No insights found for today."}, status=404)
+
+    serialized_insight = InsightSerializer(latest_insight).data
+    print(
+        "type of serialized insight", type(serialized_insight)
+    )  # Should show <class 'dict'> or <class 'OrderedDict'>
+
+    formatted_insight = format_single_insight_for_prompt(serialized_insight)
+
     print("Now getting Insight Response")
-    insights = "SAD, Failed Swim test, stressed out with college work"
+    print(serialized_insight)
+    # insights = "SAD, Failed Swim test, stressed out with college work"
     prompt = (
         f"Generate a quick message to help user {user.first_name} "
-        f"to understand their insights as follows: {insights} .\n\n"
+        f"to understand their insights as follows: {formatted_insight} .\n\n"
     )
 
     message = llm.invoke(prompt)
