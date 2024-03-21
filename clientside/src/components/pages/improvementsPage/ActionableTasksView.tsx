@@ -28,16 +28,16 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
   };
 
   return (
-    <div>
-      <div className=" border-rich-green text-black p-4">
-        <h3 className="text-xl font-semibold mb-2">
-          Start with Your Actionable Tasks
+    <div className=" bg-green-100 p-5 rounded-lg my-4">
+      <div className=" border-rich-green text-black text-center ">
+        <h3 className="text-2xl font-semibold mb-2">
+          Recommendedations for today
         </h3>
-        <p className="text-sm mb-1">
-          <span className="font-semibold">To track a task:</span> Press{" "}
+        <p className="text-lg mb-1">
+          <span className="font-semibold ">To track a task:</span> Press{" "}
           <span className="font-semibold">'Save Task'</span>.
         </p>
-        <p className="text-sm mb-1">
+        <p className="text-lg mb-4">
           <span className="font-semibold">To learn more:</span> Press{" "}
           <span className="font-semibold">'Read More'</span> for detailed
           insights.

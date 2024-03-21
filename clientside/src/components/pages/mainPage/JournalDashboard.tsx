@@ -94,7 +94,7 @@ export default function JournalDashboard() {
       <div className="flex  items-center justify-center">
         <div className=" bg-rich-green p-8 border  rounded-lg flex flex-col items-center justify-center ">
           <h1 className="text-3xl text-black mb-2 text-left ">Journal </h1>
-          <p className="text-md text-white text-center ">
+          <p className="text-lg text-white text-center ">
             Welcome to your personal journaling space. Take a moment to reflect
             on your day, track your mood, and gain insights to foster your
             well-being.

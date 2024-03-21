@@ -37,6 +37,17 @@ export default function StatsDashboard() {
 
   return (
     <div className="flex flex-col gap-4 m-5">
+      <div className="flex  items-center justify-center">
+        <div className=" bg-rich-green p-8 border  rounded-lg flex flex-col items-center justify-center ">
+          <h1 className="text-3xl text-black mb-2 text-left ">Statistics </h1>
+          <p className="text-lg text-white text-center ">
+            Welcome to your personal statistics page. Take a moment to look back
+            at some of the statsistics over the course of the past few weeks or
+            months.
+          </p>
+        </div>
+      </div>
+
       {/* <StreakChart /> */}
       <div className="flex flex-row gap-4 w-full">
         <div className="flex flex-grow min-w-0">
