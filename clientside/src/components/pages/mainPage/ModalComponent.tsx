@@ -5,33 +5,45 @@ interface ModalComponentProps {
   isOpen: boolean;
   onClose: (event: React.MouseEvent<HTMLButtonElement>) => void; // Updated to accept a mouse event
   insight: Insight;
+  entry: JournalEntry;
 }
 
-const ModalComponent = ({ isOpen, onClose, insight }: ModalComponentProps) => {
+const ModalComponent = ({
+  isOpen,
+  onClose,
+  insight,
+  entry,
+}: ModalComponentProps) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-      <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+      <div className="relative top-20 mx-auto p-5 border max-w-2xl shadow-lg rounded-md bg-white">
         <div className="mt-3 text-center">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            Insight for Journal Entry
+          <h3 className="text-2xl leading-6 font-semibold text-gray-900">
+            Insights by AI companion this Journal Entry
           </h3>
           <div className="mt-2 px-7 py-3">
-            <p className="text-sm text-gray-500">
+            <p className="text-lg  text-gray-500">
               Insight Id: {insight.insightID}
               {/* ... add more details you want to show ... */}
             </p>
-            <p className="text-sm text-gray-800">
+            <p className="text-lg text-gray-800">
               <strong>Emotions:</strong> {insight.moods || "N/A"}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-lg text-gray-600">
               <strong>Sentiment:</strong> {insight.sentiment || "N/A"}
             </p>
 
-            <p className="text-sm text-gray-600">
+            <p className="text-lg text-gray-600">
               <strong>Themes:</strong> {insight.key_themes || "N/A"}
             </p>
+          </div>
+          <div>
+            <h3 className="text-2xl font-semibold leading-6  text-gray-900">
+              Journal entry text
+            </h3>
+            <p className="text-lg">{entry.content}</p>
           </div>
           <div className="items-center px-4 py-3">
             <button

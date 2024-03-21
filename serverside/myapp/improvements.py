@@ -99,11 +99,6 @@ def create_tasks_from_insights(insights, user_id):
     # Parse the raw plan into distinct tasks
     mental_health_tasks = parse_raw_response_with_tasks(unstructured_tasks)
 
-    # print(
-    #     "Mental Health Tasks after parsing:\n"
-    #     + "\n".join(str(task) for task in mental_health_tasks)
-    # )
-
     user = User.objects.get(id=user_id)
 
     try:
@@ -279,6 +274,17 @@ def get_tasks_in_progress(request):
     today = timezone.now().date()
     user = request.user  # Directly use the user object
     tasks = ActionableTask.objects.filter(improvement__user=user, inProgress=True)
+    serializer = ActionableTaskSerializer(tasks, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_tasks_completed(request):
+    today = timezone.now().date()
+    user = request.user  # Directly use the user object
+    tasks = ActionableTask.objects.filter(
+        improvement__user=user, inProgress=False, isCompleted=True
+    )
     serializer = ActionableTaskSerializer(tasks, many=True)
     return Response(serializer.data)
 

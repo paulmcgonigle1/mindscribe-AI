@@ -9,7 +9,6 @@ import {
 import Improvements_Message from "./Improvements_Message";
 import AuthContext from "../../../context/AuthContext";
 import CompletedTasksView from "./CompletedTasksView";
-
 function ImprovementsDashboard() {
   const [improvementData, setImprovementData] = useState<ImprovementData>({
     message: "",
@@ -71,6 +70,7 @@ function ImprovementsDashboard() {
         try {
           const tasks = await getCompletedTasks(authTokens); // Implement this function based on your API
           setCompletedTasks(tasks);
+          console.log("tasks", tasks);
         } catch (error) {
           console.error("Error fetching completed tasks:", error);
         }

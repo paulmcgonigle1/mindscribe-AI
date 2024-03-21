@@ -9,6 +9,7 @@ from .authviews import MyTokenObtainPairView, getRoutes, register
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
+    get_tasks_completed,
     save_unsave_task,
     get_tasks_in_progress,
     update_task_completetion_status,
@@ -46,6 +47,11 @@ urlpatterns = [
         "get-tracked-tasks/",
         get_tasks_in_progress,
         name="get_tasks_in_progress",
+    ),
+    path(
+        "get-completed-tasks/",
+        get_tasks_completed,
+        name="get_tasks_complete",
     ),
     path(
         "emotions/",

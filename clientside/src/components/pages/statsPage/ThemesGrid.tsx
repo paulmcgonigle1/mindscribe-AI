@@ -63,6 +63,16 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
   return (
     <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
       <h1 className="text-xl mb-4 ">Common themes</h1>
+      <div>
+        <p className="text-lg">
+          Here are the most common emotions that we found over the last{" "}
+          {selectedPeriod} days
+        </p>
+        <p className="text-md text-red-500">
+          It might be a good idea to keep an eye on what emotions are causing
+          some dips etc in your emotions {selectedPeriod} days
+        </p>
+      </div>
       <div className="theme-icons-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {themes.map(({ theme, count }) => (
           <div

@@ -29,6 +29,7 @@ const emotionIconMap: EmotionIconMapType = {
   guilt: <FaFaceFrownOpen className="w-8 h-8 text-purple-400" />,
   panic: <FaFaceGrimace className="w-8 h-8 text-purple-400" />,
   excited: <FaFaceLaughSquint className="w-8 h-8 text-sky-400" />,
+  energized: <FaFaceLaughSquint className="w-8 h-8 text-sky-400" />,
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
   // Add mappings for other emotions
 };
@@ -59,7 +60,17 @@ function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
 
   return (
     <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
-      <h1 className="text-xl mb-4 ">Common Emotions</h1>
+      <h1 className="text-xl mb-1 font-semibold ">Common Emotions</h1>
+      <div>
+        <p className="text-lg">
+          Here are the most common emotions that we found over the last{" "}
+          {selectedPeriod} days
+        </p>
+        <p className="text-md text-red-500">
+          It might be a good idea to keep an eye on what emotions are causing
+          some dips etc in your emotions {selectedPeriod} days
+        </p>
+      </div>
       <div className="emotion-icons-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {emotions.map(({ emotion, count }) => (
           <div

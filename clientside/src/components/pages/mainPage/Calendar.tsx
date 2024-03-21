@@ -208,6 +208,7 @@ export default function Example() {
           "Select a day"
         )}
       </h2>
+      <p className="text-sm text-gray-400">Click on Journal to read more</p>
       <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
         {selectedDayMeetings.length > 0 ? (
           selectedDayMeetings.map((entry) => (

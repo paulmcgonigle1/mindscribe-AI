@@ -49,15 +49,15 @@ export default function StatsDashboard() {
       </div>
 
       {/* <StreakChart /> */}
-      <div className="flex flex-row gap-4 w-full">
-        <div className="flex flex-grow min-w-0">
+      <div className="flex flex-wrap -mx-4 w-full">
+        <div className="w-full lg:w-2/3 px-4 flex min-w-0">
           <MoodAnalytics
             entries={journals}
             selectedPeriod={selectedPeriod}
             onPeriodChange={handlePeriodChange}
           />
         </div>
-        <div className="flex flex-grow min-w-0">
+        <div className="w-full lg:w-1/3 px-4 flex min-w-0">
           <MoodPieChart
             entries={journals}
             selectedPeriod={selectedPeriod}
@@ -66,19 +66,13 @@ export default function StatsDashboard() {
         </div>
       </div>
       <div className="flex flex-row gap-4 w-full">
-        <div className="flex flex-grow min-w-0">
+        <div className="flex flex-grow ">
           <EmotionGrid selectedPeriod={selectedPeriod} />
         </div>
-        <div className="flex flex-grow min-w-0">
+        <div className="flex flex-grow ">
           <ThemesGrid selectedPeriod={selectedPeriod} />
         </div>
       </div>
-      {/* <div className="flex flex-row gap-4 w-full">
-        <div className="flex flex-grow min-w-0">
-          <AnalysisDisplay />
-        </div>
-        <div className="flex flex-grow min-w-0"></div>
-      </div> */}
     </div>
   );
 }

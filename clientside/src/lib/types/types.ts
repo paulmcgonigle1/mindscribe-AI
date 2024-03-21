@@ -37,7 +37,9 @@ export type Task = {
   explanation: string;
   inProgress:boolean;
   isCompleted: boolean;
+  created_at: string; // this is string because its coming in as ISO format
 }
+
 export type  Settings = {
   preferred_type: string;
   preferred_style: string;
