@@ -1,9 +1,6 @@
-import { Menu, Transition } from "@headlessui/react";
-import classNames from "classnames";
 import { format } from "date-fns";
 
-import { useState, useContext, Fragment } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { useState, useContext } from "react";
 import AuthContext from "../../../context/AuthContext";
 import { Insight, JournalEntry } from "../../../lib/types/types";
 import { getInsightForJournalEntry } from "../../../services/JournalService";
@@ -13,10 +10,6 @@ export function DayInsights({ entry }: { entry: JournalEntry }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [insight, setInsight] = useState<Insight | null>(null);
   const authContext = useContext(AuthContext);
-
-  function classNames(...classes: (string | boolean)[]) {
-    return classes.filter(Boolean).join(" ");
-  }
 
   //use service to get insight for selectedEntry
 

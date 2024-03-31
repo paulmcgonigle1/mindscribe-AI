@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { getEmotions } from "../../../services/JournalService";
 import { EmotionData } from "../../../lib/types/types";
-import { HiOutlinePlusCircle } from "react-icons/hi";
 import {
   FaFaceGrinBeam,
   FaFaceGrimace,

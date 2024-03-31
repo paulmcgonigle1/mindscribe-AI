@@ -14,7 +14,7 @@ import BotResponse from "./BotResponse";
 import JournalEntry from "./JournalEntry";
 
 export default function JournalDashboard() {
-  const [moodRating, setMoodRating] = useState<number | null>(null);
+  // const [moodRating, setMoodRating] = useState<number | null>(null);
   const { authTokens } = useContext(AuthContext) ?? {};
   //this is for handling the first time a user comes on the site to personalize their experience
   const [isPersonalized, setIsPersonalized] = useState(true); // Default to true to avoid flicker
@@ -64,6 +64,9 @@ export default function JournalDashboard() {
           const response = await getSettings(authTokens);
           // console.log("Settings for this user here:", response);
           setIsPersonalized(response.is_personalised);
+          if (isPersonalized) {
+            console.log("Personalized");
+          }
           //control modal based on true or false
           setShowQuestionnaireModal(!response.is_personalised);
         } catch (error) {

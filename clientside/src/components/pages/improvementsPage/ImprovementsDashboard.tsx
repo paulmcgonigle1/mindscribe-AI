@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ActionableTasks from "./ActionableTasksView";
 import { ImprovementData, Task } from "../../../lib/types/types";
 import {
-  createImprovements,
   getCompletedTasks,
   getImprovements,
 } from "../../../services/JournalService";

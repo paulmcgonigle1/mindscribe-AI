@@ -43,7 +43,7 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({ item }) => {
 };
 
 export default function Sidebar() {
-  let { user, logoutUser } = useContext(AuthContext)!;
+  let { logoutUser } = useContext(AuthContext)!;
 
   const navigate = useNavigate();
   // const { setAuthTokens, setUser } = useContext(AuthContext); // Assuming your context provides these

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { ImprovementData, Task } from "../../../lib/types/types";
 import TaskCard from "./TaskCard";
 import TaskModal from "./TaskModal";

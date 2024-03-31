@@ -23,11 +23,6 @@ function App() {
 
     return authTokens ? <Outlet /> : <Navigate to="/sign-up" replace />;
   };
-  // Correctly handle potentially undefined context
-  const authContext = useContext(AuthContext);
-
-  // This fixed my undefined error
-  const { user } = authContext ?? {};
 
   return (
     //Auth Provider now allow the context to be available throughout all the components

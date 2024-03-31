@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import AuthContext from "../../../context/AuthContext";
-import {
-  getSettings,
-  getTrackedTasks,
-  updateSettings,
-} from "../../../services/JournalService";
+import { getSettings, updateSettings } from "../../../services/JournalService";
 
 function Settings() {
   const [settings, setSettings] = useState({
     preferred_type: "",
     preferred_style: "",
-    isPersonalized: false,
+    is_personalised: false,
   });
 
   const { authTokens } = useContext(AuthContext) ?? {};

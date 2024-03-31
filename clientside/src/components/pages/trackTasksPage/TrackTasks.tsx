@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import TaskProgressBar from "./TaskProgressBar"; // This would be a new component for the progress bar
+import { useContext, useEffect, useState } from "react";
 import { Task } from "../../../lib/types/types";
 import { getTrackedTasks } from "../../../services/JournalService";
 import { updateTaskCompletionStatus } from "../../../services/JournalService";
@@ -107,12 +106,6 @@ const TrackTasks = () => {
       ))}
     </div>
   );
-};
-
-// Helper function to calculate progress percentage
-const calculateTaskProgress = (task: Task) => {
-  // Implement logic based on your requirements
-  return task.isCompleted ? 100 : 0; // This is a placeholder
 };
 
 export default TrackTasks;

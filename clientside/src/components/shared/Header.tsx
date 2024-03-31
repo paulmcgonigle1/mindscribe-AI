@@ -1,13 +1,8 @@
-import React, { Fragment, useContext } from "react";
-import {
-  HiOutlineBell,
-  HiOutlineChatAlt,
-  HiOutlineSearch,
-  HiChevronDoubleDown,
-} from "react-icons/hi";
+import { Fragment, useContext } from "react";
+import { HiOutlineBell, HiChevronDoubleDown } from "react-icons/hi";
 import { Popover, Transition, Menu } from "@headlessui/react";
 import classNames from "classnames";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import TrackTasks from "../pages/trackTasksPage/TrackTasks";
 useNavigate;
@@ -132,11 +127,7 @@ export default function Header() {
                 )}
               </Menu.Item>
               <Menu.Item>
-                {({ active }) => (
-                  <button onClick={() => navigate("/settings")}>
-                    Settings
-                  </button>
-                )}
+                <button onClick={() => navigate("/settings")}>Settings</button>
               </Menu.Item>
             </Menu.Items>
           </Transition>

@@ -1,6 +1,4 @@
-import { Image } from "../atoms/Image";
 import { Text } from "../atoms/Text";
-import GroupOfPlus from "../../assets/plusGroup.png";
 import { Card } from "../atoms/Card";
 import { useCallback } from "react";
 import Icon1 from "../../../assets/analysis.png";

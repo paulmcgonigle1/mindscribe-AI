@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import JournalSection from "./JournalSection";
 import MoodRating from "./MoodRating";
 import { useNavigate } from "react-router-dom";
