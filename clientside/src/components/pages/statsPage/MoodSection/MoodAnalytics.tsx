@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import { JournalEntry } from "../../../../lib/types/types";
-import { getRecentEntries } from "../../../../services/JournalService";
 import MoodStats from "./MoodStats";
 import MoodChartBar from "./MoodLineChart";
 interface MoodStatsProps {

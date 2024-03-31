@@ -2,7 +2,7 @@ import React from "react";
 import { ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
 import { JournalEntry, MoodChartData } from "../../../lib/types/types";
 import { filterEntriesByPeriod } from "../../../lib/utils/filter-by-period";
-import { moodRatingColors } from "../../../lib/constants/moodColors";
+import { moodRatingColors } from "../../../lib/constants/colors";
 interface MoodPieChartProps {
   entries: JournalEntry[];
   selectedPeriod: number;
@@ -73,9 +73,11 @@ function MoodPieChart({ entries, selectedPeriod }: MoodPieChartProps) {
   return (
     <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
       <h1 className=" text-lg">Mood Profile</h1>
+      <div>Here is your mood chart of the last {selectedPeriod} days</div>
+
       <div className="w-full mt-3 flex-1 text-xs">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart width={400} height={300}>
+        <ResponsiveContainer width="98%" height="100%">
+          <PieChart>
             <Pie
               data={data}
               cx="50%"

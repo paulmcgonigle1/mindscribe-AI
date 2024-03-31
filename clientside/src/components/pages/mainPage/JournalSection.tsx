@@ -6,12 +6,10 @@ import AuthContext from "../../../context/AuthContext";
 interface JournalSectionProps {
   moodRating: number | null;
   onJournalSubmit: () => void;
-  fetchInsightsCallback: () => void; // Include fetchInsightsCallback in props
 }
 export default function JournalSection({
   moodRating,
   onJournalSubmit,
-  fetchInsightsCallback,
 }: JournalSectionProps) {
   const [entryText, setEntryText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -48,16 +46,15 @@ export default function JournalSection({
       } catch (error) {
         console.error("Error creating journal entry:", error);
       }
-      fetchInsightsCallback();
 
       setIsLoading(false);
     }
   };
   return (
     <>
-      <div className="w-full mb-4">
+      <div className="w-full mb-2">
         <textarea
-          className="w-full h-80 p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full h-64 p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="Write your journal entry here..."
           value={entryText}
           onChange={(e) => setEntryText(e.target.value)}

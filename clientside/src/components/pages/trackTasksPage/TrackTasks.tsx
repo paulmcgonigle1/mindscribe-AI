@@ -4,6 +4,7 @@ import { Task } from "../../../lib/types/types";
 import { getTrackedTasks } from "../../../services/JournalService";
 import { updateTaskCompletionStatus } from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
+import { saveTask } from "../../../services/JournalService";
 
 const TrackTasks = () => {
   const [inProgressTasks, setInProgressTasks] = useState<Task[]>([]);
@@ -38,9 +39,42 @@ const TrackTasks = () => {
       )
     );
   };
+  const handleSaveTask = async (taskId: number, state: boolean) => {
+    if (authTokens?.access) {
+      const response = await saveTask(authTokens, taskId, state);
+      console.log(response);
+    }
+  };
+  const handleRemoveorCompleteTask = async (task: Task) => {
+    if (!authTokens?.access) return;
+
+    if (task.isCompleted) {
+      // If the task is completed, we assume it should be removed from tracking
+      // Call backend method to archive or mark it as no longer in progress
+      await handleSaveTask(task.taskId, false);
+    }
+
+    // Update the inProgressTasks state to reflect changes
+    setInProgressTasks((prevTasks) =>
+      prevTasks.filter((t) => t.taskId !== task.taskId)
+    );
+  };
 
   return (
-    <div className="p-4">
+    <div className="p-4 shadow-2xl">
+      <div className="p-4 bg-rich-green">
+        <h1 className="text-xl text-center shadow-2xl font-semibold">
+          Here are your tracked tasks
+        </h1>
+        <p className="text-md text-center shadow-2xl">
+          Please complete your tasks if possible and mark as complete
+        </p>
+        <p className="text-md text-center shadow-2xl">Or</p>
+        <p className="text-md text-center shadow-2xl">
+          Alternatively you can remove the task if you no longer want to do them
+        </p>
+      </div>
+
       {inProgressTasks.map((task) => (
         <div
           key={task.taskId}
@@ -53,22 +87,21 @@ const TrackTasks = () => {
             {/* <TaskProgressBar percentage={calculateTaskProgress(task)} /> */}
           </div>
           <div className="flex items-center">
-            <button
-              onClick={() =>
-                handleTaskCompletionChange(task, !task.isCompleted)
-              }
-              className="mr-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none"
-            >
-              Finished
-            </button>
             <input
               type="checkbox"
               checked={task.isCompleted}
               onChange={(e) =>
                 handleTaskCompletionChange(task, e.target.checked)
               }
-              className="form-checkbox h-5 w-5 text-blue-600"
+              className="form-checkbox h-10 w-7 text-blue-600"
             />
+            <p className="px-2">Complete</p>
+            <button
+              onClick={() => handleRemoveorCompleteTask(task)}
+              className="ml-2 p-2 bg-gray-400 text-white rounded hover:bg-red-600 focus:outline-none"
+            >
+              X
+            </button>
           </div>
         </div>
       ))}

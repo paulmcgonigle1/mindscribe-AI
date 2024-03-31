@@ -9,6 +9,7 @@ from .authviews import MyTokenObtainPairView, getRoutes, register
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
+    get_tasks_completed,
     save_unsave_task,
     get_tasks_in_progress,
     update_task_completetion_status,
@@ -48,6 +49,11 @@ urlpatterns = [
         name="get_tasks_in_progress",
     ),
     path(
+        "get-completed-tasks/",
+        get_tasks_completed,
+        name="get_tasks_complete",
+    ),
+    path(
         "emotions/",
         views.get_emotion_statistics,
         name="emotion-list-create",
@@ -55,7 +61,6 @@ urlpatterns = [
     path("settings/", views.user_settings, name="user-settings"),
     path("preferences/", views.update_preferences, name="user-preferences"),
     path("themes/", views.get_theme_statistics, name="theme-list-create"),
-    path("analyze-data/<int:user_id>/", views.analyze_data, name="analyze-data"),
     ###################################################
     # WORKING WITH AUTH AND LOGIN ETC
     # pointing to api folder

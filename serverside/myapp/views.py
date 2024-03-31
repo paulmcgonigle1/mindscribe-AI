@@ -278,15 +278,3 @@ def get_theme_statistics(request):
     ]  # Adjust the number as needed
 
     return JsonResponse(sorted_limited_theme_data, safe=False)
-
-
-def analyze_data(request, user_id):
-    try:
-        matrix, themes = perform_mood_and_emotion_analysis(user_id)
-        data = {
-            "matrix": matrix.tolist(),  # Convert numpy array to list
-            "themes": themes,
-        }
-        return JsonResponse(data, safe=False)  # Set safe to False
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)

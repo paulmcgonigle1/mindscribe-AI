@@ -57,8 +57,12 @@ class GetRecentImprovements(APIView):
 
         except UserImprovement.DoesNotExist:
             return Response(
-                {"error": "No mental health plan found for this user"},
-                status=status.HTTP_404_NOT_FOUND,
+                {
+                    "message": "No Improvements plan exists yet",
+                    "tasks": [],
+                    "created_at": None,
+                },
+                status=200,
             )
 
 
@@ -74,11 +78,11 @@ class CreateImprovementWithTasksAndMessage(APIView):
 
         insights = Insight.objects.filter(entry__user=user, timestamp__date=today)
         serialized_insights = InsightSerializer(insights, many=True).data
-
+        print("creating a new user Improvement message and tasks")
         # Create tasks and parse from today's insights
-        print("Creating tasks from insights")
+        # print("Creating tasks from insights")
         mental_health_tasks = create_tasks_from_insights(serialized_insights, user.id)
-        print("Now creating message of the day")
+        # print("Now creating message of the day")
         message_of_the_day = create_message_of_the_day(user)
         return Response({"message": message_of_the_day, "tasks": mental_health_tasks})
 
@@ -91,14 +95,9 @@ def create_tasks_from_insights(insights, user_id):
 
     # Get the unstructured tasks from OpenAI
     unstructured_tasks = interact_with_llm(prompt)
-    print("Unstructured Tasks : " + unstructured_tasks)
+    # print("Unstructured Tasks : " + unstructured_tasks)
     # Parse the raw plan into distinct tasks
     mental_health_tasks = parse_raw_response_with_tasks(unstructured_tasks)
-
-    print(
-        "Mental Health Tasks after parsing:\n"
-        + "\n".join(str(task) for task in mental_health_tasks)
-    )
 
     user = User.objects.get(id=user_id)
 
@@ -167,7 +166,7 @@ def create_message_of_the_day(user):
             user_improvement.message_of_the_day = message
             user_improvement.save()
 
-        print("Message of the day: ", message)
+        # print("Message of the day: ", message)
 
     return message
 
@@ -178,6 +177,17 @@ def format_insights_for_prompt(insights):
         # Assuming insights have 'moods', 'sentiment', 'keywords', and 'key_themes' fields
         formatted_insights += f"Moods: {insight['moods']}, Sentiment: {insight['sentiment']}, Themes: {insight['key_themes']}.\n"
     return formatted_insights
+
+
+def format_single_insight_for_prompt(insight):
+
+    # Assuming insights have 'moods', 'sentiment', 'keywords', and 'key_themes' fields
+    formatted_insight = (
+        f"Moods: {insight.get('moods', 'No moods available')}, "
+        f"Sentiment: {insight.get('sentiment', 'No sentiment available')}, "
+        f"Themes: {insight.get('key_themes', 'No themes available')}.\n"
+    )
+    return formatted_insight
 
 
 def prompt_with_insights(formatted_insights, user_id):
@@ -268,6 +278,17 @@ def get_tasks_in_progress(request):
     return Response(serializer.data)
 
 
+@api_view(["GET"])
+def get_tasks_completed(request):
+    today = timezone.now().date()
+    user = request.user  # Directly use the user object
+    tasks = ActionableTask.objects.filter(
+        improvement__user=user, inProgress=False, isCompleted=True
+    )
+    serializer = ActionableTaskSerializer(tasks, many=True)
+    return Response(serializer.data)
+
+
 llm = ChatOpenAI(
     temperature=0,
     model="gpt-3.5-turbo",
@@ -327,11 +348,27 @@ def interact_with_llm(prompt):
 def createInsightMessage(request):
     today = timezone.now().date()
     user = request.user  # Directly use the user object
+    latest_insight = (
+        Insight.objects.filter(entry__user=user, timestamp__date=today)
+        .order_by("-timestamp")
+        .first()
+    )
+    if not latest_insight:
+        return JsonResponse({"message": "No insights found for today."}, status=404)
+
+    serialized_insight = InsightSerializer(latest_insight).data
+    print(
+        "type of serialized insight", type(serialized_insight)
+    )  # Should show <class 'dict'> or <class 'OrderedDict'>
+
+    formatted_insight = format_single_insight_for_prompt(serialized_insight)
+
     print("Now getting Insight Response")
-    insights = "SAD, Failed Swim test, stressed out with college work"
+    print(serialized_insight)
+    # insights = "SAD, Failed Swim test, stressed out with college work"
     prompt = (
         f"Generate a quick message to help user {user.first_name} "
-        f"to understand their insights as follows: {insights} .\n\n"
+        f"to understand their insights as follows: {formatted_insight} .\n\n"
     )
 
     message = llm.invoke(prompt)

@@ -21,7 +21,7 @@ function Improvements_Message({ improvementData }: ImprovementsMessageProps) {
       if (authTokens?.access) {
         try {
           const fetchedsettings = await getSettings(authTokens);
-          console.log("Settings for this user:", fetchedsettings);
+          // console.log("Settings for this user:", fetchedsettings);
           setSettings(fetchedsettings);
         } catch (error) {
           console.error("Error fetching tracked tasks plan:", error);
@@ -33,8 +33,8 @@ function Improvements_Message({ improvementData }: ImprovementsMessageProps) {
   }, [authTokens]);
   // Creates a new mental health plan and sets that to the one
   return (
-    <div className="relative border border-stone-400 bg-white shadow-lg rounded-lg overflow-hidden mx-auto max-w-xl">
-      <div className="py-4 px-6 bg-indigo-600 text-white">
+    <div className="relative border border-stone-400 bg-white shadow-lg rounded-lg overflow-hidden mx-auto max-w-7xl">
+      <div className="py-2 px-2 ">
         <h1 className="text-center text-xl font-semibold">Today's Message</h1>
         <h2 className="text-center">
           A {settings.preferred_style} {settings.preferred_type} -- based on
@@ -42,7 +42,7 @@ function Improvements_Message({ improvementData }: ImprovementsMessageProps) {
         </h2>
       </div>
       {improvementData.message ? (
-        <div className="p-6">
+        <div className="p-4">
           <p className="text-gray-700 text-justify leading-relaxed">
             {improvementData.message}
           </p>

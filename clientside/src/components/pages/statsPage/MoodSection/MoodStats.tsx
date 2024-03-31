@@ -1,9 +1,4 @@
-import React, { useState, useEffect } from "react";
 import { JournalEntry } from "../../../../lib/types/types";
-import {
-  getEntriesByUser,
-  getRecentEntries,
-} from "../../../../services/JournalService";
 
 // Helper function to calculate average mood
 function calculateAverageMood(entries: JournalEntry[]) {

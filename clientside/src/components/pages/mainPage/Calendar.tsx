@@ -195,7 +195,7 @@ export default function Example() {
     selectedDay,
     selectedDayMeetings,
   }: JournalEntriesProps) => (
-    <section className="mt-12 md:mt-0 md:pl-14">
+    <section className="mt-12 md:mt-0 md:pl-10">
       <h2 className="font-semibold text-gray-900">
         {selectedDay ? (
           <>
@@ -208,6 +208,7 @@ export default function Example() {
           "Select a day"
         )}
       </h2>
+      <p className="text-sm text-gray-400">Click on Journal to read more</p>
       <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
         {selectedDayMeetings.length > 0 ? (
           selectedDayMeetings.map((entry) => (
@@ -221,21 +222,17 @@ export default function Example() {
   );
 
   return (
-    <div className="pt-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded-xl p-8 max-h-[60vh] overflow-auto">
+    <div className="border w-full max-h-full ">
+      <div className="  mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded-xl p-8 max-h-full  overflow-auto">
         <div className="grid grid-cols-1 xl:grid-cols-2 lg:gap-4 md:gap-3 divide-y md:divide-y-0 lg:divide-x divide-gray-200">
-          <div className="pb-4 md:pb-0 lg:pr-10">
+          <div className="pb-4 md:pb-0 ">
             <CalendarHeader
               {...{ firstDayCurrentMonth, previousMonth, nextMonth }}
             />
             <WeekdayHeaders />
             <DayGrid {...{ days, setSelectedDay, selectedDay, entries }} />
           </div>
-          <div
-            className={`pt-4 md: pt-0 ${
-              selectedDay ? "block" : "hidden xl:block"
-            }`}
-          >
+          <div>
             <JournalEntries {...{ selectedDay, selectedDayMeetings }} />
           </div>
         </div>

@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import JournalSection from "./JournalSection";
 import MoodRating from "./MoodRating";
+import { useNavigate } from "react-router-dom";
 
 interface JournalEntryProps {
   onJournalSubmit: any;
   hasJournaledToday: boolean;
   resetJournalState: () => void; // New callback function for resetting the journal state
-  fetchInsightsCallback: () => void; // Callback function to trigger fetchInsights
 }
 function JournalEntry({
   onJournalSubmit,
   hasJournaledToday,
   resetJournalState,
-  fetchInsightsCallback,
 }: JournalEntryProps) {
   const [moodRating, setMoodRating] = useState<number | null>(null);
   //   const [hasJournaledToday, setHasJournaledToday] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -30,20 +30,23 @@ function JournalEntry({
           <p className="text-lg font-semibold text-gray-700">
             You've already journaled for today.
           </p>
-          <p className="text-sm text-gray-500">
-            Reflect on your entry or start fresh?
+          <p className="text-md text-gray-500">
+            Want to journal again or start fresh?
           </p>
 
           <button
-            className="mt-4 px-6 py-3 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
+            className="mt-4 px-6 py-3 bg-rich-green text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
             onClick={resetJournalState}
           >
             Journal Again
           </button>
           <p>Or</p>
+          <p className="text-md text-gray-500">
+            Get actionable insights to start improving?
+          </p>
           <button
-            className="mt-4 px-6 py-3 bg-orange-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
-            onClick={resetJournalState}
+            className="mt-4 px-6 py-3 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition-colors"
+            onClick={() => navigate("/improvements")}
           >
             Get Actionable Insights
           </button>
@@ -54,7 +57,6 @@ function JournalEntry({
           <JournalSection
             moodRating={moodRating}
             onJournalSubmit={onJournalSubmit}
-            fetchInsightsCallback={fetchInsightsCallback} // Pass fetchInsightsCallback to JournalSection
           />
         </>
       )}

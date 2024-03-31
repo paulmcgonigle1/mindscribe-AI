@@ -1,59 +1,70 @@
-import React, { useState, useEffect, useContext } from "react";
-import ChatMessages from "./ChatMessages";
+import { useState, useEffect } from "react";
+import ChatMessage from "./ChatMessage";
 import chatbot from "../../assets/chatbot.png"; // Path to your bot's avatar image
-import axios from "axios";
-import AuthContext from "../../context/AuthContext";
-import { generateInsightMessageFromBot } from "../../services/JournalService";
+import { Link } from "react-router-dom";
 
 interface ChatBotProps {
-  fetchInsightsCallback: () => void; // Define the type of the callback
+  fetchInsightsCallback: () => Promise<void>;
+  message: string | null;
 }
-function ChatBot({ fetchInsightsCallback }: ChatBotProps) {
-  const [messages, setMessages] = useState<string[]>([]);
-  const { authTokens } = useContext(AuthContext) ?? {};
+function ChatBot({ fetchInsightsCallback, message }: ChatBotProps) {
+  const [messages, setMessages] = useState<React.ReactNode[]>([]); // Update state to hold React nodes
+  const [hasAdviceBeenAdded, setHasAdviceBeenAdded] = useState<boolean>(false);
 
-  const fetchInsights = async () => {
-    if (authTokens?.access) {
-      try {
-        const response = await generateInsightMessageFromBot(authTokens);
-        const insightMessage = response.message; // Accessing the message property
-
-        setMessages((prevMessages) => [...prevMessages, insightMessage]);
-      } catch (error) {
-        console.error("Error fetching insights:", error);
-      }
-    }
-  };
   useEffect(() => {
-    // Call fetchInsightsCallback when the component mounts or when needed
-    fetchInsightsCallback();
-  }, [fetchInsightsCallback]);
+    if (message) {
+      const newMessages = messages.includes(message)
+        ? [...messages]
+        : [...messages, message];
+
+      if (newMessages.length === 1 && !hasAdviceBeenAdded) {
+        // Create a React node with the message and a Link component
+        const adviceMessage = (
+          <span>
+            Please go to the{" "}
+            <Link to="/improvements" className="text-blue-500 hover:underline">
+              improvements page
+            </Link>{" "}
+            to find out how to improve.
+          </span>
+        );
+
+        newMessages.push(adviceMessage);
+        setHasAdviceBeenAdded(true);
+      }
+
+      setMessages(newMessages);
+    }
+  }, [message, hasAdviceBeenAdded]);
 
   return (
-    <div className="flex flex-col p-4 max-w-md mx-auto bg-white rounded-lg border shadow-md space-y-4">
-      {messages.length > 0 ? (
-        messages.map((message, index) => (
-          <div key={index} className="flex items-center">
-            <ChatMessages message={message} />
+    <div className="flex flex-col p-4 max-w-xl mx-auto bg-white rounded-lg border shadow-md space-y-4">
+      <div className="overflow-y-auto max-h-[300px] space-y-4">
+        {messages.length > 0 ? (
+          messages.map((message, index) => (
+            <div key={index} className="flex items-center">
+              <ChatMessage message={message} />
+
+              <img
+                src={chatbot}
+                alt="Chat Bot"
+                onClick={() => fetchInsightsCallback().catch(console.error)}
+                className="w-20 h-20 rounded-full ml-4"
+              />
+            </div>
+          ))
+        ) : (
+          <div className="text-center">
+            <p>No insights available yet. Click on the bot to get insights!</p>
             <img
               src={chatbot}
               alt="Chat Bot"
-              onClick={fetchInsights}
-              className="w-20 h-20 rounded-full ml-4" // Adjusted avatar size and spacing
+              onClick={() => fetchInsightsCallback().catch(console.error)}
+              className="w-20 h-20 rounded-full mx-auto mt-4 cursor-pointer"
             />
           </div>
-        ))
-      ) : (
-        <div className="text-center">
-          <p>No insights available yet. Click on the bot to get insights!</p>
-          <img
-            src={chatbot}
-            alt="Chat Bot"
-            onClick={fetchInsights}
-            className="w-20 h-20 rounded-full mx-auto mt-4 cursor-pointer" // Added cursor-pointer for better UX
-          />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

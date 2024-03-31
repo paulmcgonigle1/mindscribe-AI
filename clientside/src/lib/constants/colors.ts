@@ -5,3 +5,6 @@ export const moodRatingColors: { [key: number]: string } = {
     4: "#90EE90", // LightGreen for rating 4
     5: "#32CD32", // LimeGreen for rating 5
   };
+  
+
+

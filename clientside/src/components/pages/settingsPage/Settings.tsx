@@ -25,7 +25,7 @@ function Settings() {
       if (authTokens?.access) {
         try {
           const fetchedsettings = await getSettings(authTokens);
-          console.log("Settings for this user:", fetchedsettings);
+          // console.log("Settings for this user:", fetchedsettings);
           setSettings(fetchedsettings);
         } catch (error) {
           console.error("Error fetching tracked tasks plan:", error);

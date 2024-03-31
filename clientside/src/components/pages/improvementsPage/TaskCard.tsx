@@ -30,17 +30,18 @@ function TaskCard({ task, onReadMore, onSave, onUnsave }: TaskCardProps) {
 
   return (
     <div className="max-w-sm p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow">
-      <h5 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
+      <h5 className="text-lg sm:text-xl text-left font-semibold tracking-tight text-gray-900">
         {task.content}
       </h5>
+
       {/* This paragraph will be hidden on small screens */}
       <p className="hidden md:block font-normal text-gray-700">
-        {task.explanation.substring(0, 150)}...
+        {task.explanation.substring(0, 100)}...
       </p>
       {/* This button will be hidden on small screens */}
       <button
         onClick={() => onReadMore(task)}
-        className="hidden sm:inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+        className="mt-4 ml-4 hidden sm:inline-flex items-center px-3 py-2  font-medium text-center text-white bg-warm-orange-dark rounded-lg hover:bg-blue-800 "
       >
         Read more
         {/* SVG arrow icon here */}
@@ -49,8 +50,8 @@ function TaskCard({ task, onReadMore, onSave, onUnsave }: TaskCardProps) {
       <button
         onClick={handleSaveToggle}
         className={`... ${
-          isSaved ? "bg-red-600" : "bg-green-700"
-        } mt-4 sm:mt-0 sm:ml-4 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded`}
+          isSaved ? "bg-unsave-task" : "bg-rich-green"
+        } mt-4 ml-4  items-center px-3 py-2 text-md font-medium text-center text-white rounded`}
       >
         {isSaved ? "Unsave Task" : "Save Task"}
       </button>

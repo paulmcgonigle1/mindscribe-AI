@@ -28,21 +28,37 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
   };
 
   return (
-    <div className="flex flex-wrap gap-4">
-      {improvementData.tasks.map((task, index) => (
-        <TaskCard
-          key={task.taskId || index}
-          task={task}
-          onReadMore={handleReadMore}
-          onSave={() => handleSaveTask(task.taskId, true)} // Pass taskId to handleSaveTask
-          onUnsave={() => handleSaveTask(task.taskId, false)} // Assuming you have a handleUnsaveTask function
+    <div className=" bg-green-100 p-5 rounded-lg my-4">
+      <div className=" border-rich-green text-black text-center ">
+        <h3 className="text-2xl font-semibold mb-2">
+          Recommendedations for today
+        </h3>
+        <p className="text-lg mb-1">
+          <span className="font-semibold ">To track a task:</span> Press{" "}
+          <span className="font-semibold">'Save Task'</span>.
+        </p>
+        <p className="text-lg mb-4">
+          <span className="font-semibold">To learn more:</span> Press{" "}
+          <span className="font-semibold">'Read More'</span> for detailed
+          insights.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+        {improvementData.tasks.map((task, index) => (
+          <TaskCard
+            key={task.taskId || index}
+            task={task}
+            onReadMore={handleReadMore}
+            onSave={() => handleSaveTask(task.taskId, true)} // Pass taskId to handleSaveTask
+            onUnsave={() => handleSaveTask(task.taskId, false)} // Assuming you have a handleUnsaveTask function
+          />
+        ))}
+        <TaskModal
+          task={selectedTask}
+          isOpen={!!selectedTask}
+          onClose={handleCloseModal}
         />
-      ))}
-      <TaskModal
-        task={selectedTask}
-        isOpen={!!selectedTask}
-        onClose={handleCloseModal}
-      />
+      </div>
     </div>
   );
 }

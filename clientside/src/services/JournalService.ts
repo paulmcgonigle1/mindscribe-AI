@@ -61,6 +61,7 @@ export const updateTaskCompletionStatus = async (authTokens: { access: string },
   });  
   return response.data;
 };
+// export const archiveOrRemoveTask = async (authTokens: { access: string }, taskId: number): Promise<any> => {
 //create new improvemetns
 export const createImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   try {
@@ -83,27 +84,7 @@ export const createImprovements = async (authTokens: { access: string }): Promis
     throw new Error("Error creating improvements");
   }
 };
-// export const generateInsightMessage = async (authTokens: { access: string }): Promise<InsightMessage> => {
-//   try {
-//     const response = await axios.get(`${BASE_URL}/myapp/create-improvements/`,  { // Note the method change to POST
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${authTokens.access}`,
-//       }
-//     });
-    
-//     return {
-    
-//       message: response.data.message,
-//       tasks: response.data.tasks,
-//       createdAt: response.data.createdAt,
-//     };
-//   } catch (error) {
-//     // Log error or handle it as needed
-//     console.error("Failed to create improvements:", error);
-//     throw new Error("Error creating improvements");
-//   }
-// };
+
 
  
 export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
@@ -178,6 +159,18 @@ export const getTrackedTasks = async (authTokens: { access: string }): Promise<T
   return response.data;
   
 } 
+export const getCompletedTasks = async (authTokens: { access: string }): Promise<Task[]> => {
+  
+  const response = await axios.get(`${BASE_URL}/myapp/get-completed-tasks/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`, 
+    }
+  });
+  console.log(response)
+  return response.data;
+  
+} 
 
 //get all of the journals for the user
   export const getJournals = async (authTokens:{access:string}):Promise<JournalEntry[]> => {
@@ -236,11 +229,7 @@ export const getTrackedTasks = async (authTokens: { access: string }): Promise<T
     return response.data;
   };
   
-  // export const getEntriesByUser = async (userId: number): Promise<JournalEntry[]> => {
-  //   const response = await axios.get(`${BASE_URL}/myapp/journal-entries/${userId}/`);
-  //   return response.data;
-  // }
-
+ 
 
   export const getInsightbyDay = async (date: string, userId: number): Promise<Insight[]> => {
     const [year, month, day] = date.split('-');
