@@ -89,46 +89,51 @@ export default function JournalDashboard() {
     }
   };
   return (
-    <div className="flex flex-col gap-6 p-4">
-      {/* Journal Page Title and Introduction */}
-      <div className="flex  items-center justify-center">
-        <div className=" bg-rich-green p-8 border  rounded-lg flex flex-col items-center justify-center ">
-          <h1 className="text-3xl text-black mb-2 text-left ">Journal </h1>
-          <p className="text-lg text-white text-center ">
-            Welcome to your personal journaling space. Take a moment to reflect
-            on your day, track your mood, and gain insights to foster your
-            well-being.
-          </p>
+    <div className=" justify-center m-2">
+      <div className="flex flex-col gap-6 p-4 ">
+        {/* Journal Page Title and Introduction */}
+        <div className="flex  items-center justify-center">
+          <div className=" bg-rich-green p-8 border  rounded-lg flex flex-col items-center justify-center ">
+            <h1 className="text-3xl text-black mb-2 text-left ">Journal </h1>
+            <p className="text-lg text-white text-center ">
+              Welcome to your personal journaling space. Take a moment to
+              reflect on your day, track your mood, and gain insights to foster
+              your well-being.
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div className="flex flex-wrap md:flex-nowrap gap-">
-        <div className="flex flex-1 md:w-1/2 border border-black">
-          <div className="flex-1 w-full m-1 p-4 min-h-full ">
-            <JournalEntry
-              onJournalSubmit={handleJournalSubmit}
-              hasJournaledToday={hasJournaledToday}
-              resetJournalState={resetJournalState}
+        <div className="flex flex-wrap md:flex-nowrap gap-">
+          <div className="flex flex-1 md:w-1/2 border border-black">
+            <div className="flex-1 w-full m-1 p-4 min-h-full ">
+              <JournalEntry
+                onJournalSubmit={handleJournalSubmit}
+                hasJournaledToday={hasJournaledToday}
+                resetJournalState={resetJournalState}
+              />
+            </div>
+            <div className="flex flex-1 m-2 p-4 w-full max-h-[45vh]">
+              <Calendar />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex-1 ">
+            <BotResponse
+              fetchInsightsCallback={fetchMessage}
+              message={message}
             />
           </div>
-          <div className="flex flex-1 m-2 p-4 w-full max-h-[45vh]">
-            <Calendar />
-          </div>
         </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-1 ">
-          <BotResponse fetchInsightsCallback={fetchMessage} message={message} />
-        </div>
-      </div>
-      {/* <StatsDashboard /> */}
+        {/* <StatsDashboard /> */}
 
-      <Modal
-        isOpen={showQuestionnaireModal}
-        onClose={() => setShowQuestionnaireModal(false)}
-      >
-        <Questionnaire />
-      </Modal>
+        <Modal
+          isOpen={showQuestionnaireModal}
+          onClose={() => setShowQuestionnaireModal(false)}
+        >
+          <Questionnaire />
+        </Modal>
+      </div>
     </div>
   );
 }

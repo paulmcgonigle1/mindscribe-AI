@@ -30,7 +30,9 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({ item }) => {
     <Link
       to={item.path}
       className={classNames(
-        pathname === item.path ? "text-white" : "text-black-400",
+        pathname === item.path
+          ? "text-white text-xl"
+          : "text-black-400 text-xl",
         linkClasses
       )}
     >
@@ -58,7 +60,7 @@ export default function Sidebar() {
         <FcBullish />
         <span className="text-black  text-2xl">MindScribe</span>
       </div>
-      <div className="flex-1 py-8 flex flex-col gap-8">
+      <div className="flex-1 py-8 flex flex-col gap-16 justify-center">
         {DASHBOARD_SIDEBAR_LINKS.map((item) => (
           <SidebarLink key={item.key} item={item} /> // Use the SidebarLink component with a key
         ))}
@@ -72,11 +74,11 @@ export default function Sidebar() {
           onClick={handleLogout}
         >
           {
-            <span className="text-xl">
+            <span className="text-2xl">
               <HiOutlineLogout />
             </span>
           }
-          Logout
+          <h3 className="text-xl">Logout</h3>
         </div>
       </div>
     </div>
