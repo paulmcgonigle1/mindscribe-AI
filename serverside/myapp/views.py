@@ -1,6 +1,12 @@
+import os
+from django.http import HttpResponse
+
 import json
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.views import View
+
+from serverside.serverside import settings
 from .models import JournalEntry, Insight, UserImprovement, UserPreferences
 from .serializers import (
     JournalEntrySerializer,
@@ -22,6 +28,22 @@ from .analysis import perform_mood_and_emotion_analysis
 
 # Create your views here.
 logger = logging.getLogger(__name__)
+
+
+class ReactAppView(View):
+    def get(self, request):
+        try:
+            with open(
+                os.path.join(settings.BASE_DIR, "clientside/dist/index.html")
+            ) as file:
+                return HttpResponse(file.read())
+        except FileNotFoundError:
+            return HttpResponse(
+                """
+                This page is not built yet. Please run 'npm run build' inside the 'clientside' directory.
+                """,
+                status=501,
+            )
 
 
 # class for creating journals
