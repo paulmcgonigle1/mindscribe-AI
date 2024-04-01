@@ -222,5 +222,5 @@ DATABASES["default"].update(prod_db)
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 print("Base Directory:", BASE_DIR)
-print("DEBUG:", DEBUG)
-print("INSTALLED_APPS:", INSTALLED_APPS)
+# print("DEBUG:", DEBUG)
+# print("INSTALLED_APPS:", INSTALLED_APPS)
