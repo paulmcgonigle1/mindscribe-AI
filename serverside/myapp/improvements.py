@@ -1,18 +1,15 @@
 import logging
-import re
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import api_view
 from langchain.chains import create_extraction_chain
 from langchain.chat_models import ChatOpenAI
 from django.utils import timezone
-from django.db.models import Count
 from django.core.exceptions import MultipleObjectsReturned
 from django.http import JsonResponse
 
 import os
 from .models import (
-    JournalEntry,
     Insight,
     User,
     UserImprovement,
@@ -20,13 +17,11 @@ from .models import (
 )
 from .serializers import (
     ActionableTaskSerializer,
-    JournalEntrySerializer,
     InsightSerializer,
 )
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .analysis import perform_mood_and_emotion_analysis
 
 logger = logging.getLogger(__name__)
 

@@ -1,11 +1,5 @@
 from django.urls import path, include, re_path
-from .views import (
-    JournalEntryViewSet,
-    DailyInsightsView,
-    ReactAppView,
-    get_emotion_statistics,
-    getJournals,
-)  # Import your views here
+from .views import DailyInsightsView, ReactAppView  # Import your views here
 from .authviews import MyTokenObtainPairView, getRoutes, register
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
@@ -19,7 +13,6 @@ from .improvements import (
 from rest_framework.routers import DefaultRouter
 from . import views
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 

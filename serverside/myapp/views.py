@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views import View
 
-from serverside.serverside import settings
+from django.conf import settings
 
 from .models import JournalEntry, Insight, UserPreferences
 from .serializers import (
@@ -25,7 +25,6 @@ from .improvements import create_tasks_from_insights, process_entry
 from rest_framework.response import Response
 from datetime import timedelta  # Will be used for date range queries
 import logging
-from .analysis import perform_mood_and_emotion_analysis
 
 # Create your views here.
 logger = logging.getLogger(__name__)
