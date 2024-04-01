@@ -2,6 +2,8 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
+import sys
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -21,6 +23,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+
+# Example of logging
+logger = logging.getLogger(__name__)
+logger.debug("This is a debug message")
 
 # Application definition
 
@@ -51,22 +61,22 @@ MIDDLEWARE = [
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {
-#             "class": "logging.StreamHandler",
-#         },
-#     },
-#     "loggers": {
-#         "": {  # This means all loggers
-#             "handlers": ["console"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         },
-#     },
-# }
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "": {  # This means all loggers
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
 ROOT_URLCONF = "serverside.urls"
 
 TEMPLATES = [
@@ -214,3 +224,7 @@ DATABASES["default"].update(prod_db)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+print("Base Directory:", BASE_DIR)
+print("DEBUG:", DEBUG)
+print("INSTALLED_APPS:", INSTALLED_APPS)
