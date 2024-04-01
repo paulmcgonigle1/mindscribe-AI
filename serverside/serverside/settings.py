@@ -23,14 +23,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
-
-# Example of logging
-logger = logging.getLogger(__name__)
-logger.debug("This is a debug message")
 
 # Application definition
 
