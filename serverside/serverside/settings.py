@@ -21,6 +21,10 @@ SECRET_KEY = "django-insecure-!r&g$3b@3eva_gjgn4cyv50j^9_o&a5ue^(flp!1u*z2#u_ukp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# trying to fix cors error THESE MAY NEED TO BE LOOKED AT AGAIN
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 ALLOWED_HOSTS = ["*"]
 
 
@@ -53,23 +57,23 @@ MIDDLEWARE = [
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "": {  # This means all loggers
-            "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": True,
-        },
-    },
-}
-ROOT_URLCONF = "serverside.urls"
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "": {  # This means all loggers
+#             "handlers": ["console"],
+#             "level": "DEBUG",
+#             "propagate": True,
+#         },
+#     },
+# }
+ROOT_URLCONF = "serverside.serverside.urls"
 
 TEMPLATES = [
     {
