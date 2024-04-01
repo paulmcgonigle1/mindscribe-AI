@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views import View
 
-from serverside.serverside import settings
 from .models import JournalEntry, Insight, UserPreferences
 from .serializers import (
     JournalEntrySerializer,
