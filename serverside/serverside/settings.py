@@ -85,8 +85,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "serverside.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -191,6 +189,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+WSGI_APPLICATION = "serverside.wsgi.application"
 
 # Define where Django collects static files from (on `collectstatic`)
 STATIC_ROOT = BASE_DIR / "staticfiles"
