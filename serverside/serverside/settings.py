@@ -19,7 +19,7 @@ SECRET_KEY = "django-insecure-!r&g$3b@3eva_gjgn4cyv50j^9_o&a5ue^(flp!1u*z2#u_ukp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["mindscribe-0e68ab8ceda7.herokuapp.com"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -47,6 +47,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "myapp.middleware.RequestLoggingMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
@@ -201,6 +202,14 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "clientside/dist",
 ]
+
+# not sure about this here below
+
+import dj_database_url
+
+prod_db = dj_database_url.config(conn_max_age=500)
+DATABASES["default"].update(prod_db)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
