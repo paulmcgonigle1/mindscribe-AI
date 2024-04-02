@@ -39,7 +39,10 @@ class ReactAppView(View):
                 return HttpResponse(file.read())
         except FileNotFoundError:
             return HttpResponse(
-                """
+                f"""
+                Settings DIR = {settings.BASE_DIR}  
+                
+                
                 This page is not built yet. Please run 'npm run build' inside the 'clientside' directory.
                 """,
                 status=501,
