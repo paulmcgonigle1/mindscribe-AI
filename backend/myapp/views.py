@@ -34,7 +34,7 @@ class ReactAppView(View):
     def get(self, request):
         try:
             with open(
-                os.path.join(settings.BASE_DIR, "clientside/dist/index.html")
+                os.path.join(settings.VIEW_DIR, "clientside/dist/index.html")
             ) as file:
                 return HttpResponse(file.read())
         except FileNotFoundError:
