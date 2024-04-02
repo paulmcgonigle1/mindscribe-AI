@@ -7,7 +7,7 @@ import sys
 def main():
     """Run administrative tasks."""
     # Default to local settings if DJANGO_SETTINGS_MODULE not set
-    # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "serverside.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "serverside.settings")
     if "HEROKU" in os.environ:
         # Override with Heroku settings if HEROKU environment variable is set
         os.environ["DJANGO_SETTINGS_MODULE"] = "backend.serverside.settings"
