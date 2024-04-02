@@ -10,7 +10,7 @@ import dj_database_url
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["*"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-WSGI_APPLICATION = "backend.serverside.wsgi.application"
+WSGI_APPLICATION = "serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
