@@ -9,6 +9,7 @@ import logging
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 import django_heroku
+import dj_database_url
 
 load_dotenv()
 
@@ -116,6 +117,10 @@ DATABASES = {
     }
 }
 
+
+DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         # DELETE FOR PRODUCTION
@@ -201,7 +206,7 @@ USE_TZ = True
 WSGI_APPLICATION = "serverside.wsgi.application"
 
 # Define where Django collects static files from (on `collectstatic`)
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "backend/staticfiles"
 
 # URL to use when referring to static files (in templates, etc.)
 STATIC_URL = "/static/"
@@ -213,10 +218,6 @@ STATICFILES_DIRS = [
 
 # not sure about this here below
 
-# import dj_database_url
-
-# prod_db = dj_database_url.config(conn_max_age=500)
-# DATABASES["default"].update(prod_db)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
