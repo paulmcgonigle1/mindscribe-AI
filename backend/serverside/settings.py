@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["*"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-WSGI_APPLICATION = "serverside.wsgi.application"
+WSGI_APPLICATION = "backend.serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "myapp",
+    "backend.myapp",
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
