@@ -4,14 +4,14 @@ from dotenv import load_dotenv
 from datetime import timedelta
 import sys
 import logging
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
+import tempfile
 import django_heroku
 import dj_database_url
 
 load_dotenv()
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+print("BASE DIR", BASE_DIR)
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
@@ -29,6 +29,26 @@ SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 ALLOWED_HOSTS = ["*"]
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+WSGI_APPLICATION = "serverside.wsgi.application"
+# print("Base DIR:", BASE_DIR)
+
+# Define where Django collects static files from (on `collectstatic`)
+STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
+# STATIC_ROOT = tempfile.mkdtemp()
+
+# print("Static ROOT: ", STATIC_ROOT)
+# URL to use when referring to static files (in templates, etc.)
+STATIC_URL = "/static/"
+
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "clientside", "dist"),
+]
 
 
 # Application definition
@@ -76,7 +96,8 @@ CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in producti
 #         },
 #     },
 # }
-ROOT_URLCONF = "serverside.serverside.urls"
+ROOT_URLCONF = "serverside.urls"
+# updated
 
 TEMPLATES = [
     {
@@ -200,21 +221,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-WSGI_APPLICATION = "serverside.wsgi.application"
-
-# Define where Django collects static files from (on `collectstatic`)
-STATIC_ROOT = BASE_DIR / "backend/staticfiles"
-
-# URL to use when referring to static files (in templates, etc.)
-STATIC_URL = "/static/"
-
-
-STATICFILES_DIRS = [
-    BASE_DIR / "clientside/dist",
-]
+# print("Static ROOT DIRS: ", STATICFILES_DIRS)
 
 # not sure about this here below
 
@@ -224,7 +231,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-print("Base Directory:", BASE_DIR)
+
 # print("DEBUG:", DEBUG)
 # print("INSTALLED_APPS:", INSTALLED_APPS)
 django_heroku.settings(locals())
