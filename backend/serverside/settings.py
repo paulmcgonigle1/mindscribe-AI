@@ -10,8 +10,7 @@ import dj_database_url
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-print("BASE DIR", BASE_DIR)
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
@@ -231,7 +230,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
+print("Base Directory:", BASE_DIR)
 # print("DEBUG:", DEBUG)
 # print("INSTALLED_APPS:", INSTALLED_APPS)
 django_heroku.settings(locals())
