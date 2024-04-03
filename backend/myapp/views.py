@@ -33,16 +33,13 @@ logger = logging.getLogger(__name__)
 class ReactAppView(View):
     def get(self, request):
         try:
-            with open(
-                os.path.join(settings.VIEW_DIR, "clientside/dist/index.html")
-            ) as file:
+            with open(os.path.join(settings.VIEW_DIR, "index.html")) as file:
                 return HttpResponse(file.read())
         except FileNotFoundError:
             return HttpResponse(
                 f"""
-                Settings DIR = {settings.BASE_DIR}  
-                
-                
+                Settings BASE DIR = {settings.BASE_DIR}  
+                Settings VIEW DIR = {settings.VIEW_DIR} 
                 This page is not built yet. Please run 'npm run build' inside the 'clientside' directory.
                 """,
                 status=501,
