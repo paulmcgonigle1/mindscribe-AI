@@ -11,6 +11,7 @@ import dj_database_url
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+LOCAL_DIR = Path(__file__).resolve().parent.parent.parent
 VIEW_DIR_BASE = Path(__file__).resolve().parent.parent.parent
 VIEW_DIR = os.path.join(BASE_DIR, "clientside/dist")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -25,16 +26,16 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 # trying to fix cors error THESE MAY NEED TO BE LOOKED AT AGAIN
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-SECURE_CROSS_ORIGIN_OPENER_POLICY = None
-ALLOWED_HOSTS = ["*"]
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+# ALLOWED_HOSTS = ["*"]
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-WSGI_APPLICATION = "backend.serverside.wsgi.application"
+WSGI_APPLICATION = "serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
@@ -47,7 +48,7 @@ STATIC_URL = "/static/"
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "clientside", "dist"),
+    os.path.join(LOCAL_DIR, "clientside", "dist"),
 ]
 
 
@@ -61,7 +62,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    "backend.myapp.apps.MyappConfig",
+    # "backend.myapp.apps.MyappConfig",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
 ]
@@ -76,7 +77,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "backend.myapp.apps.MyappConfig.middleware.RequestLoggingMiddleware",
+    # "backend.myapp.apps.MyappConfig.middleware.RequestLoggingMiddleware",
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
@@ -96,7 +97,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in producti
 #         },
 #     },
 # }
-ROOT_URLCONF = "backend.serverside.urls"
+ROOT_URLCONF = "serverside.urls"
 # updated
 
 TEMPLATES = [

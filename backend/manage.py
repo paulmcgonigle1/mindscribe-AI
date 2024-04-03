@@ -10,7 +10,7 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "serverside.settings")
     if "HEROKU" in os.environ:
         # Override with Heroku settings if HEROKU environment variable is set
-        os.environ["DJANGO_SETTINGS_MODULE"] = "backend.serverside.settings"
+        os.environ["DJANGO_SETTINGS_MODULE"] = "serverside.settings"
 
     try:
         from django.core.management import execute_from_command_line
