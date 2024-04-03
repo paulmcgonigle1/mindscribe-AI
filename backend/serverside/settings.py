@@ -26,9 +26,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 # trying to fix cors error THESE MAY NEED TO BE LOOKED AT AGAIN
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False
-# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
 # ALLOWED_HOSTS = ["*"]
 
 
@@ -62,7 +60,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    # "backend.myapp.apps.MyappConfig",
+    "myapp.apps.MyappConfig",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
 ]
