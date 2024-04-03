@@ -38,7 +38,7 @@ WSGI_APPLICATION = "backend.serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
-STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
+# STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
 # STATIC_ROOT = tempfile.mkdtemp()
 
 # print("Static ROOT: ", STATIC_ROOT)
@@ -76,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "backend.myapp.apps.MyappConfig.middleware.RequestLoggingMiddleware",
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
