@@ -39,7 +39,7 @@ WSGI_APPLICATION = "backend.serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
-STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # STATIC_ROOT = tempfile.mkdtemp()
 # print("Static ROOT: ", STATIC_ROOT)
 
@@ -50,7 +50,7 @@ STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     os.path.join(
-        BASE_DIR, "clientside", "dist"
+        LOCAL_DIR, "clientside", "dist"
     ),  # Path to your React app's build output
 ]
 
