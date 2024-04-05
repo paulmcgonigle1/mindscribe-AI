@@ -130,20 +130,23 @@ TEMPLATES = [
 # }
 
 # WHEN UPDATING TO POSTGRES
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "test",
+#         "USER": "postgres",
+#         "PASSWORD": "Ilovebaby1",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "test",
-        "USER": "postgres",
-        "PASSWORD": "Ilovebaby1",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("HEROKU_POSTGRESQL_MAUVE_URL")
+    )
 }
-
-
-DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
