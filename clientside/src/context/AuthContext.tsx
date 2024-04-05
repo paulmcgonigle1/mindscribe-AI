@@ -145,13 +145,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       //
-      let response = await fetch("http://127.0.0.1:8000/myapp/api/register/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password, password2 }),
-      });
+      let response = await fetch(
+        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/register/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, email, password, password2 }),
+        }
+      );
       if (response.ok) {
         onSuccess();
       } else {
@@ -169,7 +172,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     if (authTokens) {
       let response = await fetch(
-        "http://127.0.0.1:8000/myapp/api/token/refresh/",
+        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/token/refresh/",
         {
           method: "POST",
           headers: {
