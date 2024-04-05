@@ -10,7 +10,7 @@ import dj_database_url
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 LOCAL_DIR = Path(__file__).resolve().parent.parent.parent
 VIEW_DIR_BASE = Path(__file__).resolve().parent.parent.parent
 VIEW_DIR = os.path.join(BASE_DIR, "clientside/dist")
@@ -29,7 +29,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ["*"]
 
-
+print("Base Directory:", BASE_DIR)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -37,8 +37,9 @@ WSGI_APPLICATION = "serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
-# STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
 # STATIC_ROOT = tempfile.mkdtemp()
+print("Static ROOT: ", STATIC_ROOT)
 
 # print("Static ROOT: ", STATIC_ROOT)
 # URL to use when referring to static files (in templates, etc.)
@@ -46,9 +47,10 @@ STATIC_URL = "/static/"
 
 
 STATICFILES_DIRS = [
-    os.path.join(LOCAL_DIR, "clientside", "dist"),
+    os.path.join(
+        BASE_DIR, "clientside", "dist"
+    ),  # Path to your React app's build output
 ]
-
 
 # Application definition
 
@@ -126,19 +128,24 @@ TEMPLATES = [
 # }
 
 # WHEN UPDATING TO POSTGRES
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "test",
+#         "USER": "postgres",
+#         "PASSWORD": "Ilovebaby1",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "test",
-        "USER": "postgres",
-        "PASSWORD": "Ilovebaby1",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("HEROKU_POSTGRESQL_MAUVE_URL")
+    )
 }
 
-
-DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 REST_FRAMEWORK = {
@@ -230,7 +237,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-print("Base Directory:", BASE_DIR)
+
 # print("DEBUG:", DEBUG)
 # print("INSTALLED_APPS:", INSTALLED_APPS)
 django_heroku.settings(locals())

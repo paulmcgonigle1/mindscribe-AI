@@ -22,7 +22,7 @@ function SignupPage() {
   const handleSignup = async (event: any) => {
     registerUser(
       event,
-      () => navigate("/multi-step-form"),
+      () => navigate("/"),
       (errorData: ErrorData) => {
         setErrors(errorData); // Update the state with the returned errors
       }
