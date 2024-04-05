@@ -23,9 +23,6 @@ import sys
 router = DefaultRouter()
 router.register(r"journal-entries", views.JournalEntryViewSet, basename="journalentry")
 
-# Add detailed logging
-# print("System Path:", sys.path)
-# print("DEBUG:", settings.DEBUG)
 
 urlpatterns = [
     path("", include(router.urls)),
