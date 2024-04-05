@@ -35,7 +35,7 @@ DEBUG = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-WSGI_APPLICATION = "serverside.wsgi.application"
+WSGI_APPLICATION = "backend.serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
@@ -99,7 +99,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in producti
 #         },
 #     },
 # }
-ROOT_URLCONF = "serverside.urls"
+ROOT_URLCONF = "backend.serverside.urls"
 # updated
 
 TEMPLATES = [
