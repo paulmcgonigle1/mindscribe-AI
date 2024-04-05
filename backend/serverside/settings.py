@@ -10,7 +10,8 @@ import dj_database_url
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+LOCAL_DIR = Path(__file__).resolve().parent.parent.parent
 VIEW_DIR_BASE = Path(__file__).resolve().parent.parent.parent
 VIEW_DIR = os.path.join(BASE_DIR, "clientside/dist")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -34,12 +35,13 @@ ALLOWED_HOSTS = ["*"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-WSGI_APPLICATION = "backend.serverside.wsgi.application"
+WSGI_APPLICATION = "serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
-# STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
 # STATIC_ROOT = tempfile.mkdtemp()
+print("Static ROOT: ", STATIC_ROOT)
 
 # print("Static ROOT: ", STATIC_ROOT)
 # URL to use when referring to static files (in templates, etc.)
@@ -47,9 +49,10 @@ STATIC_URL = "/static/"
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "clientside", "dist"),
+    os.path.join(
+        BASE_DIR, "clientside", "dist"
+    ),  # Path to your React app's build output
 ]
-
 
 # Application definition
 
@@ -61,7 +64,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    "backend.myapp.apps.MyappConfig",
+    "myapp.apps.MyappConfig",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
 ]
@@ -76,7 +79,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "backend.myapp.apps.MyappConfig.middleware.RequestLoggingMiddleware",
+    # "backend.myapp.apps.MyappConfig.middleware.RequestLoggingMiddleware",
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
@@ -96,7 +99,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in producti
 #         },
 #     },
 # }
-ROOT_URLCONF = "backend.serverside.urls"
+ROOT_URLCONF = "serverside.urls"
 # updated
 
 TEMPLATES = [
