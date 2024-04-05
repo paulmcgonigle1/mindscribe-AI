@@ -23,7 +23,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # trying to fix cors error THESE MAY NEED TO BE LOOKED AT AGAIN
 # SECURE_SSL_REDIRECT = True
