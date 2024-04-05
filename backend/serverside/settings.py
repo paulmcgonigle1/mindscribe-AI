@@ -10,8 +10,11 @@ import dj_database_url
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# updated base rl
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 LOCAL_DIR = Path(__file__).resolve().parent.parent.parent
+
+
 VIEW_DIR_BASE = Path(__file__).resolve().parent.parent.parent
 VIEW_DIR = os.path.join(BASE_DIR, "clientside/dist")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -51,7 +54,7 @@ STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     os.path.join(
-        LOCAL_DIR, "clientside", "dist"
+        BASE_DIR, "clientside", "dist"
     ),  # Path to your React app's build output
 ]
 
