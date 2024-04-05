@@ -23,7 +23,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # trying to fix cors error THESE MAY NEED TO BE LOOKED AT AGAIN
 # SECURE_SSL_REDIRECT = True
@@ -35,7 +35,7 @@ DEBUG = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-WSGI_APPLICATION = "backend.serverside.wsgi.application"
+WSGI_APPLICATION = "serverside.wsgi.application"
 # print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
@@ -99,7 +99,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in producti
 #         },
 #     },
 # }
-ROOT_URLCONF = "backend.serverside.urls"
+ROOT_URLCONF = "serverside.urls"
 # updated
 
 TEMPLATES = [
