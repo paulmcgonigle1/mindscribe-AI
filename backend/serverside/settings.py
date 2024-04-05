@@ -41,7 +41,7 @@ WSGI_APPLICATION = "serverside.wsgi.application"
 # Define where Django collects static files from (on `collectstatic`)
 STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
 # STATIC_ROOT = tempfile.mkdtemp()
-print("Static ROOT: ", STATIC_ROOT)
+# print("Static ROOT: ", STATIC_ROOT)
 
 # print("Static ROOT: ", STATIC_ROOT)
 # URL to use when referring to static files (in templates, etc.)
