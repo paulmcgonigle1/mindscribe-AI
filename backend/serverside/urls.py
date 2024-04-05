@@ -6,6 +6,6 @@ from django.urls import path, include, re_path
 # updated import
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("myapp/", include("myapp.urls")),
+    path("myapp/", include("myapp.urls")),
     # re_path(r"^.*$", ReactAppView.as_view(), name="react-app"),
 ]
