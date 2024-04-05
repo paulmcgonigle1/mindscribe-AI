@@ -40,7 +40,7 @@ WSGI_APPLICATION = "backend.serverside.wsgi.application"
 
 # Define where Django collects static files from (on `collectstatic`)
 # updated to proper directory
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # STATIC_ROOT = tempfile.mkdtemp()
 # print("Static ROOT: ", STATIC_ROOT)
 

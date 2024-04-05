@@ -41,6 +41,8 @@ class ReactAppView(View):
             return HttpResponse(
                 f"""
                 Settings BASE DIR = {settings.BASE_DIR}
+                DIST DIR = {settings.LOCAL_DIR, "clientside", "dist"}
+
                 This page is not built yet. Please run 'npm run build' inside the 'clientside' directory.
                 """,
                 status=501,
