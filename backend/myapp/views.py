@@ -30,18 +30,24 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 # Create your views here.
 logger = logging.getLogger(__name__)
 
+path = os.path.join(settings.BASE_DIR, "clientside", "dist", "index.html")
+
 
 class ReactAppView(View):
+
     def get(self, request):
         try:
-            # Use staticfiles_storage to generate the URL for the index.html
-            index_file_url = staticfiles_storage.url("index.html")
-            # Read the file using staticfiles_storage
-            file_content = staticfiles_storage.open(index_file_url).read()
-            return HttpResponse(file_content, content_type="text/html")
+            with open(
+                os.path.join(settings.BASE_DIR, "clientside", "dist", "index.html")
+            ) as file:
+                return HttpResponse(file.read())
         except FileNotFoundError:
+
             return HttpResponse(
                 f"""
+                Path for the dist index = {path}
+                
+
                 This page is not built yet. Please run 'npm run build' inside the 'clientside' directory.
                 """,
                 status=501,
