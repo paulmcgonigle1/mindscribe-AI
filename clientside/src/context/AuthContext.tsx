@@ -87,16 +87,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     );
     try {
       // example, needs to be updated to a service perhaps
-      let response = await fetch("http://127.0.0.1:8000/myapp/api/token/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
+      let response = await fetch(
+        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/token/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+        }
+      );
 
       let data = await response.json();
       //this gets the jwt response access token and set sit or errors
