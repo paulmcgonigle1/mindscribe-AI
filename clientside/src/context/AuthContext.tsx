@@ -86,7 +86,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       "Form Submitted with username:" + username + " and password: " + password
     );
     try {
-      // example, needs to be updated to a service perhaps
+      // needs to be updated to use AXIOS THROUGH the service like all of the other ones
       let response = await fetch(
         "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/token/",
         {
