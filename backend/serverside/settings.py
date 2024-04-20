@@ -32,7 +32,17 @@ DEBUG = True
 # SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
 # SECURE_CROSS_ORIGIN_OPENER_POLICY = None
-# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "https://www.mindscribe.life",
+    "http://www.mindscribe.life",
+    "www.mindscribe.life",
+    "mindscribe.life",
+    "https://mindscribe-36297a9e5954.herokuapp.com",
+    "http://mindscribe-36297a9e5954.herokuapp.com",
+    "mindscribe-36297a9e5954.herokuapp.com",
+]
 
 
 # Static files (CSS, JavaScript, Images)
@@ -239,6 +249,7 @@ print("Base Directory:", BASE_DIR)
 # print("INSTALLED_APPS:", INSTALLED_APPS)
 django_heroku.settings(locals())
 
+# this basically means, if currently hosted do this
 if os.getcwd() == "/app":
     print("accessed app at bottom")
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
