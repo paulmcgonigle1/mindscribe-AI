@@ -22,7 +22,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class JournalEntryAdmin(admin.ModelAdmin):
-    list_display = ("entryID", "user", "timestamp")
+    list_display = ("entryID", "user", "timestamp", "content")
     list_filter = ("timestamp",)
     inlines = [InsightInline]
 

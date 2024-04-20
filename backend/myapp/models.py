@@ -5,20 +5,24 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django_cryptography.fields import encrypt
+
 
 # Model for Journal Entries
 class JournalEntry(models.Model):
     entryID = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="journals")
     timestamp = models.DateTimeField(auto_now_add=True)
+    # content = encrypt(models.TextField(null=True, default=None))
     content = models.TextField()
+    # would need to store this as
     moodRating = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Journal Entry {self.entryID} by {self.user.username}"
 
 
-# Model for User Improvements like tips, recommendations, etc.
+# Model for User Improvements (One per day)
 class UserImprovement(models.Model):
     improvementId = models.AutoField(primary_key=True)
     user = models.ForeignKey(

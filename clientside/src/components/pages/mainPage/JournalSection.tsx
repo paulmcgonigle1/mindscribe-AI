@@ -13,18 +13,20 @@ export default function JournalSection({
 }: JournalSectionProps) {
   const [entryText, setEntryText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const { authTokens } = useContext(AuthContext) ?? {};
 
   const handleSubmit = async () => {
     //checks for missing moodRating
     if (!moodRating && moodRating !== 0) {
-      alert("Please select a mood rating before submitting your entry");
+      setError("Please select a mood rating before submitting your entry");
       return;
     }
 
     //check for missing entryText
     if (!entryText) {
-      alert("Please write a journal entry before submitting");
+      setError("Please write a journal entry before submitting");
       return;
     }
 
@@ -52,6 +54,11 @@ export default function JournalSection({
   };
   return (
     <>
+      {error && (
+        <div className="w-full text-center p-2 mb-2 bg-red-100 text-red-700 border border-red-400 rounded">
+          {error}
+        </div>
+      )}
       <div className="w-full mb-2">
         <textarea
           className="w-full h-64 p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

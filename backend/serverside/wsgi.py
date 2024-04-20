@@ -8,7 +8,7 @@ from django.core.wsgi import get_wsgi_application
 # print("DJANGO_SETTINGS_MODULE:", os.environ.get("DJANGO_SETTINGS_MODULE"))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.serverside.settings")
-# BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 application = get_wsgi_application()
 # print("BASE_DIR in wsgi:", BASE_DIR)

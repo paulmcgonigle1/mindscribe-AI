@@ -1,7 +1,8 @@
 from django.contrib import admin
+
 from django.urls import path, include, re_path
 
-from backend.myapp.views import ReactAppView
+from myapp.views import ReactAppView
 
 # updated import
 urlpatterns = [
