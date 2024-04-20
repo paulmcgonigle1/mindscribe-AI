@@ -21,7 +21,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
+print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -29,19 +29,13 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ["*"]
 
-print("Base Directory:", BASE_DIR)
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 WSGI_APPLICATION = "serverside.wsgi.application"
-# print("Base DIR:", BASE_DIR)
 
 # Define where Django collects static files from (on `collectstatic`)
 STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
 # STATIC_ROOT = tempfile.mkdtemp()
-print("Static ROOT: ", STATIC_ROOT)
 
-# print("Static ROOT: ", STATIC_ROOT)
 # URL to use when referring to static files (in templates, etc.)
 STATIC_URL = "/static/"
 
@@ -62,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
+    "django_cryptography",
     "myapp.apps.MyappConfig",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
