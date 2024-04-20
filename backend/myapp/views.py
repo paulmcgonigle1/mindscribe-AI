@@ -1,7 +1,14 @@
+import os
+from django.http import HttpResponse
+
 import json
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from .models import JournalEntry, Insight, UserImprovement, UserPreferences
+from django.views import View
+
+from django.conf import settings
+
+from .models import JournalEntry, Insight, UserPreferences
 from .serializers import (
     JournalEntrySerializer,
     InsightSerializer,
@@ -18,10 +25,24 @@ from .improvements import create_tasks_from_insights, process_entry
 from rest_framework.response import Response
 from datetime import timedelta  # Will be used for date range queries
 import logging
-from .analysis import perform_mood_and_emotion_analysis
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 # Create your views here.
 logger = logging.getLogger(__name__)
+
+
+class ReactAppView(View):
+    def get(self, request):
+        index_path = os.path.join(settings.BASE_DIR, "clientside", "dist", "index.html")
+        try:
+            with open(index_path) as file:
+                return HttpResponse(file.read())
+        except FileNotFoundError:
+            return HttpResponse(
+                f"Path for the dist index = {index_path}\n\n"
+                "This page is not built yet. Please run 'npm run build' inside the 'clientside' directory.",
+                status=501,
+            )
 
 
 # class for creating journals

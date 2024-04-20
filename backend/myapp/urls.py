@@ -1,10 +1,5 @@
-from django.urls import path, include
-from .views import (
-    JournalEntryViewSet,
-    DailyInsightsView,
-    get_emotion_statistics,
-    getJournals,
-)  # Import your views here
+from django.urls import path, include, re_path
+from .views import DailyInsightsView, ReactAppView  # Import your views here
 from .authviews import MyTokenObtainPairView, getRoutes, register
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
@@ -18,12 +13,16 @@ from .improvements import (
 from rest_framework.routers import DefaultRouter
 from . import views
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
+from django.conf import settings
+
+import sys
+
 
 router = DefaultRouter()
 router.register(r"journal-entries", views.JournalEntryViewSet, basename="journalentry")
+
 
 urlpatterns = [
     path("", include(router.urls)),
@@ -89,4 +88,10 @@ urlpatterns = [
         update_task_completetion_status,
         name="update_task_completetion_status",
     ),
+    re_path(
+        r"^.*$", ReactAppView.as_view()
+    ),  # This regex ensures that any unmatched paths are served by your React app
+    re_path(
+        "react", ReactAppView.as_view()
+    ),  # This regex ensures that any unmatched paths are served by your React app
 ]

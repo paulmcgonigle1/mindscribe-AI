@@ -7,7 +7,6 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Cell,
 } from "recharts";
 
 import { JournalEntry, MoodChartData } from "../../../../lib/types/types";
@@ -29,13 +28,13 @@ function MoodLineChart({ entries, selectedPeriod }: MoodStatsProps) {
   };
 
   const data = transformMoodData(entries);
-  const moodRatingColors = [
-    "#FFD700",
-    "#FF8C00",
-    "#FF4500",
-    "#FF0000",
-    "#B22222",
-  ]; // Define your mood rating colors
+  // const moodRatingColors = [
+  //   "#FFD700",
+  //   "#FF8C00",
+  //   "#FF4500",
+  //   "#FF0000",
+  //   "#B22222",
+  // ]; // Define your mood rating colors
 
   return (
     <div

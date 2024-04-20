@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { createEntry } from "../../../services/JournalService";
 import { NewJournalEntry } from "../../../lib/types/types";
 import AuthContext from "../../../context/AuthContext";

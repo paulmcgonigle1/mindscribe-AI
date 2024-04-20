@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface MoodRatingProps {
   setParentMoodRating: (rating: number | null) => void; // Function type definition

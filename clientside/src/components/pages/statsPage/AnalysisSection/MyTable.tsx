@@ -1,6 +1,5 @@
 import React from "react";
-import { Column, useTable } from "react-table";
-import { MyAnalysisData } from "../../../../lib/types/types";
+import { useTable } from "react-table";
 
 interface MoodTableProps {
   data: any[]; // Define a proper type for your data

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class LangchainAppConfig(AppConfig):
+class MyappConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "langchain_app"
+    name = "backend.myapp"

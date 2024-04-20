@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 
-import StreakChart from "./StreakChart";
-
 import MoodAnalytics from "./MoodSection/MoodAnalytics";
 import { getJournals } from "../../../services/JournalService";
 import { JournalEntry } from "../../../lib/types/types";

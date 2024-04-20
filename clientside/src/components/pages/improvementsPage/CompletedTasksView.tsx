@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { ImprovementData, Task } from "../../../lib/types/types";
-import { formatDate } from "date-fns";
+import { useState } from "react";
+import { Task } from "../../../lib/types/types";
 
 interface CompletedTasksProps {
   tasks: Task[];
@@ -23,13 +22,15 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
     (task) => formatDate(task.created_at) === todaysDate
   ).length;
   // State for the selected date initialized to today's date
-  const [selectedDate, setSelectedDate] = useState<string>(todaysDate);
+  //const [selectedDate, setSelectedDate] = useState<string>(todaysDate);
+
   const [expandedTaskID, SetExpandedTaskId] = useState<number | null>(null);
   // Unique dates for the dropdown
-  const uniqueDates = Array.from(
-    new Set(tasks.map((task) => formatDate(task.created_at)))
-  );
+  // const uniqueDates = Array.from(
+  //   new Set(tasks.map((task) => formatDate(task.created_at)))
+  // );
 
+  const selectedDate = formatDate(new Date());
   // Filter tasks based on the selected date
   const filteredTasks = tasks.filter(
     (task) => formatDate(task.created_at) === selectedDate

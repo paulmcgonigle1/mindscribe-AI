@@ -1,12 +1,9 @@
 import axios from 'axios';
-import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences, InsightMessage, JournalResponse } from '../lib/types/types';
+import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences, JournalResponse } from '../lib/types/types';
 
-const BASE_URL = 'http://localhost:8000'; // Replace with the URL of your Django server
+const BASE_URL = 'https://mindscribe-36297a9e5954.herokuapp.com'; // Replace with the URL of your Django server
 
-// export const getRecentEntries = async (): Promise<JournalEntry[]> => {
-//     const response = await axios.get(`${BASE_URL}/myapp/journal-entries/`);
-//     return response.data;
-//   };
+
 
 export const createEntry = async (authTokens: { access: string }, entry: NewJournalEntry): Promise<NewJournalEntry> => {
   const response = await axios.post(`${BASE_URL}/myapp/api/createjournal/`, entry, {

@@ -1,18 +1,15 @@
 import logging
-import re
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import api_view
 from langchain.chains import create_extraction_chain
 from langchain.chat_models import ChatOpenAI
 from django.utils import timezone
-from django.db.models import Count
 from django.core.exceptions import MultipleObjectsReturned
 from django.http import JsonResponse
 
 import os
 from .models import (
-    JournalEntry,
     Insight,
     User,
     UserImprovement,
@@ -20,17 +17,103 @@ from .models import (
 )
 from .serializers import (
     ActionableTaskSerializer,
-    JournalEntrySerializer,
     InsightSerializer,
 )
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .analysis import perform_mood_and_emotion_analysis
 
 logger = logging.getLogger(__name__)
 
 today = timezone.now().date()  # Get today's date
+
+
+llm = ChatOpenAI(
+    temperature=0,
+    model="gpt-3.5-turbo",
+    api_key=os.environ.get("OPENAI_API_KEY"),
+)
+
+
+# Extracts properties from journal to DB
+def process_entry(journal_entry):
+    # Create a dictionary with the required inputs
+    inputs = {
+        "user": "paul",  # The name of the user
+        "input": journal_entry.content,  # The content of the journal entry
+    }
+
+    schema = {
+        "properties": {
+            "emotions": {"type": "string"},
+            "sentiment": {"type": "string"},
+            "themes": {"type": "string"},
+        },
+        "required": ["emotions", "sentiment", "themes"],
+    }
+    # extraction_prompt = ChatPromptTemplate.from_template(_CUSTOM_EXTRACTION_TEMPLATE)
+
+    chain = create_extraction_chain(schema, llm, verbose=True)
+    insights_data = chain.run(inputs)
+    print("Insights data: ", insights_data)
+    print("Type of insights data: ", type(insights_data))
+
+    # Check if insights_data is a dictionary
+    if isinstance(insights_data, list):
+        # Process each dictionary of insights in the list
+        for insight_data in insights_data:
+            insight = Insight(
+                entry=journal_entry,
+                moods=insight_data.get("emotions", "no emotions found"),
+                sentiment=insight_data.get("sentiment", "no sentiments found"),
+                key_themes=insight_data.get("themes", "no themes"),
+            )
+            insight.save()
+    else:
+        print("Unexpected type for insights_data")
+
+
+# Calls the LLM
+def interact_with_llm(prompt):
+    print("Interacting with LLM")
+    response = llm.invoke(prompt)
+    # Debugging: Print the response object to understand its structure
+    # print("Response from GPT:", response)
+
+    return response.content.strip()
+
+
+@api_view(["GET"])
+def createInsightMessage(request):
+    today = timezone.now().date()
+    user = request.user  # Directly use the user object
+    latest_insight = (
+        Insight.objects.filter(entry__user=user, timestamp__date=today)
+        .order_by("-timestamp")
+        .first()
+    )
+    if not latest_insight:
+        return JsonResponse({"message": "No insights found for today."}, status=404)
+
+    serialized_insight = InsightSerializer(latest_insight).data
+    print(
+        "type of serialized insight", type(serialized_insight)
+    )  # Should show <class 'dict'> or <class 'OrderedDict'>
+
+    formatted_insight = format_single_insight_for_prompt(serialized_insight)
+
+    print("Now getting Insight Response")
+    print(serialized_insight)
+    # insights = "SAD, Failed Swim test, stressed out with college work"
+    prompt = (
+        f"Generate a quick message to help user {user.first_name} "
+        f"to understand their insights as follows: {formatted_insight} .\n\n"
+    )
+
+    message = llm.invoke(prompt)
+    # return response.content.strip()
+    print(message)
+    return Response({"message": message.content.strip()})
 
 
 class GetRecentImprovements(APIView):
@@ -195,7 +278,8 @@ def prompt_with_insights(formatted_insights, user_id):
 
     prompt = (
         f"I am an AI creating a list of and actionable tasks for improving my mental health, my name is {user.first_name}"
-        "Format each task with a clear 'Task:' label followed by the task itself, and an 'Explanation:' label followed by a brief explanation of how it relates to the user's insights. "
+        "Format each task with a clear 'Task:' label followed by the task itself, and an 'Explanation:' "
+        "label followed by a brief explanation of how it relates to the user's insights. "
         "Begin each new task on a new line.\n\n"
         "User's insights from today are as follows, dont mention these in the response:\n"
         f"{formatted_insights}\n\n"
@@ -287,91 +371,3 @@ def get_tasks_completed(request):
     )
     serializer = ActionableTaskSerializer(tasks, many=True)
     return Response(serializer.data)
-
-
-llm = ChatOpenAI(
-    temperature=0,
-    model="gpt-3.5-turbo",
-    api_key=os.environ.get("OPENAI_API_KEY"),
-)
-
-
-# Extracts properties from journal to DB
-def process_entry(journal_entry):
-    # Create a dictionary with the required inputs
-    inputs = {
-        "user": "paul",  # The name of the user
-        "input": journal_entry.content,  # The content of the journal entry
-    }
-
-    schema = {
-        "properties": {
-            "emotions": {"type": "string"},
-            "sentiment": {"type": "string"},
-            "themes": {"type": "string"},
-        },
-        "required": ["emotions", "sentiment", "themes"],
-    }
-    # extraction_prompt = ChatPromptTemplate.from_template(_CUSTOM_EXTRACTION_TEMPLATE)
-
-    chain = create_extraction_chain(schema, llm, verbose=True)
-    insights_data = chain.run(inputs)
-    print("Insights data: ", insights_data)
-    print("Type of insights data: ", type(insights_data))
-
-    # Check if insights_data is a dictionary
-    if isinstance(insights_data, list):
-        # Process each dictionary of insights in the list
-        for insight_data in insights_data:
-            insight = Insight(
-                entry=journal_entry,
-                moods=insight_data.get("emotions", "no emotions found"),
-                sentiment=insight_data.get("sentiment", "no sentiments found"),
-                key_themes=insight_data.get("themes", "no themes"),
-            )
-            insight.save()
-    else:
-        print("Unexpected type for insights_data")
-
-
-# Calls the LLM
-def interact_with_llm(prompt):
-    print("Interacting with LLM")
-    response = llm.invoke(prompt)
-    # Debugging: Print the response object to understand its structure
-    # print("Response from GPT:", response)
-
-    return response.content.strip()
-
-
-@api_view(["GET"])
-def createInsightMessage(request):
-    today = timezone.now().date()
-    user = request.user  # Directly use the user object
-    latest_insight = (
-        Insight.objects.filter(entry__user=user, timestamp__date=today)
-        .order_by("-timestamp")
-        .first()
-    )
-    if not latest_insight:
-        return JsonResponse({"message": "No insights found for today."}, status=404)
-
-    serialized_insight = InsightSerializer(latest_insight).data
-    print(
-        "type of serialized insight", type(serialized_insight)
-    )  # Should show <class 'dict'> or <class 'OrderedDict'>
-
-    formatted_insight = format_single_insight_for_prompt(serialized_insight)
-
-    print("Now getting Insight Response")
-    print(serialized_insight)
-    # insights = "SAD, Failed Swim test, stressed out with college work"
-    prompt = (
-        f"Generate a quick message to help user {user.first_name} "
-        f"to understand their insights as follows: {formatted_insight} .\n\n"
-    )
-
-    message = llm.invoke(prompt)
-    # return response.content.strip()
-    print(message)
-    return Response({"message": message.content.strip()})

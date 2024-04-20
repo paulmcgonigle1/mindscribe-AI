@@ -13,3 +13,6 @@ myenv/
 /frontend/build/
 
 .env
+backend/staticfiles/
+
+backend/staticfiles

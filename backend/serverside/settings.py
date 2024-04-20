@@ -2,25 +2,54 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+import sys
+import logging
+import tempfile
+import django_heroku
+import dj_database_url
 
 load_dotenv()
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# updated base rl
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+LOCAL_DIR = Path(__file__).resolve().parent.parent.parent
 
+
+VIEW_DIR_BASE = Path(__file__).resolve().parent.parent.parent
+VIEW_DIR = os.path.join(BASE_DIR, "clientside/dist")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!r&g$3b@3eva_gjgn4cyv50j^9_o&a5ue^(flp!1u*z2#u_ukp"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# trying to fix cors error THESE MAY NEED TO BE LOOKED AT AGAIN
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+# ALLOWED_HOSTS = ["*"]
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+WSGI_APPLICATION = "backend.serverside.wsgi.application"
+
+
+# URL to use when referring to static files (in templates, etc.)
+STATIC_URL = "/static/"
+
+
+STATICFILES_DIRS = [
+    os.path.join(
+        BASE_DIR, "clientside", "dist"
+    ),  # Path to your React app's build output
+]
 
 # Application definition
 
@@ -31,23 +60,23 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "myapp",
     "corsheaders",
+    "backend.myapp.apps.MyappConfig",
     "rest_framework",
-    "langchain_app",
     "rest_framework_simplejwt.token_blacklist",
 ]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "myapp.middleware.RequestLoggingMiddleware",
+    # "backend.myapp.apps.MyappConfig.middleware.RequestLoggingMiddleware",
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
@@ -67,7 +96,8 @@ CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in producti
 #         },
 #     },
 # }
-ROOT_URLCONF = "serverside.urls"
+ROOT_URLCONF = "backend.serverside.urls"
+# updated
 
 TEMPLATES = [
     {
@@ -85,8 +115,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "serverside.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -99,15 +127,22 @@ WSGI_APPLICATION = "serverside.wsgi.application"
 # }
 
 # WHEN UPDATING TO POSTGRES
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "test",
+#         "USER": "postgres",
+#         "PASSWORD": "Ilovebaby1",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "test",
-        "USER": "postgres",
-        "PASSWORD": "Ilovebaby1",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("HEROKU_POSTGRESQL_MAUVE_URL")
+    )
 }
 
 REST_FRAMEWORK = {
@@ -189,12 +224,17 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+# print("Static ROOT DIRS: ", STATICFILES_DIRS)
 
-STATIC_URL = "static/"
+# not sure about this here below
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+print("Base Directory:", BASE_DIR)
+# print("DEBUG:", DEBUG)
+# print("INSTALLED_APPS:", INSTALLED_APPS)
+django_heroku.settings(locals())
