@@ -30,7 +30,7 @@ DEBUG = True
 # ALLOWED_HOSTS = ["*"]
 
 
-WSGI_APPLICATION = "serverside.wsgi.application"
+WSGI_APPLICATION = "backend.serverside.wsgi.application"
 
 # Define where Django collects static files from (on `collectstatic`)
 STATIC_ROOT = os.path.join(BASE_DIR, "backend", "staticfiles")
@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "django_cryptography",
-    "myapp.apps.MyappConfig",
+    "backend.myapp.apps.MyappConfig",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
 ]
@@ -92,7 +92,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in producti
 #         },
 #     },
 # }
-ROOT_URLCONF = "serverside.urls"
+ROOT_URLCONF = "backend.serverside.urls"
 # updated
 
 TEMPLATES = [
