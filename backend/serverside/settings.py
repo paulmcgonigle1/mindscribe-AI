@@ -238,3 +238,8 @@ print("Base Directory:", BASE_DIR)
 # print("DEBUG:", DEBUG)
 # print("INSTALLED_APPS:", INSTALLED_APPS)
 django_heroku.settings(locals())
+
+if os.getcwd() == "/app":
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    DEBUG = False
