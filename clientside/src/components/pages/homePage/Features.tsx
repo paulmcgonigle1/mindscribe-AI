@@ -50,7 +50,7 @@ const Features = () => {
   }, []);
   return (
     <section className="w-full h-auto flex flex-col items-center justify-center relative lg:px-20 md:px-20 px-6">
-      <main className="w-full pt-40 flex flex-col gap-3 items-center justify-center">
+      <main className="w-full pt-5 flex flex-col gap-3 items-center justify-center">
         <Text
           as="p"
           className="font-light text-base text-color3/80 tracking-widest"
