@@ -107,7 +107,7 @@ export default function JournalDashboard() {
         </div>
 
         <div className="flex flex-wrap md:flex-nowrap gap-">
-          <div className="flex flex-1 md:w-1/2 border border-black">
+          <div className="flex flex-1 md:w-1/2  ">
             <div className="flex-1 w-full m-1 p-4 min-h-full ">
               <JournalEntry
                 onJournalSubmit={handleJournalSubmit}
@@ -115,7 +115,7 @@ export default function JournalDashboard() {
                 resetJournalState={resetJournalState}
               />
             </div>
-            <div className="flex flex-1 m-2 p-4 w-full max-h-[45vh]">
+            <div className="flex flex-1 m-1 p-4 w-full max-h-full">
               <Calendar />
             </div>
           </div>
