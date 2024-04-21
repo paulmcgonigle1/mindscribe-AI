@@ -4,6 +4,7 @@ import Services from "./Features";
 import Icon4 from "../../../assets/mindscribe2/svg/logo-white.svg";
 import AboutSection from "./AboutSection";
 import Testimonials from "./Testimonials";
+import Footer from "./Footer";
 interface HomePageProps {}
 
 const HomePage: React.FC<HomePageProps> = () => {
@@ -13,7 +14,7 @@ const HomePage: React.FC<HomePageProps> = () => {
     <div className="bg-light-yellow">
       <div className=" mx-40  ">
         {/* Main container with grid layout */}
-        <div className="pt-30 grid grid-cols-1 md:grid-cols-2 items-center h-[50vh]">
+        <div className="pl-10 pt-30 grid grid-cols-1 md:grid-cols-2 items-center h-[50vh]">
           {/* Text container */}
           <div className="flex flex-col space-y-8 pl-20">
             <h1 className="text-5xl text-gray-800 font-semibold mb-4">
@@ -62,6 +63,7 @@ const HomePage: React.FC<HomePageProps> = () => {
         <Testimonials />
         <AboutSection />
       </div>
+      <Footer />
     </div>
   );
 };

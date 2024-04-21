@@ -45,7 +45,7 @@ function Testimonials() {
             style={{ left: 0, right: 0 }}
           >
             <p className="text-gray-600 text-center text-lg">
-              "{testimonial.text}"
+              {testimonial.text}"
             </p>
             <p className="text-gray-800 text-center font-bold mt-4">
               {testimonial.name}

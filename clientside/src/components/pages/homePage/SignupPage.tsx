@@ -1,7 +1,14 @@
 import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
-import Icon4 from "../../../assets/mindscribe/png/logo-black.png";
+import Icon4 from "../../../assets/mindscribe2/png/logo-black.png";
+import {
+  FaTwitter,
+  FaFacebook,
+  FaInstagram,
+  FaCheckCircle,
+} from "react-icons/fa";
+
 function SignupPage() {
   const location = useLocation(); // Correctly call useLocation
   // Extract the login from the state passed through on the home page
@@ -79,81 +86,85 @@ function SignupPage() {
                               src={Icon4}
                               alt="logo"
                             />
-                            <h4 className="mb-12 mt-1 pb-1 text-xl text-black ">
+                            <h4 className="mb-12 mt-1 pb-1 text-xl text-black">
                               Login to your Mindscribe account
                             </h4>
                           </div>
                           {/* Login Form */}
-                          <form onSubmit={handleLogin}>
+                          <form onSubmit={handleLogin} className="space-y-4">
+                            <div>
+                              <label
+                                className="block text-gray-700 text-sm mb-2"
+                                htmlFor="username"
+                              >
+                                Username
+                              </label>
+                              <input
+                                type="text"
+                                value={username}
+                                name="username"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                onChange={(e) => setUsername(e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label
+                                className="block text-gray-700 text-sm mb-2"
+                                htmlFor="password"
+                              >
+                                Password
+                              </label>
+                              <div className="flex items-center">
+                                <input
+                                  type={showPassword ? "text" : "password"}
+                                  name="password"
+                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                  className="ml-2 text-gray-600 hover:text-gray-800 p-2"
+                                  aria-label={
+                                    showPassword
+                                      ? "Hide password"
+                                      : "Show password"
+                                  }
+                                >
+                                  <i
+                                    className={
+                                      showPassword
+                                        ? "fas fa-eye-slash"
+                                        : "fas fa-eye"
+                                    }
+                                  ></i>
+                                </button>
+                              </div>
+                            </div>
                             {errorMessage && (
                               <div className="text-red-500 text-center mb-4">
                                 {errorMessage}
                               </div>
                             )}
-
-                            <p className="mb-4 text-black">
-                              Please Login an account
-                            </p>
-                            {/* <!--Username input--> */}
-                            <label
-                              className="block text-gray-800 text-sm  mb-2"
-                              htmlFor="username"
-                            >
-                              Username
-                            </label>
-                            <input
-                              type="text"
-                              value={username}
-                              name="username"
-                              className="mb-4"
-                              onChange={(e) => setUsername(e.target.value)}
-                            ></input>
-
-                            {/* <!--Password input--> */}
-                            <label
-                              className="block text-gray-700 text-sm  mb-2"
-                              htmlFor="password"
-                            >
-                              Password
-                            </label>
-                            <input
-                              type="password"
-                              name="password"
-                              className="mb-4"
-                              placeholder="****"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                            ></input>
-
-                            {/* <!--Submit button--> */}
-                            <div className="mb-12 pb-1 pt-1 text-center">
+                            <div>
                               <button
-                                className="bg-warm-orange-bright mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs uppercase leading-normal text-black "
+                                className="bg-warm-orange-bright text-black inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal"
                                 type="submit"
                               >
                                 Login
                               </button>
-
-                              {/* <!--Forgot password link--> */}
-
-                              <a className="text-black" href="#!">
-                                Terms and conditions
-                              </a>
                             </div>
-
-                            {/* <!--Register button--> */}
-                            <div className="flex items-center justify-between pb-6">
-                              {/* <p className="mb-0 mr-2">Have an account?</p> */}
-                              <p className="mb-0 mr-2 text-black">
+                            <div className="flex items-center justify-between">
+                              <p className="text-black">
                                 Don't have an account?
                               </p>
-
                               <button
                                 type="button"
                                 onClick={toggleForm}
-                                className="bg-rich-green text-black inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal  "
+                                className="bg-rich-green text-black inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal"
                               >
-                                Sign up.
+                                Sign up
                               </button>
                             </div>
                           </form>
@@ -334,22 +345,33 @@ function SignupPage() {
                   }}
                 >
                   <div className="px-4 py-6 text-white md:mx-6 md:p-12">
-                    <h4 className="mb-6 text-xl font-semibold text-black">
-                      Join us to access the many offered features
-                    </h4>
-                    <div>
-                      <p className="text-md text-black">
-                        Welcome to MindScribe, where your journey towards
-                        improved mental wellness begins. Our platform offers a
-                        secure and private environment for you to express your
-                        thoughts and feelings through journaling. By tracking
-                        your mood and thoughts daily, MindScribeAI helps you
-                        uncover patterns and insights that can lead to greater
-                        self-awareness and emotional well-being. Join us to
-                        discover new ways to manage stress, enhance your mood,
-                        and cultivate a positive mindset. Every entry is a step
-                        forward in your personal growth journey, and our
-                        AI-driven insights will guide you along the way.
+                    <div className="px-4 py-6 text-white md:mx-6 md:p-12 flex flex-col items-center">
+                      <h4 className="mb-6 text-xl font-semibold text-black text-center">
+                        Welcome to MindScribe!
+                      </h4>
+                      <p className="text-md text-black text-center mb-6">
+                        Start your journey towards improved mental wellness with
+                        MindScribe. Our platform offers a secure and private
+                        environment for you to express your thoughts and
+                        feelings through journaling.
+                      </p>
+                      <div className="flex justify-center items-center mb-6">
+                        <span className="mr-4">
+                          <FaCheckCircle className="text-green-500 w-6 h-6" />{" "}
+                          Track your mood daily
+                        </span>
+                        <span className="mr-4">
+                          <FaCheckCircle className="text-green-500 w-6 h-6" />{" "}
+                          Discover insights with MindScribe
+                        </span>
+                        <span>
+                          <FaCheckCircle className="text-green-500 w-6 h-6" />{" "}
+                          Cultivate a positive mindset
+                        </span>
+                      </div>
+                      <p className="text-md text-black text-center">
+                        Join us to embark on a journey of self-discovery and
+                        personal growth.
                       </p>
                     </div>
                   </div>
