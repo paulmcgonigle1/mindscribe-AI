@@ -11,7 +11,10 @@ function SignupPage() {
   const [email, setEmail] = useState(""); // Add email state
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
   const [errors, setErrors] = useState<ErrorData>({});
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [isLogin, setIsLogin] = useState(initialState); //sets the toggle between sign up or login
   const navigate = useNavigate();
@@ -34,8 +37,19 @@ function SignupPage() {
   };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    // Wrap navigate in a function to pass as onSuccess callback
-    loginUser(e, () => navigate("/"));
+    e.preventDefault(); // Prevent the default form submission behavior
+    if (!username || !password) {
+      setErrorMessage("Username and password are required.");
+      return;
+    }
+    loginUser(
+      e,
+      () => navigate("/"),
+      (error: any) => {
+        setErrorMessage(error); // Set the error message received from loginUser
+        console.error(error); // Optionally log the error
+      }
+    );
   };
 
   return (
@@ -71,6 +85,12 @@ function SignupPage() {
                           </div>
                           {/* Login Form */}
                           <form onSubmit={handleLogin}>
+                            {errorMessage && (
+                              <div className="text-red-500 text-center mb-4">
+                                {errorMessage}
+                              </div>
+                            )}
+
                             <p className="mb-4 text-black">
                               Please Login an account
                             </p>
@@ -139,6 +159,7 @@ function SignupPage() {
                           </form>
                         </>
                       ) : (
+                        // SIGN UP BEGGINS HERE ---------------------------------------------------------------
                         <>
                           <div className="text-center">
                             <img
@@ -146,85 +167,134 @@ function SignupPage() {
                               src={Icon4}
                               alt="logo"
                             />
-                            <h4 className="mb-12 mt-1 pb-1 text-xl text-black ">
+                            <h4 className="mb-12 mt-1 pb-1 text-xl text-black">
                               Sign-Up to join The Mindscribe Team
                             </h4>
                           </div>
                           {/* Sign Up Form */}
-                          <form onSubmit={handleSignup}>
-                            <p className="mb-4 text-black ">
-                              Please register an account
-                            </p>
-                            {/* <!--Username input--> */}
-                            <label
-                              className="block text-gray-700 text-sm  mb-2"
-                              htmlFor="username"
-                            >
-                              Username
-                            </label>
-                            <input
-                              type="text"
-                              value={username}
-                              name="username"
-                              className="mb-4"
-                              onChange={(e) => setUsername(e.target.value)}
-                            ></input>
-                            <label
-                              className="block text-gray-700 text-sm  mb-2"
-                              htmlFor="email"
-                            >
-                              Email
-                            </label>
-                            <input
-                              type="email"
-                              value={email}
-                              name="email"
-                              className="mb-4"
-                              onChange={(e) => setEmail(e.target.value)}
-                            ></input>
-
-                            {/* <!--Password input--> */}
-                            <label
-                              className="block text-gray-700 text-sm  mb-2"
-                              htmlFor="password"
-                            >
-                              Password
-                            </label>
-                            <input
-                              type="password"
-                              name="password"
-                              className="mb-4"
-                              placeholder="****"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                            ></input>
-
-                            {/* <!--Password input--> */}
-                            <label
-                              className="block text-gray-700 text-sm  mb-2"
-                              htmlFor="password2"
-                            >
-                              Verify Password
-                            </label>
-                            <input
-                              type="password"
-                              name="password2"
-                              className="mb-4"
-                              placeholder="****"
-                              value={password2}
-                              onChange={(e) => setPassword2(e.target.value)}
-                            ></input>
+                          <form onSubmit={handleSignup} className="space-y-4">
+                            <div>
+                              <label
+                                className="block text-gray-700 text-sm mb-2"
+                                htmlFor="username"
+                              >
+                                Username
+                              </label>
+                              <input
+                                type="text"
+                                value={username}
+                                name="username"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                onChange={(e) => setUsername(e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label
+                                className="block text-gray-700 text-sm mb-2"
+                                htmlFor="email"
+                              >
+                                Email
+                              </label>
+                              <input
+                                type="email"
+                                value={email}
+                                name="email"
+                                required
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                onChange={(e) => setEmail(e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label
+                                className="block text-gray-700 text-sm mb-2"
+                                htmlFor="password"
+                              >
+                                Password
+                              </label>
+                              <div className="flex items-center">
+                                <input
+                                  type={showPassword ? "text" : "password"}
+                                  name="password"
+                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  placeholder="****"
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                  className="ml-2 text-gray-600 hover:text-gray-800 p-2"
+                                  aria-label={
+                                    showPassword
+                                      ? "Hide password"
+                                      : "Show password"
+                                  }
+                                >
+                                  <i
+                                    className={
+                                      showPassword
+                                        ? "fas fa-eye-slash"
+                                        : "fas fa-eye"
+                                    }
+                                  ></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div>
+                              <label
+                                className="block text-gray-700 text-sm mb-2"
+                                htmlFor="password2"
+                              >
+                                Verify Password
+                              </label>
+                              <div className="flex items-center">
+                                <input
+                                  type={showPassword2 ? "text" : "password"}
+                                  name="password2"
+                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  placeholder="****"
+                                  value={password2}
+                                  onChange={(e) => setPassword2(e.target.value)}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setShowPassword2(!showPassword2)
+                                  }
+                                  className="ml-2 text-gray-600 hover:text-gray-800 p-2"
+                                  aria-label={
+                                    showPassword2
+                                      ? "Hide password"
+                                      : "Show password"
+                                  }
+                                >
+                                  <i
+                                    className={
+                                      showPassword2
+                                        ? "fas fa-eye-slash"
+                                        : "fas fa-eye"
+                                    }
+                                  ></i>
+                                </button>
+                              </div>
+                            </div>
                             {errors.non_field_errors &&
                               errors.non_field_errors.map((message, index) => (
-                                <p key={index} className="error">
+                                <p
+                                  key={index}
+                                  className="text-red-500 text-center"
+                                >
                                   {message}
                                 </p>
                               ))}
-
-                            {/* <!--Submit button--> */}
-                            <div className="mb-12 pb-1 pt-1 text-center">
+                            {errorMessage && (
+                              <div className="text-red-500 text-sm mb-2">
+                                {errorMessage}
+                              </div>
+                            )}
+                            <div className="text-center">
                               <button
-                                className="bg-warm-orange-bright mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-sm  uppercase leading-normal text-black "
+                                className="bg-warm-orange-bright inline-block w-full rounded px-6 pb-2 pt-2.5 text-sm uppercase leading-normal text-black mt-4"
                                 type="submit"
                               >
                                 Sign up
