@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
-import Icon4 from "../../../assets/journaling.png";
+import Icon4 from "../../../assets/mindscribe/png/logo-black.png";
 function SignupPage() {
   const location = useLocation(); // Correctly call useLocation
   // Extract the login from the state passed through on the home page
@@ -75,7 +75,7 @@ function SignupPage() {
                         <>
                           <div className="text-center">
                             <img
-                              className="mx-auto w-48"
+                              className="mx-auto w-96"
                               src={Icon4}
                               alt="logo"
                             />
@@ -163,7 +163,7 @@ function SignupPage() {
                         <>
                           <div className="text-center">
                             <img
-                              className="mx-auto w-48"
+                              className="mx-auto w-96"
                               src={Icon4}
                               alt="logo"
                             />
@@ -216,7 +216,6 @@ function SignupPage() {
                                   type={showPassword ? "text" : "password"}
                                   name="password"
                                   className="w-full p-2 border border-gray-300 rounded-md"
-                                  placeholder="****"
                                   value={password}
                                   onChange={(e) => setPassword(e.target.value)}
                                 />
@@ -252,7 +251,6 @@ function SignupPage() {
                                   type={showPassword2 ? "text" : "password"}
                                   name="password2"
                                   className="w-full p-2 border border-gray-300 rounded-md"
-                                  placeholder="****"
                                   value={password2}
                                   onChange={(e) => setPassword2(e.target.value)}
                                 />
@@ -339,12 +337,21 @@ function SignupPage() {
                     <h4 className="mb-6 text-xl font-semibold text-black">
                       Join us to access the many offered features
                     </h4>
-                    <p className="text-md text-black">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
+                    <div>
+                      <p className="text-md text-black">
+                        Welcome to MindScribe, where your journey towards
+                        improved mental wellness begins. Our platform offers a
+                        secure and private environment for you to express your
+                        thoughts and feelings through journaling. By tracking
+                        your mood and thoughts daily, MindScribeAI helps you
+                        uncover patterns and insights that can lead to greater
+                        self-awareness and emotional well-being. Join us to
+                        discover new ways to manage stress, enhance your mood,
+                        and cultivate a positive mindset. Every entry is a step
+                        forward in your personal growth journey, and our
+                        AI-driven insights will guide you along the way.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
