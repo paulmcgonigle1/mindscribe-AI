@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
 import Icon4 from "../../../assets/mindscribe2/png/logo-black.png";
+import SignUp from "../../../assets/mindscribe2/svg/sign-in.svg";
+
 import {
   FaTwitter,
   FaFacebook,
@@ -355,24 +357,32 @@ function SignupPage() {
                         environment for you to express your thoughts and
                         feelings through journaling.
                       </p>
-                      <div className="flex justify-center items-center mb-6">
-                        <span className="mr-4">
-                          <FaCheckCircle className="text-green-500 w-6 h-6" />{" "}
-                          Track your mood daily
-                        </span>
-                        <span className="mr-4">
-                          <FaCheckCircle className="text-green-500 w-6 h-6" />{" "}
-                          Discover insights with MindScribe
-                        </span>
-                        <span>
-                          <FaCheckCircle className="text-green-500 w-6 h-6" />{" "}
-                          Cultivate a positive mindset
-                        </span>
+                      <div className="flex justify-center flex-col items-center mb-6">
+                        <div className="flex items-center mb-2">
+                          <FaCheckCircle className="text-green-500 w-6 h-6 mr-2" />
+                          <span>Track your mood daily</span>
+                        </div>
+                        <div className="flex items-center mb-2">
+                          <FaCheckCircle className="text-green-500 w-6 h-6 mr-2" />
+                          <span>Discover insights with MindScribe</span>
+                        </div>
+                        <div className="flex items-center">
+                          <FaCheckCircle className="text-green-500 w-6 h-6 mr-2" />
+                          <span>Cultivate a positive mindset</span>
+                        </div>
                       </div>
                       <p className="text-md text-black text-center">
                         Join us to embark on a journey of self-discovery and
                         personal growth.
                       </p>
+                    </div>
+                    <div className="hidden md:block">
+                      {/* Replace with your image path */}
+                      <img
+                        src={SignUp}
+                        alt="Descriptive Alt Text"
+                        className="  h-[60vh] "
+                      />
                     </div>
                   </div>
                 </div>

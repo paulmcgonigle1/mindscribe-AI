@@ -1,9 +1,9 @@
 import { Text } from "../atoms/Text";
 import { Card } from "../atoms/Card";
 import { useCallback } from "react";
-import Icon1 from "../../../assets/mindscribe2/svg/tasks.svg";
+import Icon3 from "../../../assets/mindscribe2/svg/tasks.svg";
 import Icon2 from "../../../assets/mindscribe2/svg/Analysis.svg";
-import Icon3 from "../../../assets/mindscribe2/svg/statistics.svg";
+import Icon1 from "../../../assets/mindscribe2/svg/statistics.svg";
 import Icon4 from "../../../assets/mindscribe2/svg/writing.svg";
 
 import { Fade } from "react-awesome-reveal";
