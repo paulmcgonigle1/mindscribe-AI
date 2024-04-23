@@ -1,5 +1,7 @@
 import { Fragment, useContext } from "react";
 import { HiOutlineBell, HiChevronDoubleDown } from "react-icons/hi";
+import { FaUserCircle } from "react-icons/fa";
+
 import { Popover, Transition, Menu } from "@headlessui/react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
@@ -71,7 +73,7 @@ export default function Header() {
                 leaveTo="opacity-0 translate-y-1"
               >
                 <Popover.Panel className="absolute right-0 z-10 mt-2.5 w-80">
-                  <div className="bg-white rounded-sm shadow-md ring-1 ring-black ring-opacity-5 px-2 py-2.5">
+                  <div className="bg-white rounded-md shadow-md  ring-black ring-opacity-5 px-2 py-2.5">
                     <strong className="text-gray-700 font-medium">
                       Notifications
                     </strong>
@@ -91,15 +93,7 @@ export default function Header() {
           <div>
             <Menu.Button className="ml-2 inline-flex">
               <span className="sr-only">Open User Menu</span>
-              <div
-                className="h-10 w-10 rounded-full bg-sky-500 bg-cover bg-no-repeat bg-center"
-                style={{
-                  backgroundImage:
-                    'url("https://source.unsplash.com/80x80?face")',
-                }}
-              >
-                <span className="sr-only">Hugh Jackson</span>
-              </div>
+              <FaUserCircle className="h-10 w-10 rounded-full"></FaUserCircle>
             </Menu.Button>
           </div>
           <Transition
@@ -112,20 +106,7 @@ export default function Header() {
             leaveTo="transform scale-95 opacity-0"
           >
             {/* Mark this component as `static` */}
-            <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-40 rounded-sm shadow-sm p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <Menu.Item>
-                {({ active }) => (
-                  <div
-                    className={classNames(
-                      active && "bg-gray-100",
-                      "text-gray-700 focus:bg-gray-200 cursor-pointer rounded-sm  ring-opacity-5 px-4 py-2"
-                    )}
-                    onClick={() => navigate("/profile")}
-                  >
-                    Your Profile
-                  </div>
-                )}
-              </Menu.Item>
+            <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-40 rounded-lg shadow-sm p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
               <Menu.Item>
                 <button onClick={() => navigate("/settings")}>Settings</button>
               </Menu.Item>

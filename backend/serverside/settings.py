@@ -29,7 +29,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 
 # trying to fix cors error THESE MAY NEED TO BE LOOKED AT AGAIN
-# SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
 # SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 ALLOWED_HOSTS = [
@@ -48,7 +47,7 @@ ALLOWED_HOSTS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-WSGI_APPLICATION = "backend.serverside.wsgi.application"
+WSGI_APPLICATION = "serverside.wsgi.application"
 
 
 # URL to use when referring to static files (in templates, etc.)
@@ -71,7 +70,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    "backend.myapp.apps.MyappConfig",
+    "myapp.apps.MyappConfig",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
 ]
@@ -106,7 +105,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in producti
 #         },
 #     },
 # }
-ROOT_URLCONF = "backend.serverside.urls"
+ROOT_URLCONF = "serverside.urls"
 # updated
 
 TEMPLATES = [
@@ -129,12 +128,12 @@ TEMPLATES = [
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
 # WHEN UPDATING TO POSTGRES
 # DATABASES = {
@@ -149,11 +148,11 @@ TEMPLATES = [
 # }
 
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("HEROKU_POSTGRESQL_MAUVE_URL")
-    )
-}
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default=os.environ.get("HEROKU_POSTGRESQL_MAUVE_URL")
+#     )
+# }
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
@@ -244,7 +243,6 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-print("Base Directory:", BASE_DIR)
 # print("DEBUG:", DEBUG)
 # print("INSTALLED_APPS:", INSTALLED_APPS)
 django_heroku.settings(locals())

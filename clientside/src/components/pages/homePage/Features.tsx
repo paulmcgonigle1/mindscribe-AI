@@ -1,35 +1,36 @@
 import { Text } from "../atoms/Text";
 import { Card } from "../atoms/Card";
 import { useCallback } from "react";
-import Icon1 from "../../../assets/analysis.png";
-import Icon2 from "../../../assets/stats.png";
-import Icon3 from "../../../assets/tasks.png";
-import Icon4 from "../../../assets/journaling.png";
+import Icon3 from "../../../assets/mindscribe2/svg/tasks.svg";
+import Icon2 from "../../../assets/mindscribe2/svg/Analysis.svg";
+import Icon1 from "../../../assets/mindscribe2/svg/statistics.svg";
+import Icon4 from "../../../assets/mindscribe2/svg/writing.svg";
 
 import { Fade } from "react-awesome-reveal";
 
 const ServiceTexts = {
   firstText: "Features",
-  secondText: "We Offer Various features Services",
+  secondText: "We Offer Various Features ",
   cards: [
     {
       firstText: "Analysis",
       secondText:
-        "Built Wicket longer admire do barton vantity itself do in it.",
+        "Deep AI- analysis and insights from your journal, tailored to the user",
     },
     {
       firstText: "Statistics",
-      secondText: "engrossed listening. Park gate sell they west hard for the.",
+      secondText:
+        "Visual Statistics and charts for your data , to help you get a better understanding of your journals.",
     },
     {
       firstText: "Actionable Tasks",
       secondText:
-        "barton vantity itself do in it.Preferred to men it engrossed listening.",
+        "AI-Created Actionable tasks that you can save , track and implement to improove your mood",
     },
     {
       firstText: "Journaling",
       secondText:
-        "We deliver outsourced aviation services for military customers.",
+        "Intuitive Daily Journaling section which acts as the backbone to the application.",
     },
   ],
 };
@@ -50,7 +51,7 @@ const Features = () => {
   }, []);
   return (
     <section className="w-full h-auto flex flex-col items-center justify-center relative lg:px-20 md:px-20 px-6">
-      <main className="w-full pt-40 flex flex-col gap-3 items-center justify-center">
+      <main className="w-full pt-5 flex flex-col gap-3 items-center justify-center">
         <Text
           as="p"
           className="font-light text-base text-color3/80 tracking-widest"
@@ -67,8 +68,8 @@ const Features = () => {
         <div className="w-full h-auto grid lg:grid-cols-4 md:grid-cols-2 lg:gap-7 md:gap-10 gap-7 my-12 z-20 px-8 md:px-0">
           {ServiceTexts.cards.map((card, index) => (
             <Card
-              cardClass="w-full bg-white flex flex-col items-center justify-center py-6 cursor-pointer transition duration-300 hover:shadow-xl px-5 rounded-xl cardPseudo after:bg-color1"
-              imageWrapperClass="w-28 h-28 relative z-10 before:content-[''] before:absolute before:top-3 before:right-3 before:w-16 before:h-16 before:bg-color2/30 before:-z-10 before:rounded-tl-3xl before:rounded-br-3xl"
+              cardClass="w-full bg-warm-orange-bright flex flex-col items-center justify-center py-6 cursor-pointer transition duration-300 hover:shadow-xl px-5 rounded-xl cardPseudo after:bg-color1"
+              imageWrapperClass="w-50 h-28 relative z-10 before:content-[''] before:absolute before:top-3 before:right-3 before:w-16 before:h-16 before:bg-color2/30 before:-z-10 before:rounded-tl-3xl before:rounded-br-3xl"
               cover="object-cover"
               imageAlt={card.firstText}
               imageSrc={renderServiceIcon(index)}

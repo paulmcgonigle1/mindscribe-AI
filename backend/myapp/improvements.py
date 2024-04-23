@@ -277,14 +277,16 @@ def prompt_with_insights(formatted_insights, user_id):
     user = User.objects.get(id=user_id)
 
     prompt = (
-        f"I am an AI creating a list of and actionable tasks for improving my mental health, my name is {user.first_name}"
+        f"I am an AI creating a list of and actionable tasks for improving my mental health, my name is 
+        {user.first_name}"
         "Format each task with a clear 'Task:' label followed by the task itself, and an 'Explanation:' "
         "label followed by a brief explanation of how it relates to the user's insights. "
         "Begin each new task on a new line.\n\n"
         "User's insights from today are as follows, dont mention these in the response:\n"
         f"{formatted_insights}\n\n"
         "Please generate the list of 5 actionable tasks, do not mention the number of the task ."
-        "Again make sure they are formated like this 'Task: lorem upsum \n Explanation: lorem epsum lorem epsum' \n"
+        "Again make sure they are formated like this 'Task: lorem upsum \n "
+        "Explanation: lorem epsum lorem epsum' \n"
     )
     return prompt
 

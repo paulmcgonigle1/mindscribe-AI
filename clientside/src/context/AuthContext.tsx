@@ -1,11 +1,13 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 interface AuthContextType {
   //using forms
   loginUser: (
     e: React.FormEvent<HTMLFormElement>,
-    onSuccess: any
+    onSuccess: any,
+    onError: any
   ) => Promise<void>;
   //logout
   logoutUser: () => void;
@@ -36,10 +38,8 @@ type AuthTokens = {
 
 interface MyTokenPayload {
   username: string;
-  // include other properties you expect to have
 }
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  // Use a function to initialize authTokens state lazily
   const [authTokens, setAuthTokens] = useState<AuthTokens>(() => {
     try {
       // Attempt to get the item from localStorage
@@ -56,15 +56,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   //this is called every time this page is refreshed.
   useEffect(() => {
-    // If authTokens are present, decode them to set the user (you might already be doing something similar)
-    const token = authTokens?.access; // Assuming authTokens has an 'access' property holding the token string
+    // If authTokens are present, decode them to set the user
+    const token = authTokens?.access;
     if (token && typeof token === "string") {
       try {
         // Assuming you have a function to decode the JWT and extract user info
         const decodedUser = jwtDecode<MyTokenPayload>(authTokens.access); // Make sure to define or import jwtDecode
-        // console.log(
-        //   "Below is JWT token details after decode -- these can be updated"
-        // );
+
         // console.log(decodedUser);
         setUser({ username: decodedUser.username });
       } catch (error) {
@@ -75,51 +73,46 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const loginUser = async (
     e: React.FormEvent<HTMLFormElement>,
-    onSuccess: () => void
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void
   ) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    console.log(
-      "Form Submitted with username:" + username + " and password: " + password
-    );
     try {
-      // needs to be updated to use AXIOS THROUGH the service like all of the other ones
-      let response = await fetch(
+      const response = await axios.post(
         "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/token/",
         {
-          method: "POST",
+          username,
+          password,
+        },
+        {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            username,
-            password,
-          }),
         }
       );
 
-      let data = await response.json();
-      //this gets the jwt response access token and set sit or errors
-      if (response.status === 200) {
-        setAuthTokens(data);
-        //using jwt decode to get the access key
-        setUser(jwtDecode(data.access));
-        //setting authJWTTokens in localStorage
-        localStorage.setItem("authTokens", JSON.stringify(data));
-        //for working with login
-        onSuccess(); // Execute the callback after successful login
-      } else {
-        alert("Something Went Wrong in authcontext");
-      }
-
-      // console.log("Login Success", data);
-      // console.log("response", response);
-      //end of try
+      const data = response.data;
+      setAuthTokens(data);
+      setUser(jwtDecode(data.access));
+      localStorage.setItem("authTokens", JSON.stringify(data));
+      onSuccess(); // Execute the callback after successful login
     } catch (error) {
-      console.error("Login failed:", error);
+      if (axios.isAxiosError(error)) {
+        let errorMessage =
+          "Authentication failed. Please check your credentials.";
+        if (error.response) {
+          // More specific error handling if the server sends a response
+          errorMessage = error.response.data.detail || errorMessage;
+        }
+        onError(errorMessage); // Pass the error message to the onError callback
+      } else {
+        console.error("Login request failed:", error);
+        onError("An error occurred during login.");
+      }
     }
   };
 
@@ -143,27 +136,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const password = formData.get("password") as string;
     const password2 = formData.get("password2") as string;
 
+    // Check if passwords match
+    if (password !== password2) {
+      onError({ non_field_errors: ["Passwords do not match."] });
+      return;
+    }
+
     try {
-      //
-      let response = await fetch(
+      const response = await axios.post(
         "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/register/",
         {
-          method: "POST",
+          username,
+          email,
+          password,
+          password2,
+        },
+        {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ username, email, password, password2 }),
         }
       );
-      if (response.ok) {
+
+      if (response.status === 200) {
         onSuccess();
       } else {
-        const errorData = await response.json();
-        onError(errorData); // Save error messages to state
+        // Handle non-200 HTTP responses
+        onError(response.data);
       }
     } catch (error) {
-      console.error("An error occured during the signup", error);
-      onError({ non_field_errors: ["An unexpected error occurred."] }); // Provide a way to handle unexpected errors
+      if (axios.isAxiosError(error) && error.response) {
+        // Error responses from the server will be handled here
+        onError(error.response.data);
+      } else {
+        // Generic error handling if the error is not from Axios
+        console.error("An error occurred during the signup", error);
+        onError({ non_field_errors: ["An unexpected error occurred."] });
+      }
     }
   };
 
