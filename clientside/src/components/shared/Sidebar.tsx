@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { FcBullish } from "react-icons/fc";
+import Icon4 from "../../assets/mindscribe2/png/logo-no-background.png";
+
 import {
   DASHBOARD_SIDEBAR_BOTTOM_LINKS,
   DASHBOARD_SIDEBAR_LINKS,
@@ -57,8 +59,7 @@ export default function Sidebar() {
   return (
     <div className="bg-rich-green w-60 p-3 flex flex-col ">
       <div className="flex items-center gap-2 px-1 py-3">
-        <FcBullish />
-        <span className="text-black  text-2xl">MindScribe</span>
+        <img src={Icon4} alt="Logo" />
       </div>
       <div className="flex-1 py-8 flex flex-col gap-16 justify-center">
         {DASHBOARD_SIDEBAR_LINKS.map((item) => (
