@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { FcBullish } from "react-icons/fc";
 import Icon4 from "../../assets/mindscribe2/png/logo-no-background.png";
 
 import {
