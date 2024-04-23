@@ -15,21 +15,22 @@ const ServiceTexts = {
     {
       firstText: "Analysis",
       secondText:
-        "Built Wicket longer admire do barton vantity itself do in it.",
+        "Deep AI- analysis and insights from your journal, tailored to the user",
     },
     {
       firstText: "Statistics",
-      secondText: "engrossed listening. Park gate sell they west hard for the.",
+      secondText:
+        "Visual Statistics and charts for your data , to help you get a better understanding of your journals.",
     },
     {
       firstText: "Actionable Tasks",
       secondText:
-        "barton vantity itself do in it.Preferred to men it engrossed listening.",
+        "AI-Created Actionable tasks that you can save , track and implement to improove your mood",
     },
     {
       firstText: "Journaling",
       secondText:
-        "We deliver outsourced aviation services for military customers.",
+        "Intuitive Daily Journaling section which acts as the backbone to the application.",
     },
   ],
 };
