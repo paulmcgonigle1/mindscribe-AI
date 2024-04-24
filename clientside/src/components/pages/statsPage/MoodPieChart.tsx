@@ -25,9 +25,11 @@ const transformMoodDataToPieData = (
     return acc;
   }, {} as { [key: number]: number });
 
-  return Object.entries(moodRatingCounts).map(([moodRating, count]) => ({
-    name: moodRating,
-    value: count,
+  const allMoodRatings = Array.from({ length: 5 }, (_, index) => index + 1);
+
+  return allMoodRatings.map((moodRating) => ({
+    name: moodRating.toString(),
+    value: moodRatingCounts[moodRating] || 0,
   }));
 };
 
@@ -53,6 +55,10 @@ function renderCustomizedLabel({
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
+  if (percent < 0.01) {
+    return null;
+  }
+
   return (
     <text
       x={x}
@@ -65,17 +71,22 @@ function renderCustomizedLabel({
     </text>
   );
 }
-const moodColors = Object.values(moodRatingColors);
 
-function MoodPieChart({ entries, selectedPeriod }: MoodPieChartProps) {
+const MoodPieChart: React.FC<MoodPieChartProps> = ({
+  entries,
+  selectedPeriod,
+}) => {
+  const moodColors = Object.values(moodRatingColors);
+
   const data = transformMoodDataToPieData(entries, selectedPeriod);
+
   return (
     <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
       <h1 className=" text-lg">Mood Profile</h1>
       <div>Here is your mood chart of the last {selectedPeriod} days</div>
 
       <div className="w-full mt-3 flex-1 text-xs">
-        <ResponsiveContainer width="98%" height="100%">
+        <ResponsiveContainer width="99%" height="100%">
           <PieChart>
             <Pie
               data={data}
@@ -83,7 +94,7 @@ function MoodPieChart({ entries, selectedPeriod }: MoodPieChartProps) {
               cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
-              outerRadius={130}
+              outerRadius={140}
               fill="#8884d8"
               dataKey="value"
             >
@@ -100,6 +111,6 @@ function MoodPieChart({ entries, selectedPeriod }: MoodPieChartProps) {
       </div>
     </div>
   );
-}
+};
 
 export default MoodPieChart;
