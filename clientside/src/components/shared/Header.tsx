@@ -12,7 +12,7 @@ export default function Header() {
   let { user } = useContext(AuthContext)!;
   const navigate = useNavigate();
   return (
-    <div className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200">
+    <div className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200 z-50">
       {/* //this is the popover for tracking tasks in our website*/}
       <div className="flex-grow">
         <Popover className="relative">

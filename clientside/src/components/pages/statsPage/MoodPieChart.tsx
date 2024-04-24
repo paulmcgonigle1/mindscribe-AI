@@ -2,6 +2,8 @@ import { ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
 import { JournalEntry } from "../../../lib/types/types";
 import { filterEntriesByPeriod } from "../../../lib/utils/filter-by-period";
 import { moodRatingColors } from "../../../lib/constants/colors";
+import Load from "../../../assets/mindscribe2/svg/load.svg";
+
 interface MoodPieChartProps {
   entries: JournalEntry[];
   selectedPeriod: number;
@@ -80,10 +82,35 @@ const MoodPieChart: React.FC<MoodPieChartProps> = ({
 
   const data = transformMoodDataToPieData(entries, selectedPeriod);
 
+  const enoughEntries = entries.length >= 5;
+
+  // if (!enoughEntries) {
+  //   return (
+  //     <div className="flex flex-1 items-center justify-center bg-white p-4 rounded-sm border border-gray-200 flex-col">
+  //       <h1 className="text-lg mb-20">Mood Profile</h1>
+  //       <div className="items-center text-center">
+  //         <div className="text-red-500">
+  //           You need at least 5 journal entries to display the mood chart.
+  //         </div>
+  //         <div className="hidden md:block">
+  //           {/* Replace with your image path */}
+  //           <img
+  //             src={Load}
+  //             alt="Descriptive Alt Text"
+  //             className="h-[25vh] mx-auto mb-auto"
+  //           />
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
   return (
     <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
       <h1 className=" text-lg">Mood Profile</h1>
-      <div>Here is your mood chart of the last {selectedPeriod} days</div>
+      <div className=" text-red-500">
+        Here is your mood chart of the last {selectedPeriod} days
+      </div>
 
       <div className="w-full mt-3 flex-1 text-xs">
         <ResponsiveContainer width="99%" height="100%">

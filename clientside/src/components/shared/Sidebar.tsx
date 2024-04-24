@@ -56,7 +56,7 @@ export default function Sidebar() {
     navigate("/sign-up", { state: { isLogin: true } });
   };
   return (
-    <div className="bg-rich-green w-60 p-3 flex flex-col ">
+    <div className="bg-rich-green w-60 p-3 flex flex-col z-50 ">
       <div className="flex items-center gap-2 px-1 py-3">
         <img src={Icon4} alt="Logo" />
       </div>
