@@ -46,14 +46,14 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
   };
   return (
     <div
-      className="shadow rounded-lg mx-auto p-4"
+      className=" rounded-lg mx-auto p-4 shadow-lg"
       style={{ backgroundColor: "#f9a827" }}
     >
       {" "}
       <div className="flex justify-between items-center mb-3">
-        <h3 className="text-xl font-semibold">
+        <h1 className="text-center text-2xl font-semibold mb-4">
           Completed Tasks Today ({todaysTasksCount})
-        </h3>
+        </h1>
         {/* Selector as before */}
       </div>
       <ul>
@@ -68,9 +68,6 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
               <span className="text-lg font-medium">
                 {index + 1}. {task.content}
               </span>
-              <button className="text-lg text-blue-500 hover:text-blue-700">
-                Details
-              </button>
             </div>
             {expandedTaskID === task.taskId && (
               <div className="p-3 text-md">

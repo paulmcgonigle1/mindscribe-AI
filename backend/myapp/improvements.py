@@ -220,8 +220,9 @@ def create_message_of_the_day(user):
     # prompt with values from database
 
     prompt = (
-        f"Generate a quick and short {preferred_type} in the style of {preferred_style} "
-        f"as a personal message to {user.first_name} to help them with their day.\n\n"
+        f"Generate a message of type: {preferred_type} in the style of: {preferred_style} "
+        f"as a personal message to {user.first_name} to help them with their day. \n\n"
+        f"be positive. \n\n"
     )
 
     # Generate the message using your LLM interaction function

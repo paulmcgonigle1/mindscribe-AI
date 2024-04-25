@@ -34,18 +34,18 @@ function Improvements_Message({ improvementData }: ImprovementsMessageProps) {
   // }, [authTokens]);
   // Creates a new mental health plan and sets that to the one
   return (
-    <div className="flex flex-col rounded-lg p-4 justify-center items-center bg-green-100 flex-grow">
+    <div className="flex flex-col rounded-lg p-4 justify-center items-center bg-green-100 flex-grow shadow-lg">
       <div className="w-full flex flex-col justify-center h-full">
-        <h1 className="text-center text-3xl font-semibold mb-4">
+        <h1 className="text-center text-2xl font-semibold mb-4">
           Today's Personal Message
         </h1>
-        <div className="text-lg text-gray-800 flex flex-col justify-center h-full">
+        <div className="text-xl text-gray-800 flex flex-col justify-center h-full">
           {improvementData.message ? (
             <Typewriter
               options={{
                 strings: improvementData.message,
                 autoStart: true,
-                delay: 18, // Lower is faster
+                delay: 19, // Lower is faster
               }}
             />
           ) : (
