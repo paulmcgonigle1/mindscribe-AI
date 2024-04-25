@@ -44,6 +44,9 @@ export type  Settings = {
   preferred_type: string;
   preferred_style: string;
   is_personalised: boolean;
+  responseType: string,
+  companionType: string,
+
 }
 
 export type Preferences = {

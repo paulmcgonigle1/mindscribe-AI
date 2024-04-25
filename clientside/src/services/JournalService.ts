@@ -82,7 +82,14 @@ export const createImprovements = async (authTokens: { access: string }): Promis
   }
 };
 
-
+export const removeUserData = async (authTokens:{ access: string }): Promise<void> => {
+  await axios.delete(`${BASE_URL}/myapp/remove-user/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`,
+    }
+  });
+}
  
 export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   const response = await axios.get(`${BASE_URL}/myapp/get-improvements/`, {
@@ -107,7 +114,9 @@ export const getSettings = async (authTokens: { access: string }): Promise<Setti
   return {
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
-    is_personalised: response.data.is_personalised
+    is_personalised: response.data.is_personalised,
+    responseType: response.data.responseType,
+    companionType: response.data.companionType,
   };
 } 
 //for updating our settings at the moment
@@ -121,7 +130,9 @@ export const updateSettings = async (authTokens: { access: string }, newSettings
   return {
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
-    is_personalised: response.data.is_is_personalised
+    is_personalised: response.data.is_is_personalised,
+    responseType: response.data.responseType,
+    companionType: response.data.companionType,
   };
 } 
 

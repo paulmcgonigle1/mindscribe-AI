@@ -111,6 +111,7 @@ class UserPreferences(models.Model):
     )
     # Add other settings fields as needed
     responseType = models.TextField(blank=True, null=True)
+    companionType = models.TextField(blank=True, default="Terry")
 
     def __str__(self):
         return f"Preferences for {self.user.username}"

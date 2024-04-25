@@ -31,7 +31,19 @@ DEBUG = True
 # trying to fix cors error THESE MAY NEED TO BE LOOKED AT AGAIN
 # SESSION_COOKIE_SECURE = True
 # SECURE_CROSS_ORIGIN_OPENER_POLICY = None
-# ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = [
+#     "127.0.0.1",
+#     "localhost",
+#     "https://www.mindscribe.life",
+#     "http://www.mindscribe.life",
+#     "www.mindscribe.life",
+#     "mindscribe.life",
+#     "https://mindscribe-36297a9e5954.herokuapp.com",
+#     "http://mindscribe-36297a9e5954.herokuapp.com",
+#     "mindscribe-36297a9e5954.herokuapp.com",
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True  # For development only
 
 
 # Static files (CSS, JavaScript, Images)

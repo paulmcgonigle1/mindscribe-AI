@@ -41,6 +41,7 @@ urlpatterns = [
         GetRecentImprovements.as_view(),
         name="get-improvements",
     ),
+    path("delete-data/", views.removeUser, name="delete-data"),
     # gets all of the tracked tasks
     path(
         "get-tracked-tasks/",
