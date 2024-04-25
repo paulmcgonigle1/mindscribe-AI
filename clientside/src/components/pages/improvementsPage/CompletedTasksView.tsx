@@ -95,7 +95,6 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
         <>
           <p className="text-sm">No tasks completed on this date yet.</p>
           <div className="hidden md:block">
-            {/* Replace with your image path */}
             <img
               src={Load}
               alt="Descriptive Alt Text"

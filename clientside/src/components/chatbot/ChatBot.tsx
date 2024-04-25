@@ -6,28 +6,32 @@ interface ChatBotProps {
   fetchInsightsCallback: () => Promise<void>;
   message: string | null;
 }
+interface Message {
+  text: string;
+  link?: string;
+}
 
 function ChatBot({ fetchInsightsCallback, message }: ChatBotProps) {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [hasAdviceBeenAdded, setHasAdviceBeenAdded] = useState<boolean>(false);
 
   useEffect(() => {
-    if (message && !messages.includes(message)) {
-      // Add new user message
-      setMessages((prevMessages) => [...prevMessages, message]);
+    if (message && !messages.some((msg) => msg.text === message)) {
+      const newMessage: Message = { text: message };
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
 
-      // Add advice message if it's the first user message
       if (!hasAdviceBeenAdded) {
         setTimeout(() => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            "Please go to the improvements page to find out how to improve.",
-          ]);
-          setHasAdviceBeenAdded(true); // Ensure advice message is only added once
-        }, 6000); // Delay of 3 seconds
+          const adviceMessage: Message = {
+            text: "Please go to the improvements page to find out how to improve ",
+            link: "/improvements",
+          };
+          setMessages((prevMessages) => [...prevMessages, adviceMessage]);
+          setHasAdviceBeenAdded(true);
+        }, 7000);
       }
     }
-  }, [message]); // Remove hasAdviceBeenAdded and messages from dependency array to avoid retriggering the effect needlessly
+  }, [message]);
 
   return (
     <div className="flex flex-col p-4 max-w-xl mx-auto bg-white rounded-lg border shadow-md space-y-4">
@@ -38,9 +42,10 @@ function ChatBot({ fetchInsightsCallback, message }: ChatBotProps) {
               <div className="flex-grow bg-gray-100 rounded-lg p-2 text-md text-gray-700">
                 <Typewriter
                   options={{
-                    strings: message,
+                    strings: message.text,
                     autoStart: true,
                     delay: 19, // Typing effect speed
+                    cursor: "",
                   }}
                 />
               </div>

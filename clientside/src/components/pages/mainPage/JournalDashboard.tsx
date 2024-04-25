@@ -12,6 +12,7 @@ import Questionnaire from "../homePage/multi-step-form/page";
 import Modal from "../../shared/Modal";
 import BotResponse from "./BotResponse";
 import JournalEntry from "./JournalEntry";
+import Load from "../../../assets/mindscribe2/svg/writer1.svg";
 
 export default function JournalDashboard() {
   // const [moodRating, setMoodRating] = useState<number | null>(null);
@@ -106,29 +107,34 @@ export default function JournalDashboard() {
           </div>
         </div>
 
-        <div className="flex flex-wrap md:flex-nowrap gap-">
-          <div className="flex flex-1 md:w-1/2  ">
-            <div className="flex-1 w-full m-1 p-4 min-h-full ">
-              <JournalEntry
-                onJournalSubmit={handleJournalSubmit}
-                hasJournaledToday={hasJournaledToday}
-                resetJournalState={resetJournalState}
-              />
-            </div>
-            <div className="flex flex-1 m-1 p-4 w-full max-h-full">
-              <Calendar />
-            </div>
+        <div className="flex flex-wrap xl:flex-nowrap gap-4">
+          <div className="w-full lg:w-1/2 p-4">
+            <JournalEntry
+              onJournalSubmit={handleJournalSubmit}
+              hasJournaledToday={hasJournaledToday}
+              resetJournalState={resetJournalState}
+            />
+          </div>
+          <div className="flex flex-1 m-1  p-4 w-full max-h-[35vh]">
+            <Calendar />
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-1 ">
+        <div className="flex flex-col md:flex-row gap-6 ">
+          <div className="flex-1 max-w-2xl ">
             <BotResponse
               fetchInsightsCallback={fetchMessage}
               message={message}
             />
           </div>
+          <div className="hidden xl:block">
+            {/* Replace with your image path */}
+            <img
+              src={Load}
+              alt="Descriptive Alt Text"
+              className="h-[20vh] m-auto mt-6"
+            />
+          </div>
         </div>
-        {/* <StatsDashboard /> */}
 
         <Modal
           isOpen={showQuestionnaireModal}
