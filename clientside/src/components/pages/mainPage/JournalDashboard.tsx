@@ -119,23 +119,28 @@ export default function JournalDashboard() {
             <Calendar />
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-6 ">
-          <div className="flex-1 max-w-2xl ">
+
+        <div className="flex flex-col md:flex-row gap-4  ">
+          <div className="w-full lg:w-1/2">
             <BotResponse
               fetchInsightsCallback={fetchMessage}
               message={message}
             />
           </div>
-          <div className="hidden xl:block">
-            {/* Replace with your image path */}
+          <div className="w-full md:w-1/2 hidden lg:flex flex-col justify-center items-center">
+            <p className="text-xl text-gray-700 mb-2">
+              Your Motivational Quote:
+            </p>
             <img
               src={Load}
               alt="Descriptive Alt Text"
-              className="h-[20vh] m-auto mt-6"
+              className="max-h-[25vh]"
             />
+            <p className="text-md text-gray-600 mt-2">
+              "Every day brings new choices." - Martha Beck
+            </p>
           </div>
         </div>
-
         <Modal
           isOpen={showQuestionnaireModal}
           onClose={() => setShowQuestionnaireModal(false)}
