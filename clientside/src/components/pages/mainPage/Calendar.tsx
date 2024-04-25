@@ -222,7 +222,7 @@ export default function Example() {
   );
 
   return (
-    <div className=" w-full max-h-full ">
+    <div className=" w-full  max-h-full ">
       <div className="  mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded-md p-10 max-h-full  overflow-auto">
         <div className="grid grid-cols-1 xl:grid-cols-2 lg:gap-4 md:gap-3 divide-y md:divide-y-0 lg:divide-x divide-gray-200">
           <div className="pb-4 md:pb-0 ">

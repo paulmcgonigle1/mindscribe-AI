@@ -115,28 +115,23 @@ export default function JournalDashboard() {
               resetJournalState={resetJournalState}
             />
           </div>
-          <div className="flex flex-1 m-1  p-4 w-full max-h-[35vh]">
+          <div className="flex flex-1 m-1  p-4 w-full min-h-[20vh] max-h-[35vh]">
             <Calendar />
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4  ">
-          <div className="w-full lg:w-1/2">
+        <div className="flex flex-col md:flex-row gap-4  h-full">
+          <div className="w-full lg:w-1/2 h-full">
+            {" "}
             <BotResponse
               fetchInsightsCallback={fetchMessage}
               message={message}
             />
           </div>
-          <div className="w-full md:w-1/2 hidden lg:flex flex-col justify-center items-center">
-            <p className="text-xl text-gray-700 mb-2">
-              Your Motivational Quote:
-            </p>
-            <img
-              src={Load}
-              alt="Descriptive Alt Text"
-              className="max-h-[25vh]"
-            />
-            <p className="text-md text-gray-600 mt-2">
+          <div className="w-full md:w-1/2 hidden lg:flex flex-col justify-center items-center h-full">
+            {" "}
+            <img src={Load} alt="Descriptive Alt Text" className="h-[25vh]" />
+            <p className="text-lg text-gray-600 mt-10">
               "Every day brings new choices." - Martha Beck
             </p>
           </div>
