@@ -56,6 +56,7 @@ export default function StatsDashboard() {
             <p className="text-center text-gray-700">
               You need more journal entries to get statistical insights
             </p>
+
             <div className="hidden md:block">
               {/* Replace with your image path */}
               <img

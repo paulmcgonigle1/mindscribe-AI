@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Task } from "../../../lib/types/types";
+import Load from "../../../assets/mindscribe2/svg/load.svg";
 
 interface CompletedTasksProps {
   tasks: Task[];
@@ -25,10 +26,6 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
   //const [selectedDate, setSelectedDate] = useState<string>(todaysDate);
 
   const [expandedTaskID, SetExpandedTaskId] = useState<number | null>(null);
-  // Unique dates for the dropdown
-  // const uniqueDates = Array.from(
-  //   new Set(tasks.map((task) => formatDate(task.created_at)))
-  // );
 
   const selectedDate = formatDate(new Date());
   // Filter tasks based on the selected date
@@ -48,7 +45,11 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
     SetExpandedTaskId((prevTaskId) => (prevTaskId === taskId ? null : taskId));
   };
   return (
-    <div className="bg-white shadow rounded-lg my-4 p-4">
+    <div
+      className="shadow rounded-lg mx-auto p-4"
+      style={{ backgroundColor: "#f9a827" }}
+    >
+      {" "}
       <div className="flex justify-between items-center mb-3">
         <h3 className="text-xl font-semibold">
           Completed Tasks Today ({todaysTasksCount})
@@ -94,7 +95,17 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
         ))}
       </ul>
       {selectedDate && sortedTasks.length === 0 && (
-        <p className="text-sm">No tasks completed on this date yet.</p>
+        <>
+          <p className="text-sm">No tasks completed on this date yet.</p>
+          <div className="hidden md:block">
+            {/* Replace with your image path */}
+            <img
+              src={Load}
+              alt="Descriptive Alt Text"
+              className="h-[25vh] m-auto mt-6"
+            />
+          </div>
+        </>
       )}
     </div>
   );

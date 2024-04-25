@@ -37,13 +37,8 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
           <span className="font-semibold ">To track a task:</span> Press{" "}
           <span className="font-semibold">'Save Task'</span>.
         </p>
-        <p className="text-lg mb-4">
-          <span className="font-semibold">To learn more:</span> Press{" "}
-          <span className="font-semibold">'Read More'</span> for detailed
-          insights.
-        </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4">
         {improvementData.tasks.map((task, index) => (
           <TaskCard
             key={task.taskId || index}
