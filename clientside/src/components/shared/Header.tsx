@@ -12,7 +12,7 @@ export default function Header() {
   let { user } = useContext(AuthContext)!;
   const navigate = useNavigate();
   return (
-    <div className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200">
+    <div className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200 z-50">
       {/* //this is the popover for tracking tasks in our website*/}
       <div className="flex-grow">
         <Popover className="relative">
@@ -52,40 +52,6 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-2 mr-2">
-        <Popover className="relative">
-          {({ open }) => (
-            <>
-              <Popover.Button
-                className={classNames(
-                  open && "bg-gray-100",
-                  "p-1.5 rounded inline-flex items-center text-gray-700 hover:text-opacity-100 focus:outline-none active:bg-gray-100"
-                )}
-              >
-                <HiOutlineBell fontSize={24} />
-              </Popover.Button>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 translate-y-1"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
-              >
-                <Popover.Panel className="absolute right-0 z-10 mt-2.5 w-80">
-                  <div className="bg-white rounded-md shadow-md  ring-black ring-opacity-5 px-2 py-2.5">
-                    <strong className="text-gray-700 font-medium">
-                      Notifications
-                    </strong>
-                    <div className="mt-2 py-1 text-sm">
-                      This is notifications pannel
-                    </div>
-                  </div>
-                </Popover.Panel>
-              </Transition>
-            </>
-          )}
-        </Popover>
         <Menu
           as="div"
           className="relative inline-block text-left rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400"
