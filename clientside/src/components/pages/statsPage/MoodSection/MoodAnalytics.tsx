@@ -1,7 +1,6 @@
 import { JournalEntry } from "../../../../lib/types/types";
 import MoodStats from "./MoodStats";
 import MoodChartBar from "./MoodLineChart";
-import Load from "../../../../assets/mindscribe2/svg/serverdown.svg";
 
 interface MoodStatsProps {
   entries: JournalEntry[];
@@ -13,7 +12,7 @@ function MoodAnalytics({
   selectedPeriod,
   onPeriodChange,
 }: MoodStatsProps) {
-  const enoughEntries = entries.length >= 5;
+  // const enoughEntries = entries.length >= 5;
 
   // if (!enoughEntries) {
   //   return (

@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 export default function StatsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(7); // Default to last 7 days
   const [journals, setJournals] = useState<JournalEntry[]>([]);
-  const [loading, setLoading] = useState(true); // Added state for loading indicator
 
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
@@ -28,7 +27,6 @@ export default function StatsDashboard() {
         } catch (error) {
           console.error("Failed to fetch recent entries:", error);
         } finally {
-          setLoading(false); // Set loading to false once journals are fetched
         }
       } else {
         console.log("Auth context or tokens are undefined/null");

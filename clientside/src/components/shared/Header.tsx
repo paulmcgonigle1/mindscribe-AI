@@ -1,9 +1,8 @@
 import { Fragment, useContext } from "react";
-import { HiOutlineBell, HiChevronDoubleDown } from "react-icons/hi";
+import { HiChevronDoubleDown } from "react-icons/hi";
 import { FaUserCircle } from "react-icons/fa";
 
 import { Popover, Transition, Menu } from "@headlessui/react";
-import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import TrackTasks from "../pages/trackTasksPage/TrackTasks";

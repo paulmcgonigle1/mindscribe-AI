@@ -1,7 +1,7 @@
 import { JournalEntry } from "../../../../lib/types/types";
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { Label } from "recharts";
+// import { Label } from "recharts";
 
 // Helper function to calculate average mood
 function calculateAverageMood(entries: JournalEntry[]) {
@@ -39,7 +39,7 @@ function MoodStats({
       <h1 className="text-xl font-semibold">Mood Over Time</h1>
       <div>
         <Listbox value={selectedPeriod} onChange={onPeriodChange}>
-          {({ open }) => (
+          {() => (
             <>
               <Listbox.Label className="text-sm font-medium">
                 Select Period:
