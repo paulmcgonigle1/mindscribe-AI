@@ -12,6 +12,9 @@ export default function Header() {
   let { user } = useContext(AuthContext)!;
   const navigate = useNavigate();
 
+  const handleOverlayClick = () => {
+    setTrackTasksVisible(false);
+  };
   return (
     <div
       className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200 z-50"
@@ -30,11 +33,21 @@ export default function Header() {
             />
           </button>
           {trackTasksVisible && (
-            <div className="absolute left-1/4 z-50 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
-              <div className="bg-gray-50 overflow-hidden rounded-lg shadow-2xl ring-1 ring-black/5">
-                <TrackTasks />
+            <>
+              {/* Overlay background */}
+              <div
+                className="fixed inset-0 bg-black bg-opacity-30 mt-[63px] ml-[240px]"
+                aria-hidden="true"
+                onClick={handleOverlayClick} // This will trigger when the overlay is clicked
+              ></div>
+
+              {/* Scale-in animation container */}
+              <div className="absolute left-1/4 z-50 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl animate-scale-in">
+                <div className="bg-gray-50 overflow-hidden rounded-lg shadow-2xl ring-1 ring-black/5">
+                  <TrackTasks />
+                </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>
