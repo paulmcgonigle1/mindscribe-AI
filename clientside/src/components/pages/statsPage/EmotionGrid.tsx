@@ -57,16 +57,17 @@ function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
   }, [selectedPeriod]);
 
   return (
-    <div className="flex flex-1 bg-white p-4 rounded-sm border shadow-md flex-col ">
-      <h1 className="text-xl mb-1 font-semibold ">Common Emotions</h1>
+    <div
+      className="flex flex-1 bg-white p-4 rounded-sm border shadow-md flex-col "
+      style={{ backgroundColor: "#f9a827" }}
+    >
+      <h1 className="text-center text-2xl font-semibold mb-4 ">
+        Common Emotions
+      </h1>
       <div>
         <p className="text-lg">
           Here are the most common emotions that we found over the last{" "}
           {selectedPeriod} days
-        </p>
-        <p className="text-md text-red-500">
-          It might be a good idea to keep an eye on what emotions are causing
-          some dips etc in your emotions {selectedPeriod} days
         </p>
       </div>
       <div className="emotion-icons-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

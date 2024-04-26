@@ -61,16 +61,17 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
 
   //this just displays the common themes as emojis in a nice layout.
   return (
-    <div className="flex flex-1 bg-white p-4 rounded-sm border shadow-md border-gray-200  flex-col ">
-      <h1 className="text-xl mb-4 ">Common themes</h1>
+    <div
+      className="flex flex-1 bg-white p-4 rounded-sm border shadow-md flex-col "
+      style={{ backgroundColor: "#f9a827" }}
+    >
+      <h1 className="text-center text-2xl font-semibold mb-4 ">
+        Common themes
+      </h1>
       <div>
         <p className="text-lg">
           Here are the most common emotions that we found over the last{" "}
           {selectedPeriod} days
-        </p>
-        <p className="text-md text-red-500">
-          It might be a good idea to keep an eye on what emotions are causing
-          some dips etc in your emotions {selectedPeriod} days
         </p>
       </div>
       <div className="theme-icons-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

@@ -36,7 +36,9 @@ function MoodStats({
     <div className="flex flex-col mb-2 space-y-4 relative">
       {" "}
       {/* Added relative class */}
-      <h1 className="text-xl font-semibold">Mood Over Time</h1>
+      <h1 className="text-center text-2xl font-semibold mb-4">
+        Mood Over Time
+      </h1>
       <div>
         <Listbox value={selectedPeriod} onChange={onPeriodChange}>
           {() => (
