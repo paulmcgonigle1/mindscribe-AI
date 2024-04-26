@@ -46,7 +46,7 @@ export default function StatsDashboard() {
   const enoughEntries = journals.length >= 5;
 
   return (
-    <div className="flex flex-col gap-4 m-5">
+    <div className="flex flex-col  m-20">
       {!enoughEntries && (
         <div className="absolute top-0 left-0 w-full h-full z-10 opacity-100 flex justify-center items-center">
           <div className="p-8 bg-white rounded-md shadow-lg">
@@ -56,6 +56,7 @@ export default function StatsDashboard() {
             <p className="text-center text-gray-700">
               You need more journal entries to get statistical insights
             </p>
+
             <div className="hidden md:block">
               {/* Replace with your image path */}
               <img
@@ -78,15 +79,15 @@ export default function StatsDashboard() {
           !enoughEntries ? "filter blur-md" : ""
         } flex-wrap -mx-4 w-full`}
       >
-        <div className={`flex flex-wrap -mx-4 w-full mb-5`}>
-          <div className="w-full xl:w-2/3 px-4 flex min-w-0">
+        <div className={`flex flex-wrap -mx-4 w-full mb-4`}>
+          <div className="w-full xl:w-2/3 px-4 py-3 flex min-w-0">
             <MoodAnalytics
               entries={journals}
               selectedPeriod={selectedPeriod}
               onPeriodChange={handlePeriodChange}
             />
           </div>
-          <div className="w-full xl:w-1/3 px-4 flex min-w-0">
+          <div className="w-full xl:w-1/3 px-4 py-3  flex min-w-0">
             <MoodPieChart
               entries={journals}
               selectedPeriod={selectedPeriod}
@@ -94,11 +95,11 @@ export default function StatsDashboard() {
             />
           </div>
         </div>
-        <div className="flex flex-row gap-4 w-full">
-          <div className="flex flex-grow ">
+        <div className="flex flex-col xl:flex-row gap-4 w-full h-full ">
+          <div className="w-full flex-grow p-4">
             <EmotionGrid selectedPeriod={selectedPeriod} />
           </div>
-          <div className="flex flex-grow ">
+          <div className="w-full flex-grow p-4">
             <ThemesGrid selectedPeriod={selectedPeriod} />
           </div>
         </div>

@@ -77,16 +77,21 @@ function ImprovementsDashboard() {
     };
 
     fetchCompletedTasks();
-  }, [authTokens]); // Dependency array depends on your specific needs
+  }, [authTokens]);
   return (
-    <div className="m-4 space-y-2">
-      <Improvements_Message improvementData={improvementData} />
-
-      <div className="flex flex-col md:flex-row gap-6  justify-center items-center w-full px-2 ">
+    <div className="m-20  ">
+      <div className="flex flex-col md:flex-row gap-6 justify-center items-center w-full px-2">
         <ActionableTasks improvementData={improvementData} />
       </div>
 
-      <CompletedTasksView tasks={completedTasks} />
+      <div className="flex flex-wrap xl:flex-nowrap gap-4 px-4">
+        <div className="w-full  p-4">
+          <CompletedTasksView tasks={completedTasks} />
+        </div>
+        <div className="w-full p-4">
+          <Improvements_Message />
+        </div>
+      </div>
     </div>
   );
 }

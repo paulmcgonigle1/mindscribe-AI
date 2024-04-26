@@ -31,7 +31,7 @@ function MoodLineChart({ entries, selectedPeriod }: MoodStatsProps) {
 
   return (
     <div
-      className="flex flex-col bg-white p-4 rounded-sm border border-gray-200"
+      className="flex flex-col bg-white p-4 rounded-sm border border-gray-200 "
       style={{ height: "22rem" }}
     >
       <strong className="text-gray-700 font-medium">Mood</strong>
