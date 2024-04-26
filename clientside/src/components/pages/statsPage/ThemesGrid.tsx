@@ -13,6 +13,8 @@ import {
   FaStar,
   FaFire,
   FaHouse,
+  FaRocketchat,
+  FaFaceSadTear,
 } from "react-icons/fa6";
 import AuthContext from "../../../context/AuthContext";
 
@@ -30,6 +32,8 @@ const themeIconMap: themeIconMapType = {
   contributing: <FaStar className="w-8 h-8 text-purple-400" />,
   unity: <FaFire className="w-8 h-8 text-sky-400" />,
   house: <FaHouse className="w-8 h-8 text-orange-400" />,
+  chatbot: <FaRocketchat className="w-8 h-8 text-sky-400" />,
+  loneliness: <FaFaceSadTear className="w-8 h-8 text-pink-400" />,
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
 
   // Add mappings for other themes

@@ -11,6 +11,7 @@ import {
   FaFaceGrinTongue,
   FaFaceFrownOpen,
   FaFaceLaughSquint,
+  FaFaceSadTear,
 } from "react-icons/fa6";
 import AuthContext from "../../../context/AuthContext";
 
@@ -27,8 +28,12 @@ const emotionIconMap: EmotionIconMapType = {
   guilt: <FaFaceFrownOpen className="w-8 h-8 text-purple-400" />,
   panic: <FaFaceGrimace className="w-8 h-8 text-purple-400" />,
   excited: <FaFaceLaughSquint className="w-8 h-8 text-sky-400" />,
+  loneliness: <FaFaceSadTear className="w-8 h-8 text-pink-400" />,
+
   energized: <FaFaceLaughSquint className="w-8 h-8 text-sky-400" />,
+
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
+
   // Add mappings for other emotions
 };
 
