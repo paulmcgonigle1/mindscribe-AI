@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import AuthContext from "../../../context/AuthContext";
 import Typewriter from "typewriter-effect";
-import Load from "../../../assets/mindscribe2/svg/writer1.svg";
 import { fetchMessageOfDay } from "../../../services/JournalService";
 
 function Improvements_Message() {
@@ -41,29 +40,29 @@ function Improvements_Message() {
       <div className="w-full flex flex-col justify-center items-center h-full ">
         {" "}
         {/* Updated this line */}
-        <h1 className="text-center text-2xl font-semibold mb-4">
+        <h1 className="text-center text-2xl font-semibold mb-4 sticky top-0">
           Today's Personal Message
         </h1>
-        <div className="text-xl text-gray-800 flex flex-col justify-center pt-10 overflow-y-auto">
+        <div className="text-xl text-gray-800 flex flex-col justify-center p overflow-y-auto italic">
           {message ? (
             shouldTypeWriter ? (
               <Typewriter
                 options={{
-                  strings: message,
+                  strings: `"${message}"`,
                   autoStart: true,
                   delay: 15,
                   cursor: "",
                 }}
               />
             ) : (
-              <p>{message}</p>
+              <p>{`"${message}"`}</p>
             )
           ) : (
             <p className="text-center text-gray-500">No message for today.</p>
           )}
         </div>
         <button
-          className=" items-center shadow w-fit hover:bg-orange-100 rounded text-black p-2"
+          className="bg-white items-center shadow w-fit hover:bg-orange-100 rounded text-black p-2"
           onClick={handleFetchNewMessage}
         >
           Get New Message

@@ -4,10 +4,15 @@ import TaskCard from "./TaskCard";
 import TaskModal from "./TaskModal";
 import { saveTask } from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
+import Load from "../../../assets/mindscribe2/svg/post.svg";
+import { useNavigate } from "react-router-dom";
+
 interface ImprovementsMessageProps {
   improvementData: ImprovementData; // Define the type based on your actual type definitions
 }
 function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
+  const navigate = useNavigate();
+
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const { authTokens } = useContext(AuthContext) ?? {};
 
@@ -26,6 +31,29 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
       console.log(response);
     }
   };
+  const handleNav = () => {
+    navigate("/"); // Fetch message when button is clicked
+  };
+  if (!improvementData.tasks.length) {
+    return (
+      <div className="flex flex-col items-center justify-center bg-white p-5 rounded-lg my-4 w-full">
+        <h2 className="text-2xl font-semibold mb-6">
+          Recommendedations for today
+        </h2>
+        <img src={Load} alt="Writer" className="mb-4 max-h-72" />
+        <p className="text-center text-lg">
+          No recommendations available yet. Please try journaling for today
+          first.
+        </p>
+        <button
+          className=" items-center shadow-lg w-fit hover:bg-orange-100 rounded text-black p-2 mt-3"
+          onClick={handleNav}
+        >
+          Add Entry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className=" bg-white p-5 rounded-lg my-4">

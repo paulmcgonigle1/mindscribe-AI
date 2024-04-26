@@ -80,7 +80,7 @@ function ImprovementsDashboard() {
   }, [authTokens]);
   return (
     <div className="m-20  ">
-      <div className="flex flex-col md:flex-row gap-6 justify-center items-center w-full px-2 ">
+      <div className="flex flex-col md:flex-row gap-6 justify-center items-center w-full px-2">
         <ActionableTasks improvementData={improvementData} />
       </div>
 

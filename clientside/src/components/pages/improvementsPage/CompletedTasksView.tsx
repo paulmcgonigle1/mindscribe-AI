@@ -93,12 +93,12 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
       </ul>
       {selectedDate && sortedTasks.length === 0 && (
         <>
-          <p className="text-sm">No tasks completed on this date yet.</p>
+          <p className="text-lg">No tasks completed on this date yet.</p>
           <div className="hidden md:block">
             <img
               src={Load}
               alt="Descriptive Alt Text"
-              className="h-[25vh] m-auto mt-6"
+              className="h-[20vh] m-auto mt-6"
             />
           </div>
         </>
