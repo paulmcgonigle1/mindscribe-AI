@@ -79,15 +79,15 @@ export default function StatsDashboard() {
           !enoughEntries ? "filter blur-md" : ""
         } flex-wrap -mx-4 w-full`}
       >
-        <div className={`flex flex-wrap -mx-4 w-full mb-5`}>
-          <div className="w-full xl:w-2/3 px-4 flex min-w-0">
+        <div className={`flex flex-wrap -mx-4 w-full mb-4`}>
+          <div className="w-full xl:w-2/3 px-4 py-3 flex min-w-0">
             <MoodAnalytics
               entries={journals}
               selectedPeriod={selectedPeriod}
               onPeriodChange={handlePeriodChange}
             />
           </div>
-          <div className="w-full xl:w-1/3  flex min-w-0">
+          <div className="w-full xl:w-1/3 px-4 py-3  flex min-w-0">
             <MoodPieChart
               entries={journals}
               selectedPeriod={selectedPeriod}
@@ -95,11 +95,11 @@ export default function StatsDashboard() {
             />
           </div>
         </div>
-        <div className="flex flex-row gap-4 w-full">
-          <div className="flex flex-grow ">
+        <div className="flex flex-col xl:flex-row gap-4 w-full h-full ">
+          <div className="w-full flex-grow p-4">
             <EmotionGrid selectedPeriod={selectedPeriod} />
           </div>
-          <div className="flex flex-grow ">
+          <div className="w-full flex-grow p-4">
             <ThemesGrid selectedPeriod={selectedPeriod} />
           </div>
         </div>

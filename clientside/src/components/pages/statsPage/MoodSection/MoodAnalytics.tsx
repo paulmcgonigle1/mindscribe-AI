@@ -35,7 +35,7 @@ function MoodAnalytics({
   //   );
   // }
   return (
-    <div className="bg-white border rounded-lg p-4 flex-1 shadow-md">
+    <div className="bg-white border rounded-lg p-4 flex-1 shadow-md mb-4">
       <MoodStats
         entries={entries}
         selectedPeriod={selectedPeriod}

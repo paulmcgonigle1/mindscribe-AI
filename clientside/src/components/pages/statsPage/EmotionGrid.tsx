@@ -12,6 +12,7 @@ import {
   FaFaceFrownOpen,
   FaFaceLaughSquint,
   FaFaceSadTear,
+  FaFaceTired,
 } from "react-icons/fa6";
 import AuthContext from "../../../context/AuthContext";
 
@@ -29,8 +30,10 @@ const emotionIconMap: EmotionIconMapType = {
   panic: <FaFaceGrimace className="w-8 h-8 text-purple-400" />,
   excited: <FaFaceLaughSquint className="w-8 h-8 text-sky-400" />,
   loneliness: <FaFaceSadTear className="w-8 h-8 text-pink-400" />,
-
+  overwhelmed: <FaFaceFrownOpen className="w-8 h-8 text-brown-400" />,
+  discouraged: <FaFaceGrimace className="w-8 h-8 text-brown-400" />,
   energized: <FaFaceLaughSquint className="w-8 h-8 text-sky-400" />,
+  frustrated: <FaFaceTired className="w-8 h-8 text-brown-400" />,
 
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
 
@@ -40,6 +43,7 @@ const emotionIconMap: EmotionIconMapType = {
 type EmotionGridProps = {
   selectedPeriod: number;
 };
+const excludedEmotions = ["n/a", "spirits", "anotherEmotionToExclude"];
 
 function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
   const [emotions, setEmotions] = useState<EmotionData[]>([]);
@@ -51,8 +55,14 @@ function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
         try {
           //const userId = 1;
           const userEmotions = await getEmotions(authTokens, selectedPeriod);
+
+          const validEmotions = userEmotions.filter(
+            (emotionData) =>
+              !excludedEmotions.includes(emotionData.emotion.toLowerCase())
+          );
+
           console.log(userEmotions); //this needs to be updated to get entries for the user
-          setEmotions(userEmotions);
+          setEmotions(validEmotions);
         } catch (error) {
           console.error("Error fetching emotions: ", error);
         }
@@ -62,34 +72,25 @@ function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
   }, [selectedPeriod]);
 
   return (
-    <div
-      className="flex flex-1 bg-white p-4 rounded-sm border shadow-md flex-col "
-      style={{ backgroundColor: "#f9a827" }}
-    >
-      <h1 className="text-center text-2xl font-semibold mb-4 ">
+    <div className="flex flex-1 bg-green-100 p-4 rounded-md border border-gray-200 shadow-lg flex-col h-full">
+      <h1 className="text-center text-2xl font-semibold mb-6 text-gray-800">
         Common Emotions
       </h1>
-      <div>
-        <p className="text-lg">
-          Here are the most common emotions that we found over the last{" "}
-          {selectedPeriod} days
-        </p>
-      </div>
-      <div className="emotion-icons-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <p className="text-lg mb-4 text-gray-600">
+        Here are the most common emotions that we found over the last{" "}
+        {selectedPeriod} days
+      </p>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
         {emotions.map(({ emotion, count }) => (
           <div
             key={emotion}
-            className="emotion-item flex flex-col items-center bg-gray-100 p-3 rounded-md shadow"
+            className="flex flex-col items-center bg-white p-4 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 w-full"
           >
-            <div className={`icon-container ${emotion}-icon`}>
+            <div className="mb-2 text-3xl">
               {emotionIconMap[emotion] || emotionIconMap.default}
             </div>
-            <span className="emotion-count text-lg font-semibold">
-              {count}{" "}
-            </span>
-            <span className="emotion-label text-sm text-gray-700">
-              {emotion}
-            </span>
+            <span className="text-xl font-semibold text-gray-800">{count}</span>
+            <span className="text-sm text-gray-700">{emotion}</span>
           </div>
         ))}
       </div>
