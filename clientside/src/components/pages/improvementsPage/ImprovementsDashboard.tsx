@@ -79,21 +79,17 @@ function ImprovementsDashboard() {
     fetchCompletedTasks();
   }, [authTokens]);
   return (
-    <div className="m-4 space-y-2">
+    <div className="m-20  ">
       <div className="flex flex-col md:flex-row gap-6 justify-center items-center w-full px-2 ">
         <ActionableTasks improvementData={improvementData} />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 justify-center items-stretch w-full px-2">
-        <div className="flex flex-col w-full md:w-1/2">
-          {" "}
-          {/* This will take half the width on large screens */}
+      <div className="flex flex-wrap xl:flex-nowrap gap-4">
+        <div className="w-full  p-4">
           <CompletedTasksView tasks={completedTasks} />
         </div>
-        <div className="flex flex-col w-full md:w-1/2">
-          {" "}
-          {/* This will take half the width on large screens */}
-          <Improvements_Message improvementData={improvementData} />
+        <div className="w-full p-4">
+          <Improvements_Message />
         </div>
       </div>
     </div>

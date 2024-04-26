@@ -44,7 +44,9 @@ DEBUG = True
 # ]
 
 CORS_ALLOW_ALL_ORIGINS = True  # For development only
-
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",  # Add your development server URL here
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -78,35 +80,48 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # "backend.myapp.apps.MyappConfig.middleware.RequestLoggingMiddleware",
 ]
-CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict this in production
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {
-#             "class": "logging.StreamHandler",
-#         },
-#     },
-#     "loggers": {
-#         "": {  # This means all loggers
-#             "handlers": ["console"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         },
-#     },
-# }
+# To allow specific origins, use:
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # The URL of your frontend application
+]
+
+# Or, to allow only specific methods for CORS:
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "": {  # This means all loggers
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
 ROOT_URLCONF = "serverside.urls"
 # updated
 

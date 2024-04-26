@@ -46,7 +46,7 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
   };
   return (
     <div
-      className=" rounded-lg mx-auto p-4 shadow-lg"
+      className=" rounded-lg mx-auto p-4 shadow-lg w-full  h-[35vh]"
       style={{ backgroundColor: "#f9a827" }}
     >
       {" "}

@@ -93,7 +93,7 @@ export default function JournalDashboard() {
     }
   };
   return (
-    <div className=" justify-center m-2">
+    <div className=" justify-center m-16">
       <div className="flex flex-col gap-6 p-4 ">
         {/* Journal Page Title and Introduction */}
         <div className="flex  items-center justify-center">

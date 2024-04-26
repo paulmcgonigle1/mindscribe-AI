@@ -82,7 +82,7 @@ const MoodPieChart: React.FC<MoodPieChartProps> = ({
   const data = transformMoodDataToPieData(entries, selectedPeriod);
 
   return (
-    <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
+    <div className="flex flex-1 bg-white p-4 rounded-md border border-gray-200  flex-col shadow-md ">
       <h1 className=" text-lg">Mood Profile</h1>
       <div className=" text-red-500">
         Here is your mood chart of the last {selectedPeriod} days

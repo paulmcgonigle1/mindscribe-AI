@@ -46,7 +46,7 @@ export default function StatsDashboard() {
   const enoughEntries = journals.length >= 5;
 
   return (
-    <div className="flex flex-col gap-4 m-5">
+    <div className="flex flex-col  m-20">
       {!enoughEntries && (
         <div className="absolute top-0 left-0 w-full h-full z-10 opacity-100 flex justify-center items-center">
           <div className="p-8 bg-white rounded-md shadow-lg">
@@ -87,7 +87,7 @@ export default function StatsDashboard() {
               onPeriodChange={handlePeriodChange}
             />
           </div>
-          <div className="w-full xl:w-1/3 px-4 flex min-w-0">
+          <div className="w-full xl:w-1/3  flex min-w-0">
             <MoodPieChart
               entries={journals}
               selectedPeriod={selectedPeriod}

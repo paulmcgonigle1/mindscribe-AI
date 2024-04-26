@@ -4,6 +4,7 @@ from .authviews import MyTokenObtainPairView, getRoutes, register
 from .improvements import (
     CreateImprovementWithTasksAndMessage,
     GetRecentImprovements,
+    MessageOfDayView,
     get_tasks_completed,
     save_unsave_task,
     get_tasks_in_progress,
@@ -36,6 +37,7 @@ urlpatterns = [
         CreateImprovementWithTasksAndMessage.as_view(),
         name="create-improvements",
     ),
+    path("create-message/", MessageOfDayView.as_view(), name="message-of-the-day"),
     path(
         "get-improvements/",
         GetRecentImprovements.as_view(),

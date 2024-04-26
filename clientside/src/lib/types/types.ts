@@ -30,6 +30,10 @@ export type  ImprovementData = {
   tasks: Task[];
   createdAt: string | null;
 }
+export type  MessageData = {
+  message: string;
+
+}
 //individual tasks including ID
 export type Task = {
   taskId: number;

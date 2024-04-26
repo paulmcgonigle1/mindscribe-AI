@@ -61,7 +61,7 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
 
   //this just displays the common themes as emojis in a nice layout.
   return (
-    <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
+    <div className="flex flex-1 bg-white p-4 rounded-sm border shadow-md border-gray-200  flex-col ">
       <h1 className="text-xl mb-4 ">Common themes</h1>
       <div>
         <p className="text-lg">
