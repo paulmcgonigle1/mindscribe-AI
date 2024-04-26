@@ -58,7 +58,7 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
   return (
     <div className=" bg-white p-5 rounded-lg my-4">
       <div className=" border-rich-green text-black text-center ">
-        <h3 className="text-2xl font-semibold mb-2">
+        <h3 className="text-2xl font-semibold mb-8">
           Recommendedations for today
         </h3>
         {/* <p className="text-lg mb-1">

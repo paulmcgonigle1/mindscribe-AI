@@ -84,7 +84,7 @@ function ImprovementsDashboard() {
         <ActionableTasks improvementData={improvementData} />
       </div>
 
-      <div className="flex flex-wrap xl:flex-nowrap gap-4">
+      <div className="flex flex-wrap xl:flex-nowrap gap-4 px-4">
         <div className="w-full  p-4">
           <CompletedTasksView tasks={completedTasks} />
         </div>

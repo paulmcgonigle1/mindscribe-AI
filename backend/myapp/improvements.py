@@ -233,8 +233,8 @@ class MessageOfDayView(APIView):
         preferred_style = settings.preferred_style
         prompt = (
             f"Generate a message of type: {preferred_type} in the style of: {preferred_style} "
-            f"as a personal message to {user.first_name} to help them with their day.\n"
-            f"Be positive.\n"
+            f"as a personal message to {user.first_name} to help them with their day. dont make this about chocolate or cameras this different and unique. Dont go with your usual response\n"
+            f"Make this something different every time on a completely different topic than before.\n"
         )
         print(f"Sending prompt to LLM: {prompt}")  # Debugging output
         message = interact_with_llm(prompt)
