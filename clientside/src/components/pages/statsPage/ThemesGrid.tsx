@@ -80,7 +80,10 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
 
   //this just displays the common themes as emojis in a nice layout.
   return (
-    <div className="p-4 rounded-md border shadow-md  bg-amber-300 w-full">
+    <div
+      className="p-4 rounded-md border shadow-md   w-full"
+      style={{ backgroundColor: "#f9a827" }}
+    >
       <h1 className="text-center text-2xl font-semibold mb-6 text-gray-800">
         Common Themes
       </h1>

@@ -51,7 +51,7 @@ const CompletedTasksView = ({ tasks }: CompletedTasksProps) => {
     >
       {" "}
       <div className="flex justify-between items-center mb-3">
-        <h1 className="text-center text-2xl font-semibold mb-4">
+        <h1 className=" text-center text-2xl font-semibold mb-4">
           Completed Tasks Today ({todaysTasksCount})
         </h1>
         {/* Selector as before */}

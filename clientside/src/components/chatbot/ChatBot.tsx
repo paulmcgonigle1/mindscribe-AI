@@ -28,13 +28,13 @@ function ChatBot({ fetchInsightsCallback, message }: ChatBotProps) {
           };
           setMessages((prevMessages) => [...prevMessages, adviceMessage]);
           setHasAdviceBeenAdded(true);
-        }, 7000);
+        }, 9000);
       }
     }
   }, [message]);
 
   return (
-    <div className="flex flex-col p-4 max-w-xl mx-auto bg-white rounded-lg border shadow-md space-y-4">
+    <div className="flex flex-col p-4 max-w-xl mx-auto max-h-[25vh]  bg-white rounded-lg border shadow-md space-y-4">
       <div className="overflow-y-auto max-h-[300px] space-y-4">
         {messages.length > 0 ? (
           messages.map((message, index) => (
