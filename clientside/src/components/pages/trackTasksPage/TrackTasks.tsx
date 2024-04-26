@@ -61,7 +61,7 @@ const TrackTasks = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-2xl">
+    <div className="p-6 bg-white rounded-lg shadow-2xl min-h-[40vh]">
       <div
         className="mb-6  p-6 rounded-lg"
         style={{ backgroundColor: "#f9a827" }}
