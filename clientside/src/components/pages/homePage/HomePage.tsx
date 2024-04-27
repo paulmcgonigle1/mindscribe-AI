@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Services from "./Features";
 import Icon4 from "../../../assets/mindscribe2/svg/logo-no-background.svg";

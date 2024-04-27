@@ -1,73 +1,67 @@
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ImprovementData } from "../../../lib/types/types";
+import { getSettings } from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
-import Typewriter from "typewriter-effect";
-import { fetchMessageOfDay } from "../../../services/JournalService";
 
-function Improvements_Message() {
-  const [message, setMessage] = useState<string | null>(null);
-  const [shouldTypeWriter, setShouldTypeWriter] = useState<boolean>(true); // Indicates whether to use Typewriter effect
+interface ImprovementsMessageProps {
+  improvementData: ImprovementData; // Define the type based on your actual type definitions
+}
+function Improvements_Message({ improvementData }: ImprovementsMessageProps) {
+  const [settings, setSettings] = useState({
+    preferred_type: "",
+    preferred_style: "",
+  });
+
   const { authTokens } = useContext(AuthContext) ?? {};
 
-  const fetchMessage = async () => {
-    if (authTokens?.access) {
-      try {
-        const response = await fetchMessageOfDay(authTokens);
-        setMessage(response.message);
-        localStorage.setItem("messageOfDay", response.message); // Store the new message in localStorage
-        setShouldTypeWriter(true); // Enable Typewriter when a new message is fetched
-      } catch (error) {
-        console.error("Error fetching message of the day:", error);
-      }
-    }
-  };
-
   useEffect(() => {
-    const storedMessage = localStorage.getItem("messageOfDay"); // Retrieve message from localStorage
-    if (storedMessage) {
-      setMessage(storedMessage);
-      setShouldTypeWriter(false); // Disable Typewriter if message is retrieved from localStorage
-    } else {
-      fetchMessage(); // Fetch message when component mounts if not already stored
-    }
-  }, []); // Fetch message only once when the component mounts
+    // fetch settings logic
 
-  const handleFetchNewMessage = () => {
-    fetchMessage(); // Fetch message when button is clicked
-  };
+    const fetchSettings = async () => {
+      if (authTokens?.access) {
+        try {
+          const fetchedsettings = await getSettings(authTokens);
+          // console.log("Settings for this user:", fetchedsettings);
+          setSettings(fetchedsettings);
+        } catch (error) {
+          console.error("Error fetching tracked tasks plan:", error);
+        }
+      }
+    };
 
+    fetchSettings();
+  }, [authTokens]);
+  // Creates a new mental health plan and sets that to the one
   return (
-    <div className="flex flex-col rounded-lg p-4 justify-center items-center bg-green-100 flex-grow shadow-lg h-[35vh]">
-      <div className="w-full flex flex-col justify-center items-center h-full ">
-        {" "}
-        {/* Updated this line */}
-        <h1 className="text-center text-2xl font-semibold mb-4 sticky top-0">
-          Today's Personal Message
-        </h1>
-        <div className="text-xl text-gray-800 flex flex-col justify-center p overflow-y-auto italic">
-          {message ? (
-            shouldTypeWriter ? (
-              <Typewriter
-                options={{
-                  strings: `"${message}"`,
-                  autoStart: true,
-                  delay: 15,
-                  cursor: "",
-                }}
-              />
-            ) : (
-              <p>{`"${message}"`}</p>
-            )
-          ) : (
-            <p className="text-center text-gray-500">No message for today.</p>
+    <div className="relative border border-stone-400 bg-white shadow-lg rounded-lg overflow-hidden mx-auto max-w-7xl">
+      <div className="py-2 px-2 ">
+        <h1 className="text-center text-xl font-semibold">Today's Message</h1>
+        <h2 className="text-center">
+          A {settings.preferred_style} {settings.preferred_type} -- based on
+          your preferences
+        </h2>
+      </div>
+      {improvementData.message ? (
+        <div className="p-4">
+          <p className="text-gray-700 text-justify leading-relaxed">
+            {improvementData.message}
+          </p>
+          {improvementData.createdAt && (
+            <p className="text-center text-xs mt-4 text-gray-500">
+              Based on entry from:{" "}
+              {new Date(improvementData.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </p>
           )}
         </div>
-        <button
-          className="bg-white items-center shadow w-fit hover:bg-orange-100 rounded text-black p-2"
-          onClick={handleFetchNewMessage}
-        >
-          Get New Message
-        </button>
-      </div>
+      ) : (
+        <p className="p-6 text-center text-gray-500">No message for today.</p>
+      )}
     </div>
   );
 }

@@ -30,10 +30,6 @@ export type  ImprovementData = {
   tasks: Task[];
   createdAt: string | null;
 }
-export type  MessageData = {
-  message: string;
-
-}
 //individual tasks including ID
 export type Task = {
   taskId: number;
@@ -48,9 +44,6 @@ export type  Settings = {
   preferred_type: string;
   preferred_style: string;
   is_personalised: boolean;
-  responseType: string,
-  companionType: string,
-
 }
 
 export type Preferences = {

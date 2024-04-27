@@ -2,7 +2,6 @@ import { ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
 import { JournalEntry } from "../../../lib/types/types";
 import { filterEntriesByPeriod } from "../../../lib/utils/filter-by-period";
 import { moodRatingColors } from "../../../lib/constants/colors";
-
 interface MoodPieChartProps {
   entries: JournalEntry[];
   selectedPeriod: number;
@@ -26,11 +25,9 @@ const transformMoodDataToPieData = (
     return acc;
   }, {} as { [key: number]: number });
 
-  const allMoodRatings = Array.from({ length: 5 }, (_, index) => index + 1);
-
-  return allMoodRatings.map((moodRating) => ({
-    name: moodRating.toString(),
-    value: moodRatingCounts[moodRating] || 0,
+  return Object.entries(moodRatingCounts).map(([moodRating, count]) => ({
+    name: moodRating,
+    value: count,
   }));
 };
 
@@ -56,10 +53,6 @@ function renderCustomizedLabel({
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-  if (percent < 0.01) {
-    return null;
-  }
-
   return (
     <text
       x={x}
@@ -72,24 +65,17 @@ function renderCustomizedLabel({
     </text>
   );
 }
+const moodColors = Object.values(moodRatingColors);
 
-const MoodPieChart: React.FC<MoodPieChartProps> = ({
-  entries,
-  selectedPeriod,
-}) => {
-  const moodColors = Object.values(moodRatingColors);
-
+function MoodPieChart({ entries, selectedPeriod }: MoodPieChartProps) {
   const data = transformMoodDataToPieData(entries, selectedPeriod);
-
   return (
-    <div className="flex flex-1 bg-white p-4 rounded-md border border-gray-200  flex-col shadow-md ">
-      <h1 className=" text-center text-2xl font-semibold mb-4">Mood Profile</h1>
-      <div className="text-lg text-gray-500 text-center">
-        Here is your mood chart of the last {selectedPeriod} days
-      </div>
+    <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
+      <h1 className=" text-lg">Mood Profile</h1>
+      <div>Here is your mood chart of the last {selectedPeriod} days</div>
 
       <div className="w-full mt-3 flex-1 text-xs">
-        <ResponsiveContainer width="99%" height="100%">
+        <ResponsiveContainer width="98%" height="100%">
           <PieChart>
             <Pie
               data={data}
@@ -97,7 +83,7 @@ const MoodPieChart: React.FC<MoodPieChartProps> = ({
               cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
-              outerRadius={140}
+              outerRadius={130}
               fill="#8884d8"
               dataKey="value"
             >
@@ -114,6 +100,6 @@ const MoodPieChart: React.FC<MoodPieChartProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default MoodPieChart;

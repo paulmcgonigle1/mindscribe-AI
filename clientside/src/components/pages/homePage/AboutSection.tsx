@@ -1,3 +1,5 @@
+import React from "react";
+
 function AboutSection() {
   return (
     <div className=" py-12 px-8 md:px-24">

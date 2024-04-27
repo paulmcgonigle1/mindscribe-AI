@@ -28,10 +28,17 @@ function MoodLineChart({ entries, selectedPeriod }: MoodStatsProps) {
   };
 
   const data = transformMoodData(entries);
+  // const moodRatingColors = [
+  //   "#FFD700",
+  //   "#FF8C00",
+  //   "#FF4500",
+  //   "#FF0000",
+  //   "#B22222",
+  // ]; // Define your mood rating colors
 
   return (
     <div
-      className="flex flex-col bg-white p-4 rounded-sm border border-gray-200 "
+      className="flex flex-col bg-white p-4 rounded-sm border border-gray-200"
       style={{ height: "22rem" }}
     >
       <strong className="text-gray-700 font-medium">Mood</strong>
@@ -42,12 +49,8 @@ function MoodLineChart({ entries, selectedPeriod }: MoodStatsProps) {
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-            <YAxis
-              domain={[1, 5]}
-              ticks={[1, 2, 3, 4, 5]}
-              tick={{ fontSize: 12 }}
-            />
+            <XAxis dataKey="date" />
+            <YAxis domain={[1, 5]} ticks={[1, 2, 3, 4, 5]} />
             <Tooltip />
             <Legend />
             <Line

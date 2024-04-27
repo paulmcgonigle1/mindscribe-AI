@@ -13,13 +13,6 @@ import {
   FaStar,
   FaFire,
   FaHouse,
-  FaRocketchat,
-  FaFaceSadTear,
-  FaBook,
-  FaDumbbell,
-  FaTree,
-  FaListCheck,
-  FaComments,
 } from "react-icons/fa6";
 import AuthContext from "../../../context/AuthContext";
 
@@ -35,15 +28,8 @@ const themeIconMap: themeIconMapType = {
   yoga: <FaPeace className="w-8 h-8 text-blue-400" />,
   teamwork: <FaHeartCircleBolt className="w-8 h-8 text-green-400" />,
   contributing: <FaStar className="w-8 h-8 text-purple-400" />,
-  learning: <FaBook className="w-8 h-8 text-purple-400" />,
-  perseverance: <FaDumbbell className="w-8 h-8 text-purple-400" />,
   unity: <FaFire className="w-8 h-8 text-sky-400" />,
   house: <FaHouse className="w-8 h-8 text-orange-400" />,
-  chatbot: <FaRocketchat className="w-8 h-8 text-sky-400" />,
-  nature: <FaTree className="w-8 h-8 text-green-400" />,
-  improvement: <FaListCheck className="w-8 h-8 text-blue-400" />,
-  loneliness: <FaFaceSadTear className="w-8 h-8 text-pink-400" />,
-  communication: <FaComments className="w-8 h-8 text-yellow-400" />,
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
 
   // Add mappings for other themes
@@ -52,7 +38,6 @@ const themeIconMap: themeIconMapType = {
 type ThemeGridProps = {
   selectedPeriod: number;
 };
-const excludedThemes = ["n/a", "spirits", "anotherEmotionToExclude"];
 
 function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
   const [themes, setThemes] = useState<ThemeData[]>([]);
@@ -64,12 +49,8 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
         try {
           //const userId = 1;
           const userThemes = await getThemes(authTokens, selectedPeriod);
-          const validThemes = userThemes.filter(
-            (themeData) =>
-              !excludedThemes.includes(themeData.theme.toLowerCase())
-          );
           console.log(userThemes); //this needs to be updated to get entries for the user
-          setThemes(validThemes);
+          setThemes(userThemes);
         } catch (error) {
           console.error("Error fetching themes:", error);
         }
@@ -80,28 +61,29 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
 
   //this just displays the common themes as emojis in a nice layout.
   return (
-    <div
-      className="p-4 rounded-md border shadow-md   w-full"
-      style={{ backgroundColor: "#f9a827" }}
-    >
-      <h1 className="text-center text-2xl font-semibold mb-6 text-gray-800">
-        Common Themes
-      </h1>
-      <p className="text-lg mb-4 text-gray-600">
-        Here are the most common themes that we found over the last{" "}
-        {selectedPeriod} days
-      </p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
+    <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
+      <h1 className="text-xl mb-4 ">Common themes</h1>
+      <div>
+        <p className="text-lg">
+          Here are the most common emotions that we found over the last{" "}
+          {selectedPeriod} days
+        </p>
+        <p className="text-md text-red-500">
+          It might be a good idea to keep an eye on what emotions are causing
+          some dips etc in your emotions {selectedPeriod} days
+        </p>
+      </div>
+      <div className="theme-icons-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {themes.map(({ theme, count }) => (
           <div
             key={theme}
-            className="flex flex-col items-center bg-white p-4 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 w-full"
+            className="theme-item flex flex-col items-center bg-gray-100 p-3 rounded-md shadow"
           >
-            <div className="mb-2 text-3xl">
+            <div className={`icon-container ${theme}-icon`}>
               {themeIconMap[theme] || themeIconMap.default}
             </div>
-            <span className="text-xl font-semibold text-gray-800">{count}</span>
-            <span className="text-sm text-gray-700">{theme}</span>
+            <span className="theme-count text-lg font-semibold">{count} </span>
+            <span className="theme-label text-sm text-gray-700">{theme}</span>
           </div>
         ))}
       </div>

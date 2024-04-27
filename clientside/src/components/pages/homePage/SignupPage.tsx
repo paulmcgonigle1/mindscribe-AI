@@ -4,7 +4,12 @@ import AuthContext from "../../../context/AuthContext";
 import Icon4 from "../../../assets/mindscribe2/png/logo-black.png";
 import SignUp from "../../../assets/mindscribe2/svg/sign-in.svg";
 
-import { FaCheckCircle } from "react-icons/fa";
+import {
+  FaTwitter,
+  FaFacebook,
+  FaInstagram,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 function SignupPage() {
   const location = useLocation(); // Correctly call useLocation
