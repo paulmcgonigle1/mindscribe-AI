@@ -12,6 +12,7 @@ import Questionnaire from "../homePage/multi-step-form/page";
 import Modal from "../../shared/Modal";
 import BotResponse from "./BotResponse";
 import JournalEntry from "./JournalEntry";
+import Load from "../../../assets/mindscribe2/svg/writer1.svg";
 
 export default function JournalDashboard() {
   // const [moodRating, setMoodRating] = useState<number | null>(null);
@@ -118,16 +119,23 @@ export default function JournalDashboard() {
             <Calendar />
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-1 ">
+
+        <div className="flex flex-col md:flex-row gap-4  h-full">
+          <div className="w-full lg:w-1/2 h-full">
+            {" "}
             <BotResponse
               fetchInsightsCallback={fetchMessage}
               message={message}
             />
           </div>
+          <div className="w-full md:w-1/2 hidden lg:flex flex-col justify-center items-center h-full">
+            {" "}
+            <img src={Load} alt="Descriptive Alt Text" className="h-[25vh]" />
+            <p className="text-lg text-gray-600 mt-10">
+              "Every day brings new choices." - Martha Beck
+            </p>
+          </div>
         </div>
-        {/* <StatsDashboard /> */}
-
         <Modal
           isOpen={showQuestionnaireModal}
           onClose={() => setShowQuestionnaireModal(false)}
