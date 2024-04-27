@@ -6,9 +6,12 @@ interface BotResponseProps {
 }
 function BotResponse({ fetchInsightsCallback, message }: BotResponseProps) {
   return (
-    <div className="bg-white shadow-md  rounded-lg overflow-hidden">
-      <div className="p-4 min-h-full border-b">
-        <h2 className="text-lg font-semibold text-gray-900">
+    <div
+      className="bg-white shadow-md  rounded-lg h-[35vh]"
+      style={{ backgroundColor: "#f9a827" }}
+    >
+      <div className="p-4 border-b">
+        <h2 className="text-2xl text-center font-semibold text-gray-900">
           Your Insightful Companion
         </h2>
         <p className="text-md text-green-700">

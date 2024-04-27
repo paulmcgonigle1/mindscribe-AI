@@ -105,7 +105,7 @@ const HomePage: React.FC<HomePageProps> = () => {
         <div id="testimonials">
           <Testimonials />
         </div>
-        <div id="about">
+        <div id="about" className="mb-10">
           <AboutSection />
         </div>
       </div>

@@ -61,29 +61,28 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
 
   //this just displays the common themes as emojis in a nice layout.
   return (
-    <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
-      <h1 className="text-xl mb-4 ">Common themes</h1>
-      <div>
-        <p className="text-lg">
-          Here are the most common emotions that we found over the last{" "}
-          {selectedPeriod} days
-        </p>
-        <p className="text-md text-red-500">
-          It might be a good idea to keep an eye on what emotions are causing
-          some dips etc in your emotions {selectedPeriod} days
-        </p>
-      </div>
-      <div className="theme-icons-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div
+      className="p-4 rounded-md border shadow-md w-full"
+      style={{ backgroundColor: "#f9a827" }}
+    >
+      <h1 className="text-center text-2xl font-semibold mb-6 text-gray-800">
+        Common Themes
+      </h1>
+      <p className="text-lg mb-4 text-gray-600">
+        Here are the most common themes that we found over the last{" "}
+        {selectedPeriod} days
+      </p>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr">
         {themes.map(({ theme, count }) => (
           <div
             key={theme}
-            className="theme-item flex flex-col items-center bg-gray-100 p-3 rounded-md shadow"
+            className="flex flex-col items-center bg-white p-2 rounded-lg shadow hover:shadow-xl transition-shadow duration-300"
           >
-            <div className={`icon-container ${theme}-icon`}>
+            <div className="mb-1 text-2xl">
               {themeIconMap[theme] || themeIconMap.default}
             </div>
-            <span className="theme-count text-lg font-semibold">{count} </span>
-            <span className="theme-label text-sm text-gray-700">{theme}</span>
+            <span className="text-lg font-semibold text-gray-800">{count}</span>
+            <span className="text-sm text-gray-700">{theme}</span>
           </div>
         ))}
       </div>

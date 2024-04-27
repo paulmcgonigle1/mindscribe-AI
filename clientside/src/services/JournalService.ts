@@ -81,8 +81,31 @@ export const createImprovements = async (authTokens: { access: string }): Promis
     throw new Error("Error creating improvements");
   }
 };
+export const fetchMessageOfDay = async (authTokens: { access: string }): Promise<MessageData> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/myapp/create-message/`,  {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authTokens.access}`,
+      }
+    });
 
-
+    return {
+      message: response.data.message
+    };
+  } catch (error) {
+    console.error("Failed to fetch message of the day:", error);
+    throw new Error("Error fetching message of the day");
+  }
+};
+export const removeUserData = async (authTokens:{ access: string }): Promise<void> => {
+  await axios.get(`${BASE_URL}/myapp/delete-user/`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authTokens.access}`,
+    }
+  });
+}
  
 export const getImprovements = async (authTokens: { access: string }): Promise<ImprovementData> => {
   const response = await axios.get(`${BASE_URL}/myapp/get-improvements/`, {

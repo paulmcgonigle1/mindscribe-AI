@@ -19,9 +19,9 @@ function JournalEntry({
 
   return (
     <div
-      className={`flex-1 w-full h-full rounded-md  ${
+      className={`flex-1 w-full h-full rounded-md bg-white  ${
         hasJournaledToday
-          ? "bg-white flex items-center justify-center p-10"
+          ? " flex items-center justify-center p-10 shadow-md"
           : "p-4"
       }`}
     >
@@ -53,11 +53,13 @@ function JournalEntry({
         </div>
       ) : (
         <>
-          <MoodRating setParentMoodRating={setMoodRating} />
-          <JournalSection
-            moodRating={moodRating}
-            onJournalSubmit={onJournalSubmit}
-          />
+          <div className="">
+            <MoodRating setParentMoodRating={setMoodRating} />
+            <JournalSection
+              moodRating={moodRating}
+              onJournalSubmit={onJournalSubmit}
+            />
+          </div>
         </>
       )}
     </div>

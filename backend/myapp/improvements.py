@@ -213,6 +213,44 @@ def create_tasks_from_insights(insights, user_id):
     return mental_health_tasks
 
 
+class DeleteUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        user = request.user
+        message = self.removeUser(request)  # Pass the request object to the method
+
+        print(f"Generated Message: {message}")  # Debugging output
+        return Response({"message": message})
+
+    def removeUser(
+        self, request
+    ):  # Adjust method signature to accept 'self' as the first parameter
+        user = request.user
+        user.delete()  # This deletes the user and all related data if cascade delete is set up in your models
+        return "User deleted successfully"
+
+
+class DeleteUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+        def get(self, request):
+
+        user = request.user
+        message = self.removeUser(request)  # Pass the request object to the method
+
+        print(f"Generated Message: {message}")  # Debugging output
+        return Response({"message": message})
+
+    def removeUser(
+        self, request
+    ):  # Adjust method signature to accept 'self' as the first parameter
+        user = request.user
+        user.delete()  # This deletes the user and all related data if cascade delete is set up in your models
+        return "User deleted successfully"
+
+
 def create_message_of_the_day(user):
     settings = user.settings
     preferred_type = settings.preferred_type

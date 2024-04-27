@@ -57,33 +57,25 @@ function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
   }, [selectedPeriod]);
 
   return (
-    <div className="flex flex-1 bg-white p-4 rounded-sm border border-gray-200  flex-col ">
-      <h1 className="text-xl mb-1 font-semibold ">Common Emotions</h1>
-      <div>
-        <p className="text-lg">
-          Here are the most common emotions that we found over the last{" "}
-          {selectedPeriod} days
-        </p>
-        <p className="text-md text-red-500">
-          It might be a good idea to keep an eye on what emotions are causing
-          some dips etc in your emotions {selectedPeriod} days
-        </p>
-      </div>
-      <div className="emotion-icons-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="flex flex-1 bg-green-100 p-4 rounded-md border border-gray-200 shadow-lg flex-col h-full">
+      <h1 className="text-center text-2xl font-semibold mb-6 text-gray-800">
+        Common Emotions
+      </h1>
+      <p className="text-lg mb-4 text-gray-600">
+        Here are the most common emotions that we found over the last{" "}
+        {selectedPeriod} days
+      </p>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr">
         {emotions.map(({ emotion, count }) => (
           <div
             key={emotion}
-            className="emotion-item flex flex-col items-center bg-gray-100 p-3 rounded-md shadow"
+            className="flex flex-col items-center bg-white p-2 rounded-lg shadow hover:shadow-xl transition-shadow duration-300"
           >
-            <div className={`icon-container ${emotion}-icon`}>
+            <div className="mb-1 text-2xl">
               {emotionIconMap[emotion] || emotionIconMap.default}
             </div>
-            <span className="emotion-count text-lg font-semibold">
-              {count}{" "}
-            </span>
-            <span className="emotion-label text-sm text-gray-700">
-              {emotion}
-            </span>
+            <span className="text-lg font-semibold text-gray-800">{count}</span>
+            <span className="text-sm text-gray-700">{emotion}</span>
           </div>
         ))}
       </div>

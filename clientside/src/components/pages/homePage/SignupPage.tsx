@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
-import Icon4 from "../../../assets/mindscribe2/png/logo-black.png";
+import Icon4 from "../../../assets/mindscribe2/png/logo-black-crop.png";
 import SignUp from "../../../assets/mindscribe2/svg/sign-in.svg";
 
 import {
@@ -31,12 +31,18 @@ function SignupPage() {
   interface ErrorData {
     [key: string]: string[]; // Dynamic keys with array of error messages
   }
-  const handleSignup = async (event: any) => {
+  const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     registerUser(
       event,
-      () => navigate("/"),
+      () => navigate("/"), // Success callback
       (errorData: ErrorData) => {
-        setErrors(errorData); // Update the state with the returned errors
+        setErrors(errorData); // Error callback
+        let errorMessage = "An unexpected error occurred.";
+        if (errorData.non_field_errors) {
+          errorMessage = errorData.non_field_errors[0]; // Display first error message
+        }
+        setErrorMessage(errorMessage);
       }
     );
   };
@@ -62,19 +68,19 @@ function SignupPage() {
   };
 
   return (
-    <section className="flex  justify-center min-h-screen items-center bg-light-yellow">
-      <div className="container h-full p-10">
-        <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
-          <div className="w-full">
-            <div className="block rounded-lg bg-white shadow-lg ">
-              <div className="g-0 lg:flex lg:flex-wrap">
+    <div className="bg-light-yellow min-h-screen ">
+      <div className="flex p-10  justify-center items-center  h-full ">
+        <div className=" flex  flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200 max-w-6xl h-full ">
+          <div className="h-full ">
+            <div className=" rounded-lg bg-white shadow-lg   ">
+              <div className=" lg:flex lg:flex-wrap">
                 {/* <!-- Left column container--> */}
                 <div className="px-4 md:px-0 lg:w-6/12">
-                  <div className="md:mx-6 md:p-12">
+                  <div className="md:mx-6 p-6">
                     {/* <!--Logo--> */}
                     <button
                       onClick={() => navigate("/home")}
-                      className="text-md text-black  bg-warm-orange-bright mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 max-w-max font-medium  leading-normal"
+                      className="text-md text-black  bg-warm-orange-bright mb-3 inline-block  rounded px-6 pb-2 pt-2.5 font-medium  leading-normal"
                     >
                       Return to home
                     </button>
@@ -83,12 +89,14 @@ function SignupPage() {
                       {isLogin ? (
                         <>
                           <div className="text-center">
-                            <img
-                              className="mx-auto w-96"
-                              src={Icon4}
-                              alt="logo"
-                            />
-                            <h4 className="mb-12 mt-1 pb-1 text-xl text-black">
+                            <div className=" h-52 ">
+                              <img
+                                className="mx-auto "
+                                src={Icon4}
+                                alt="logo"
+                              />
+                            </div>
+                            <h4 className="mb-10 mt-1 pb-1 text-xl text-black">
                               Login to your Mindscribe account
                             </h4>
                           </div>
@@ -105,7 +113,7 @@ function SignupPage() {
                                 type="text"
                                 value={username}
                                 name="username"
-                                className="w-full p-2 border border-gray-300 rounded-md"
+                                className="w-full  p-2 border border-gray-300 rounded-md"
                                 onChange={(e) => setUsername(e.target.value)}
                               />
                             </div>
@@ -175,12 +183,10 @@ function SignupPage() {
                         // SIGN UP BEGGINS HERE ---------------------------------------------------------------
                         <>
                           <div className="text-center">
-                            <img
-                              className="mx-auto w-96"
-                              src={Icon4}
-                              alt="logo"
-                            />
-                            <h4 className="mb-12 mt-1 pb-1 text-xl text-black">
+                            <div className="mb-5">
+                              <img src={Icon4} alt="logo" />
+                            </div>
+                            <h4 className="mb-10  text-xl text-black">
                               Sign-Up to join The Mindscribe Team
                             </h4>
                           </div>
@@ -346,9 +352,9 @@ function SignupPage() {
                       "linear-gradient(to right, #F9CC48, #FDDA77, #A9C9FF, #729BFF)",
                   }}
                 >
-                  <div className="px-4 py-6 text-white md:mx-6 md:p-12">
-                    <div className="px-4 py-6 text-white md:mx-6 md:p-12 flex flex-col items-center">
-                      <h4 className="mb-6 text-xl font-semibold text-black text-center">
+                  <div className="px-4 text-white ">
+                    <div className="px-4  text-white   flex flex-col items-center">
+                      <h4 className="mb-6 mt-8  text-2xl font-semibold text-black text-center">
                         Welcome to MindScribe!
                       </h4>
                       <p className="text-md text-black text-center mb-6">
@@ -357,7 +363,7 @@ function SignupPage() {
                         environment for you to express your thoughts and
                         feelings through journaling.
                       </p>
-                      <div className="flex justify-center flex-col items-center mb-6">
+                      <div className="flex justify-center flex-col items-center ">
                         <div className="flex items-center mb-2">
                           <FaCheckCircle className="text-green-500 w-6 h-6 mr-2" />
                           <span>Track your mood daily</span>
@@ -371,17 +377,17 @@ function SignupPage() {
                           <span>Cultivate a positive mindset</span>
                         </div>
                       </div>
-                      <p className="text-md text-black text-center">
+                      <p className="text-md mt-4 text-black text-center">
                         Join us to embark on a journey of self-discovery and
                         personal growth.
                       </p>
                     </div>
-                    <div className="hidden md:block">
+                    <div className="mt-5 hidden md:block">
                       {/* Replace with your image path */}
                       <img
                         src={SignUp}
                         alt="Descriptive Alt Text"
-                        className="  h-[60vh] "
+                        className="  h-[30vh] "
                       />
                     </div>
                   </div>
@@ -391,7 +397,7 @@ function SignupPage() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
