@@ -115,9 +115,9 @@ export const getImprovements = async (authTokens: { access: string }): Promise<I
     }
   });
   return {
-      message: response.data.message,
-      tasks: response.data.tasks,
-      createdAt: response.data.createdAt,
+    message: response.data.message,
+    tasks: response.data.tasks,
+    createdAt: response.data.createdAt,
   };
 } 
 export const getSettings = async (authTokens: { access: string }): Promise<Settings> => {
@@ -130,7 +130,9 @@ export const getSettings = async (authTokens: { access: string }): Promise<Setti
   return {
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
-    is_personalised: response.data.is_personalised
+    is_personalised: response.data.is_personalised,
+    responseType: response.data.responseType,
+    companionType: response.data.companionType,
   };
 } 
 //for updating our settings at the moment
@@ -144,7 +146,9 @@ export const updateSettings = async (authTokens: { access: string }, newSettings
   return {
     preferred_type: response.data.preferred_type,
     preferred_style: response.data.preferred_style,
-    is_personalised: response.data.is_is_personalised
+    is_personalised: response.data.is_personalised,
+    responseType: response.data.responseType,
+    companionType: response.data.companionType,
   };
 } 
 
