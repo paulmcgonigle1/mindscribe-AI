@@ -99,7 +99,7 @@ export const fetchMessageOfDay = async (authTokens: { access: string }): Promise
   }
 };
 export const removeUserData = async (authTokens:{ access: string }): Promise<void> => {
-  await axios.delete(`${BASE_URL}/myapp/remove-user/`, {
+  await axios.get(`${BASE_URL}/myapp/delete-user/`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${authTokens.access}`,

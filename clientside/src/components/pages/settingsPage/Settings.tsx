@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
 import {
   getSettings,
@@ -18,6 +19,7 @@ function Settings() {
     responseType: "",
     companionType: "",
   });
+  const navigate = useNavigate();
 
   const { authTokens } = useContext(AuthContext) ?? {};
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
@@ -70,6 +72,7 @@ function Settings() {
     try {
       const response = await removeUserData(authTokens);
       console.log("User data removed successfully:", response);
+      navigate("/home");
       // Optionally, you could redirect the user to a different page or display a confirmation message.
     } catch (error) {
       console.error("Error removing user data:", error);

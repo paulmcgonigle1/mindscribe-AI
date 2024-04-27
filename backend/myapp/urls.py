@@ -10,6 +10,7 @@ from .improvements import (
     get_tasks_in_progress,
     update_task_completetion_status,
     createInsightMessage,
+    DeleteUserView,
 )
 from rest_framework.routers import DefaultRouter
 from . import views
@@ -43,7 +44,7 @@ urlpatterns = [
         GetRecentImprovements.as_view(),
         name="get-improvements",
     ),
-    path("delete-data/", views.removeUser, name="delete-data"),
+    path("delete-user/", DeleteUserView.as_view(), name="delete-user"),
     # gets all of the tracked tasks
     path(
         "get-tracked-tasks/",

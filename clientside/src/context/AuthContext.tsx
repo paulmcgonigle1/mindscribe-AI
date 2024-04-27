@@ -83,7 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const response = await axios.post(
-        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/token/",
+        "http://localhost:8000/myapp/api/token/",
         {
           username,
           password,
@@ -144,7 +144,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const response = await axios.post(
-        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/register/",
+        "http://localhost:8000/myapp/api/register/",
         {
           username,
           email,
@@ -158,7 +158,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 200 || 201) {
+        console.log("new user signed up");
         onSuccess();
       } else {
         // Handle non-200 HTTP responses
@@ -181,7 +182,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     if (authTokens) {
       let response = await fetch(
-        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/token/refresh/",
+        "http://localhost:8000/myapp/api/token/refresh/",
         {
           method: "POST",
           headers: {
