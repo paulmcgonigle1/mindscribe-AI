@@ -34,7 +34,7 @@ export default function MoodRating({ setParentMoodRating }: MoodRatingProps) {
             onClick={() => handleMoodClick(mood.rating)}
             title={mood.label} // Assuming 'mood' has a 'label' property for accessibility
           >
-            <span className="text-2xl">{mood.face}</span>
+            <span className="text-4xl">{mood.face}</span>
           </button>
         ))}
       </div>

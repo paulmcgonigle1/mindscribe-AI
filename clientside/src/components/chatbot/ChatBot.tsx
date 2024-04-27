@@ -34,8 +34,8 @@ function ChatBot({ fetchInsightsCallback, message }: ChatBotProps) {
   }, [message]);
 
   return (
-    <div className="flex flex-col p-4 max-w-xl mx-auto max-h-[25vh]  bg-white rounded-lg border shadow-md space-y-4">
-      <div className="overflow-y-auto max-h-[300px] space-y-4">
+    <div className="flex flex-col p-4 max-w-xl mx-auto max-h-[23vh] overflow-y-auto   bg-white rounded-lg border shadow-md">
+      <div className="overflow-y-auto max-h-[250px] space-y-4">
         {messages.length > 0 ? (
           messages.map((message, index) => (
             <div key={index} className="flex items-center">

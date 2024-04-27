@@ -7,7 +7,7 @@ interface BotResponseProps {
 function BotResponse({ fetchInsightsCallback, message }: BotResponseProps) {
   return (
     <div
-      className="bg-white shadow-md  rounded-lg h-[30vh]"
+      className="bg-white shadow-md  rounded-lg h-[35vh]"
       style={{ backgroundColor: "#f9a827" }}
     >
       <div className="p-4 border-b">

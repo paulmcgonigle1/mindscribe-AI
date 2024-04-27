@@ -195,7 +195,7 @@ export default function Example() {
     selectedDay,
     selectedDayMeetings,
   }: JournalEntriesProps) => (
-    <section className="mt-12 md:mt-0 md:pl-10">
+    <section className="mt-12 md:mt-0 md:pl-10 max-h-96">
       <h2 className="font-semibold text-gray-900">
         {selectedDay ? (
           <>

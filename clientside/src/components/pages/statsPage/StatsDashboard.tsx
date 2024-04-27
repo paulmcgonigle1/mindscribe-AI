@@ -46,7 +46,7 @@ export default function StatsDashboard() {
   const enoughEntries = journals.length >= 5;
 
   return (
-    <div className="flex flex-col  m-20">
+    <div className="flex flex-col  mx-20">
       {!enoughEntries && (
         <div className="absolute top-0 left-0 w-full h-full z-10 opacity-100 flex justify-center items-center">
           <div className="p-8 bg-white rounded-md shadow-lg">
