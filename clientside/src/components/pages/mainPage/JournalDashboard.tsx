@@ -93,8 +93,8 @@ export default function JournalDashboard() {
     }
   };
   return (
-    <div className=" justify-center m-16">
-      <div className="flex flex-col gap-6 p-4 ">
+    <div className=" justify-center mx-10">
+      <div className="flex flex-col gap-3 p-4 ">
         {/* Journal Page Title and Introduction */}
         <div className="flex  items-center justify-center">
           <div className=" bg-rich-green p-8 border  rounded-lg flex flex-col items-center justify-center ">
@@ -107,15 +107,15 @@ export default function JournalDashboard() {
           </div>
         </div>
 
-        <div className="flex flex-wrap xl:flex-nowrap gap-4">
-          <div className="w-full lg:w-1/2 p-4">
+        <div className="flex flex-wrap xl:flex-nowrap gap-4 h-2/4 ">
+          <div className="w-full lg:w-1/2 p-4 ">
             <JournalEntry
               onJournalSubmit={handleJournalSubmit}
               hasJournaledToday={hasJournaledToday}
               resetJournalState={resetJournalState}
             />
           </div>
-          <div className="flex flex-1 m-1  p-4 w-full min-h-[20vh] max-h-[35vh]">
+          <div className="flex flex-1 m-1  p-4 w-full  h-full">
             <Calendar />
           </div>
         </div>
