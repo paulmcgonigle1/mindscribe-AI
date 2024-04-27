@@ -39,7 +39,7 @@ function ImprovementsDashboard() {
       };
 
       fetchImprovements();
-      setTasksCreated(false); // Reset for further creations
+      setTasksCreated(false);
     }
   }, [tasksCreated, authTokens]); // Runs whenever tasksCreated changes
 
@@ -77,14 +77,21 @@ function ImprovementsDashboard() {
     };
 
     fetchCompletedTasks();
-  }, [authTokens]); // Dependency array depends on your specific needs
+  }, [authTokens]);
   return (
     <div className="mx-10 my-5  ">
       <div className="flex flex-col md:flex-row  justify-center items-center w-full px-2">
         <ActionableTasks improvementData={improvementData} />
       </div>
 
-      <CompletedTasksView tasks={completedTasks} />
+      <div className="flex flex-wrap xl:flex-nowrap gap-4 px-4">
+        <div className="w-full  p-4">
+          <CompletedTasksView tasks={completedTasks} />
+        </div>
+        <div className="w-full p-4">
+          <Improvements_Message />
+        </div>
+      </div>
     </div>
   );
 }

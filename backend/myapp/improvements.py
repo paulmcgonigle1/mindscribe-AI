@@ -235,7 +235,7 @@ class DeleteUserView(APIView):
 class DeleteUserView(APIView):
     permission_classes = [IsAuthenticated]
 
-        def get(self, request):
+    def get(self, request):
 
         user = request.user
         message = self.removeUser(request)  # Pass the request object to the method

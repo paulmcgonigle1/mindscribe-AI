@@ -16,6 +16,8 @@ function Settings() {
     preferred_type: "",
     preferred_style: "",
     is_personalised: false,
+    responseType: "",
+    companionType: "",
   });
   const navigate = useNavigate();
 
@@ -84,6 +86,12 @@ function Settings() {
     setSettings((prevSettings) => ({
       ...prevSettings,
       [name]: value,
+    }));
+  };
+  const handleCompanionClick = (companion: string) => {
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      companionType: companion,
     }));
   };
 
