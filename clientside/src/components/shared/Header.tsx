@@ -1,119 +1,77 @@
-import { Fragment, useContext } from "react";
-import { HiOutlineBell, HiChevronDoubleDown } from "react-icons/hi";
+import { Fragment, useContext, useState } from "react";
+import { HiChevronDoubleDown } from "react-icons/hi";
 import { FaUserCircle } from "react-icons/fa";
-
-import { Popover, Transition, Menu } from "@headlessui/react";
-import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import TrackTasks from "../pages/trackTasksPage/TrackTasks";
-useNavigate;
+
 export default function Header() {
+  const [trackTasksVisible, setTrackTasksVisible] = useState(false);
+  const [settingsVisible, setSettingsVisible] = useState(false);
+
   let { user } = useContext(AuthContext)!;
   const navigate = useNavigate();
+
+  const handleOverlayClick = () => {
+    setTrackTasksVisible(false);
+  };
   return (
-    <div className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200">
-      {/* //this is the popover for tracking tasks in our website*/}
+    <div
+      className="bg-gray-50 h-16 px-4 flex justify-between items-center border-b border-gray-200 z-50"
+      style={{ backgroundColor: "#f9a827" }}
+    >
       <div className="flex-grow">
-        <Popover className="relative">
-          {({ open }) => (
+        <div className="relative">
+          <button
+            className="text-black group justify-items-end inline-flex items-center rounded-md bg-warm-orange px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+            onClick={() => setTrackTasksVisible(!trackTasksVisible)}
+          >
+            <span>Track Tasks</span>
+            <HiChevronDoubleDown
+              className="text-white-300 ml-2 h-5 w-5 transition duration-150 ease-in-out group-hover:text-blue-300/80"
+              aria-hidden="true"
+            />
+          </button>
+          {trackTasksVisible && (
             <>
-              <Popover.Button
-                className={`
-                ${open ? "text-black" : "text-black/90"}
-                group justify-items-end inline-flex items-center rounded-md bg-warm-orange px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
-              >
-                <span>Track Tasks</span>
-                <HiChevronDoubleDown
-                  className={`${open ? "text-white-300" : "text-white-300/70"}
-                  ml-2 h-5 w-5 transition duration-150 ease-in-out group-hover:text-blue-300/80`}
-                  aria-hidden="true"
-                />
-              </Popover.Button>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 translate-y-1"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
-              >
-                <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
-                  {/* this is where my track tasks are being displayed */}
-                  <div className="bg-gray-50 overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
-                    <TrackTasks />
-                  </div>
-                </Popover.Panel>
-              </Transition>
+              {/* Overlay background */}
+              <div
+                className="fixed inset-0 bg-black bg-opacity-30 mt-[63px] ml-[240px]"
+                aria-hidden="true"
+                onClick={handleOverlayClick} // This will trigger when the overlay is clicked
+              ></div>
+
+              {/* Scale-in animation container */}
+              <div className="absolute left-1/4 z-50 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl animate-scale-in">
+                <div className="bg-gray-50 overflow-hidden rounded-lg shadow-2xl ring-1 ring-black/5">
+                  <TrackTasks />
+                </div>
+              </div>
             </>
           )}
-        </Popover>
+        </div>
       </div>
 
       <div className="flex items-center gap-2 mr-2">
-        <Popover className="relative">
-          {({ open }) => (
-            <>
-              <Popover.Button
-                className={classNames(
-                  open && "bg-gray-100",
-                  "p-1.5 rounded inline-flex items-center text-gray-700 hover:text-opacity-100 focus:outline-none active:bg-gray-100"
-                )}
-              >
-                <HiOutlineBell fontSize={24} />
-              </Popover.Button>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 translate-y-1"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
-              >
-                <Popover.Panel className="absolute right-0 z-10 mt-2.5 w-80">
-                  <div className="bg-white rounded-md shadow-md  ring-black ring-opacity-5 px-2 py-2.5">
-                    <strong className="text-gray-700 font-medium">
-                      Notifications
-                    </strong>
-                    <div className="mt-2 py-1 text-sm">
-                      This is notifications pannel
-                    </div>
-                  </div>
-                </Popover.Panel>
-              </Transition>
-            </>
-          )}
-        </Popover>
-        <Menu
-          as="div"
-          className="relative inline-block text-left rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400"
-        >
-          <div>
-            <Menu.Button className="ml-2 inline-flex">
-              <span className="sr-only">Open User Menu</span>
-              <FaUserCircle className="h-10 w-10 rounded-full"></FaUserCircle>
-            </Menu.Button>
-          </div>
-          <Transition
-            as={Fragment}
-            enter="transition duration-100 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition duration-75 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0"
+        <div>
+          <p>{user && `Hello, ${user.username}`}</p>
+        </div>
+
+        {/* User Menu */}
+        <div className="relative inline-block text-left rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400">
+          <button
+            className="ml-2 inline-flex"
+            onClick={() => setSettingsVisible(!settingsVisible)}
           >
-            {/* Mark this component as `static` */}
-            <Menu.Items className="origin-top-right z-10 absolute right-0 mt-2 w-40 rounded-lg shadow-sm p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <Menu.Item>
-                <button onClick={() => navigate("/settings")}>Settings</button>
-              </Menu.Item>
-            </Menu.Items>
-          </Transition>
-        </Menu>
-        <div>{user && <p>Hello, {user.username}</p>}</div>
+            <span className="sr-only">Open User Menu</span>
+            <FaUserCircle className="h-10 w-10 rounded-full" />
+          </button>
+          {settingsVisible && (
+            <div className="origin-top-right z-10 absolute right-0 mt-2 w-40 rounded-lg shadow-sm p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <button onClick={() => navigate("/settings")}>Settings</button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

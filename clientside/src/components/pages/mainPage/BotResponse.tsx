@@ -14,9 +14,8 @@ function BotResponse({ fetchInsightsCallback, message }: BotResponseProps) {
         <h2 className="text-2xl text-center font-semibold text-gray-900">
           Your Insightful Companion
         </h2>
-        <p className="text-md text-green-700">
-          Here's what the bot has to say about your recent journal entries. Feel
-          free to start a new conversation anytime!
+        <p className="text-lg text-gray text-center">
+          Here's what the bot has to say about your recent journal entries
         </p>
       </div>
       <div className="p-4">
