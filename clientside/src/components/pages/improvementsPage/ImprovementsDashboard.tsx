@@ -79,7 +79,7 @@ function ImprovementsDashboard() {
     fetchCompletedTasks();
   }, [authTokens]);
   return (
-    <div className="mx-10  ">
+    <div className="mx-10 my-5  ">
       <div className="flex flex-col md:flex-row  justify-center items-center w-full px-2">
         <ActionableTasks improvementData={improvementData} />
       </div>

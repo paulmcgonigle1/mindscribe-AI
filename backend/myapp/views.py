@@ -254,7 +254,7 @@ def get_emotion_statistics(request):
         key=lambda x: x["count"],
         reverse=True,
     )[
-        :10
+        :8
     ]  # Adjust the number as needed
 
     return JsonResponse(sorted_limited_emotion_data, safe=False)
@@ -305,7 +305,7 @@ def get_theme_statistics(request):
         key=lambda x: x["count"],
         reverse=True,
     )[
-        :10
+        :8
     ]  # Adjust the number as needed
 
     return JsonResponse(sorted_limited_theme_data, safe=False)

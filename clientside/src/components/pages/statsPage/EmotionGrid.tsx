@@ -80,16 +80,16 @@ function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
         Here are the most common emotions that we found over the last{" "}
         {selectedPeriod} days
       </p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr">
         {emotions.map(({ emotion, count }) => (
           <div
             key={emotion}
-            className="flex flex-col items-center bg-white p-4 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 w-full"
+            className="flex flex-col items-center bg-white p-2 rounded-lg shadow hover:shadow-xl transition-shadow duration-300"
           >
-            <div className="mb-2 text-3xl">
+            <div className="mb-1 text-2xl">
               {emotionIconMap[emotion] || emotionIconMap.default}
             </div>
-            <span className="text-xl font-semibold text-gray-800">{count}</span>
+            <span className="text-lg font-semibold text-gray-800">{count}</span>
             <span className="text-sm text-gray-700">{emotion}</span>
           </div>
         ))}

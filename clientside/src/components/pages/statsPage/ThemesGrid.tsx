@@ -81,7 +81,7 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
   //this just displays the common themes as emojis in a nice layout.
   return (
     <div
-      className="p-4 rounded-md border shadow-md   w-full"
+      className="p-4 rounded-md border shadow-md w-full"
       style={{ backgroundColor: "#f9a827" }}
     >
       <h1 className="text-center text-2xl font-semibold mb-6 text-gray-800">
@@ -91,16 +91,16 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
         Here are the most common themes that we found over the last{" "}
         {selectedPeriod} days
       </p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr">
         {themes.map(({ theme, count }) => (
           <div
             key={theme}
-            className="flex flex-col items-center bg-white p-4 rounded-lg shadow hover:shadow-xl transition-shadow duration-300 w-full"
+            className="flex flex-col items-center bg-white p-2 rounded-lg shadow hover:shadow-xl transition-shadow duration-300"
           >
-            <div className="mb-2 text-3xl">
+            <div className="mb-1 text-2xl">
               {themeIconMap[theme] || themeIconMap.default}
             </div>
-            <span className="text-xl font-semibold text-gray-800">{count}</span>
+            <span className="text-lg font-semibold text-gray-800">{count}</span>
             <span className="text-sm text-gray-700">{theme}</span>
           </div>
         ))}
