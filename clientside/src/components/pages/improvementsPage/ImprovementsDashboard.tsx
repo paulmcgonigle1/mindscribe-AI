@@ -39,7 +39,7 @@ function ImprovementsDashboard() {
       };
 
       fetchImprovements();
-      setTasksCreated(false); // Reset for further creations
+      setTasksCreated(false);
     }
   }, [tasksCreated, authTokens]); // Runs whenever tasksCreated changes
 
@@ -77,27 +77,21 @@ function ImprovementsDashboard() {
     };
 
     fetchCompletedTasks();
-  }, [authTokens]); // Dependency array depends on your specific needs
+  }, [authTokens]);
   return (
-    <div className="m-4 space-y-2">
-      <div className="flex  items-center justify-center">
-        <div className=" bg-rich-green p-8 border  rounded-lg flex flex-col items-center justify-center ">
-          <h1 className="text-3xl text-black mb-2 text-left ">Improvements </h1>
-          <p className="text-lg text-white text-center ">
-            Welcome to your personal improvements space. This is the page where
-            you can find actionable tasks to improve your mental health. You can
-            also track tasks, and find out more information if you need.
-          </p>
-        </div>
-      </div>
-
-      <Improvements_Message improvementData={improvementData} />
-
-      <div className="flex flex-col md:flex-row gap-6  justify-center items-center w-full px-2 ">
+    <div className="m-20  ">
+      <div className="flex flex-col md:flex-row gap-6 justify-center items-center w-full px-2">
         <ActionableTasks improvementData={improvementData} />
       </div>
 
-      <CompletedTasksView tasks={completedTasks} />
+      <div className="flex flex-wrap xl:flex-nowrap gap-4 px-4">
+        <div className="w-full  p-4">
+          <CompletedTasksView tasks={completedTasks} />
+        </div>
+        <div className="w-full p-4">
+          <Improvements_Message />
+        </div>
+      </div>
     </div>
   );
 }
