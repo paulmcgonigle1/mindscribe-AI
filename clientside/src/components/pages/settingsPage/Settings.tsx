@@ -5,10 +5,10 @@ import {
   removeUserData,
   updateSettings,
 } from "../../../services/JournalService";
-import Load from "../../../assets/mindscribe2/svg/settings.svg";
 import Companion1 from "../../../assets/chatbot.png";
 import Companion2 from "../../../assets/companion2.png";
 import Companion3 from "../../../assets/chatbot.png";
+import ConfirmationModal from "./ConfirmationModel";
 
 function Settings() {
   const [settings, setSettings] = useState({
@@ -20,6 +20,7 @@ function Settings() {
   });
 
   const { authTokens } = useContext(AuthContext) ?? {};
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   console.log("Current settings:", settings);
 
@@ -93,15 +94,16 @@ function Settings() {
 
   return (
     <div className=" justify-center items-center">
-      <h2 className="text-2xl font-semibold text-center text-gray-800 mt-20">
+      <h2 className="text-2xl font-semibold text-center text-gray-800 mt-10">
         Settings
       </h2>
-      <div className="max-w-4xl mx-auto my-10 bg-white shadow-md rounded-lg p-6 md:grid md:grid-cols-2 md:gap-6 min-h-[50vh] max-h-[60vh] ">
+      <div className="max-w-2xl mx-auto my-8 bg-white shadow-lg rounded-lg p-6 md:grid  md:gap-6">
         <div className="md:col-span-1">
           <h3 className="text-xl font-semibold text-gray-500 mb-4">
             Personal Messages
           </h3>
           <form onSubmit={handleSubmit}>
+            {/* Preffered Type  */}
             <div className="mb-4">
               <label
                 htmlFor="preferred_type"
@@ -122,6 +124,7 @@ function Settings() {
                 <option value="motivation">Motivation</option>
               </select>
             </div>
+            {/* Preffered Style  */}
             <div className="mb-6">
               <label
                 htmlFor="preferred_style"
@@ -145,6 +148,7 @@ function Settings() {
             <h3 className="text-xl font-semibold text-gray-500 mb-4">
               General
             </h3>
+            {/* Response Type Here */}
             <div className="mb-4">
               <label
                 htmlFor="responseType"
@@ -164,6 +168,7 @@ function Settings() {
                 <option value="both">Both</option>
               </select>
             </div>
+            {/* Companion Preferences Here */}
             <div className="mb-6">
               <label
                 htmlFor="companionType"
@@ -171,7 +176,7 @@ function Settings() {
               >
                 Companion Personality
               </label>
-              <div className="flex justify-between items-center">
+              <div className="flex justify-start items-center gap-8">
                 <div className="flex flex-col items-center">
                   <img
                     src={Companion1}
@@ -201,27 +206,29 @@ function Settings() {
                 </div>
               </div>
             </div>
-
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Save Settings
-            </button>
-            <button
-              onClick={handleRemoveData}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline"
-            >
-              Remove All Data
-            </button>
+            <div className=" flex justify-center">
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
+              >
+                Save Settings
+              </button>
+              <button
+                onClick={() => setShowConfirmationModal(true)}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Remove All Data
+              </button>
+            </div>
           </form>
         </div>
-        <div className="md:col-span-1 flex md:justify-end bg-gray">
-          <img
-            src={Load}
-            alt="Descriptive Alt Text"
-            className=" object-contain" // Adjust the size as needed
-          />
+        <div className="mt-8 flex justify-between">
+          {showConfirmationModal && (
+            <ConfirmationModal
+              onConfirm={handleRemoveData}
+              onCancel={() => setShowConfirmationModal(false)}
+            />
+          )}
         </div>
       </div>
     </div>
