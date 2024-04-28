@@ -132,7 +132,8 @@ export default function JournalDashboard() {
             {" "}
             <img src={Load} alt="Descriptive Alt Text" className="h-[25vh]" />
             <p className="text-lg text-gray-600 mt-10">
-              "Every day brings new choices." - Martha Beck
+              “Luck is what happens when preparation meets opportunity.” –
+              Seneca
             </p>
           </div>
         </div>

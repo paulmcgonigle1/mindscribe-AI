@@ -79,7 +79,7 @@ export default function StatsDashboard() {
           !enoughEntries ? "filter blur-md" : ""
         } flex-wrap -mx-4 w-full`}
       >
-        <div className={`flex flex-wrap -mx-4 w-full mb-4`}>
+        <div className={`flex flex-wrap -mx-4 w-full mb-4 bg-slate-50`}>
           <div className="w-full xl:w-2/3 px-4 py-3 flex min-w-0">
             <MoodAnalytics
               entries={journals}

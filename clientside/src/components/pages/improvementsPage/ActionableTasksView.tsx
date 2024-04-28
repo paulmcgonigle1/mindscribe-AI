@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ImprovementData, Task } from "../../../lib/types/types";
+import { ImprovementData } from "../../../lib/types/types";
 import TaskCard from "./TaskCard";
 import { saveTask } from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
@@ -46,21 +46,23 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
   }
 
   return (
-    <div className=" bg-white p-5 rounded-lg my-4">
-      <div className=" border-rich-green text-black text-center ">
-        <h3 className="text-2xl font-semibold mb-10">
-          Recommendedations for today
-        </h3>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4">
-        {improvementData.tasks.map((task, index) => (
-          <TaskCard
-            key={task.taskId || index}
-            task={task}
-            onSave={() => handleSaveTask(task.taskId, true)} // Pass taskId to handleSaveTask
-            onUnsave={() => handleSaveTask(task.taskId, false)} // Assuming you have a handleUnsaveTask function
-          />
-        ))}
+    <div className="">
+      <div className=" bg-white p-5 rounded-lg my-4">
+        <div className=" border-rich-green text-black text-center ">
+          <h3 className="text-2xl font-semibold mb-10">
+            Recommendedations for today
+          </h3>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4">
+          {improvementData.tasks.map((task, index) => (
+            <TaskCard
+              key={task.taskId || index}
+              task={task}
+              onSave={() => handleSaveTask(task.taskId, true)} // Pass taskId to handleSaveTask
+              onUnsave={() => handleSaveTask(task.taskId, false)} // Assuming you have a handleUnsaveTask function
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
