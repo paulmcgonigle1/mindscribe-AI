@@ -29,19 +29,22 @@ function TaskCard({ task, onReadMore, onSave, onUnsave }: TaskCardProps) {
   };
 
   return (
-    <div className="max-w-sm p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow">
-      <h5 className="text-lg sm:text-xl text-left font-semibold tracking-tight text-gray-900">
+    <div
+      className="max-w-sm p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow-lg"
+      // style={{ backgroundColor: "#f9a827" }}
+    >
+      <h5 className="text-lg sm:text-xl text-left font-semibold tracking-tight text-black">
         {task.content}
       </h5>
 
       {/* This paragraph will be hidden on small screens */}
-      <p className="hidden md:block font-normal text-gray-700">
+      <p className="hidden md:block font-normal text-black">
         {task.explanation.substring(0, 100)}...
       </p>
       {/* This button will be hidden on small screens */}
       <button
         onClick={() => onReadMore(task)}
-        className="mt-4 ml-4 hidden sm:inline-flex items-center px-3 py-2  font-medium text-center text-white bg-warm-orange-dark rounded-lg hover:bg-blue-800 "
+        className="mt-4 ml-4 hidden sm:inline-flex items-center px-3 py-2 font-medium text-center text-white bg-warm-orange-dark rounded-lg hover:bg-orange-600 transition-colors duration-300 ease-in-out"
       >
         Read more
         {/* SVG arrow icon here */}
@@ -49,9 +52,11 @@ function TaskCard({ task, onReadMore, onSave, onUnsave }: TaskCardProps) {
       {/* SAVE BUTTON*/}
       <button
         onClick={handleSaveToggle}
-        className={`... ${
-          isSaved ? "bg-unsave-task" : "bg-rich-green"
-        } mt-4 ml-4  items-center px-3 py-2 text-md font-medium text-center text-white rounded`}
+        className={`mt-4 ml-4 items-center px-3 py-2 text-md font-medium text-center text-white rounded transition-colors duration-300 ease-in-out ${
+          isSaved
+            ? "bg-unsave-task hover:bg-red-600"
+            : "bg-rich-green hover:bg-green-600"
+        }`}
       >
         {isSaved ? "Unsave Task" : "Save Task"}
       </button>

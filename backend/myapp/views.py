@@ -164,6 +164,16 @@ def check_journal_for_today(request):
     return Response({"journal_exists": journal_exists})
 
 
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def removeUser(request):
+    user = request.user
+    user.delete()  # This deletes the user and all related data if cascade delete is set up in your models
+    return Response(
+        {"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT
+    )
+
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_insights_for_journal_entry(request, entry_id):
