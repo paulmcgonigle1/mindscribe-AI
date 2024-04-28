@@ -97,10 +97,19 @@ function Settings() {
 
   return (
     <div className=" justify-center items-center">
-      <h2 className="text-2xl font-semibold text-center text-gray-800 mt-10">
-        Settings
-      </h2>
+      <h2 className="text-2xl font-semibold text-center text-gray-800 mt-10"></h2>
       <div className="max-w-2xl mx-auto my-8 bg-white shadow-lg rounded-lg p-6 md:grid  md:gap-6">
+        <div
+          className="mb-6  p-6 rounded-lg"
+          style={{ backgroundColor: "#f9a827" }}
+        >
+          <h1 className="text-2xl text-center font-semibold text-gray-800">
+            Settings
+          </h1>
+          <p className="text-md text-center text-gray-600 mt-2">
+            Update your preferences and settings here
+          </p>
+        </div>
         <div className="md:col-span-1">
           <h3 className="text-xl font-semibold text-gray-500 mb-4">
             Personal Messages
@@ -177,7 +186,7 @@ function Settings() {
                 htmlFor="companionType"
                 className="block text-gray-700 text-sm font-bold mb-2"
               >
-                Companion Personality
+                Companion Personality - Coming soon
               </label>
               <div className="flex justify-start items-center gap-8">
                 <div className="flex flex-col items-center">
