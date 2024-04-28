@@ -19,7 +19,7 @@ function JournalEntry({
 
   return (
     <div
-      className={`flex-1 w-full h-full rounded-md bg-white  ${
+      className={`flex-1 w-full h-full rounded-md bg-white shadow-md  ${
         hasJournaledToday
           ? " flex items-center justify-center p-10 shadow-md"
           : "p-4"

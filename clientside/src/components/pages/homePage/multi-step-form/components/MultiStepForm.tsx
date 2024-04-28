@@ -104,12 +104,12 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
       return null;
     }
     return (
-      <section className="mt-2 mb-4 flex justify-between">
+      <section className="mt-2  flex justify-between">
         {stepsArray.map((item) => (
           <div
             key={item}
             className={`w-8 h-8 flex justify-center items-center border-2 border-gray-600 rounded-full cursor-pointer ${
-              item === step ? "bg-blue-500" : ""
+              item === step ? "bg-orange-500" : ""
             }`}
             onClick={() => setStep(item)}
           >
@@ -121,7 +121,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
   };
 
   return (
-    <div className="w-[600px] max-w-full px-6 py-1 mx-auto rounded-lg border-2 border-dotted border-sky-300">
+    <div className="w-[600px] min-h-[28vh] max-w-full px-6 py-1 mx-auto rounded-lg border-2 border-dotted border-orange-400">
       {renderTopStepNumbers()}
 
       {/* // Render Steps */}

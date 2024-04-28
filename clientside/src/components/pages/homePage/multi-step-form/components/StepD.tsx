@@ -81,12 +81,12 @@ const StepD: React.FC<StepDProp> = ({
           {/* Your Terms of Service content here */}
           <h2 className="text-2xl font-semibold mb-4">Terms of Service</h2>
           <p className="space-y-4 text-justify">
-            Welcome to [App Name]! These Terms of Service ("Terms") govern your
-            use of [App Name], including all related tools, services, and
-            features (collectively, the "Service") provided by [Your Company
-            Name] ("we", "us", or "our"). By accessing or using the Service, you
-            agree to be bound by these Terms. If you disagree with any part of
-            the Terms, then you do not have permission to access the Service.
+            Welcome to Mindscribe! These Terms of Service ("Terms") govern your
+            use of Mindscribe, including all related tools, services, and
+            features (collectively, the "Service") provided by Mindscribe("we",
+            "us", or "our"). By accessing or using the Service, you agree to be
+            bound by these Terms. If you disagree with any part of the Terms,
+            then you do not have permission to access the Service.
           </p>
           <h3 className="text-xl font-semibold">Privacy Policy</h3>
           <p className="space-y-4 text-justify">

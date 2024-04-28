@@ -20,7 +20,7 @@ const StepC: React.FC<StepCProp> = ({
 
   return (
     <div>
-      <h1 className="mt-2 text-xl font-bold text-blue-900">
+      <h1 className="mt-2 text-xl font-bold text-black">
         Step C: Journal Companion Responses
       </h1>
 
