@@ -6,9 +6,9 @@ import {
   removeUserData,
   updateSettings,
 } from "../../../services/JournalService";
-import Companion1 from "../../../assets/chatbot.png";
-import Companion2 from "../../../assets/companion2.png";
+import Companion1 from "../../../assets/companion3.png";
 import Companion3 from "../../../assets/chatbot.png";
+import Companion2 from "../../../assets/companion4.png";
 import ConfirmationModal from "./ConfirmationModel";
 
 function Settings() {
@@ -19,8 +19,8 @@ function Settings() {
     responseType: "",
     companionType: "",
   });
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const { authTokens } = useContext(AuthContext) ?? {};
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
@@ -188,7 +188,7 @@ function Settings() {
               >
                 Companion Personality - Coming soon
               </label>
-              <div className="flex justify-start items-center gap-8">
+              <div className="flex justify-between items-center gap-8 ml-10 mr-20">
                 <div className="flex flex-col items-center">
                   <img
                     src={Companion1}
