@@ -158,7 +158,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 200 || 201) {
+        console.log("new user signed up");
         onSuccess();
       } else {
         // Handle non-200 HTTP responses
