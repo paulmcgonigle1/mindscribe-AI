@@ -3,14 +3,18 @@ import { Task } from "../../../lib/types/types";
 
 interface TaskCardProps {
   task: Task;
-  onReadMore: (task: Task) => void;
   onSave: (taskId: number) => void;
   onUnsave: (taskId: number) => void;
 }
 
-function TaskCard({ task, onReadMore, onSave, onUnsave }: TaskCardProps) {
+function TaskCard({ task, onSave, onUnsave }: TaskCardProps) {
   const [isSaved, setIsSaved] = useState(task.inProgress);
 
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleExpansion = () => {
+    setExpanded(!expanded);
+  };
   // Function to handle save click
   const handleSaveToggle = async () => {
     try {
@@ -38,12 +42,13 @@ function TaskCard({ task, onReadMore, onSave, onUnsave }: TaskCardProps) {
       </h5>
 
       {/* This paragraph will be hidden on small screens */}
-      <p className="hidden md:block font-normal text-black">
-        {task.explanation.substring(0, 100)}...
-      </p>
+      {!expanded && (
+        <p className="text-gray-600">{task.explanation.substring(0, 100)}</p>
+      )}
+      {expanded && <p className="text-gray-600">{task.explanation}</p>}
       {/* This button will be hidden on small screens */}
       <button
-        onClick={() => onReadMore(task)}
+        onClick={toggleExpansion}
         className="mt-4 ml-4 hidden sm:inline-flex items-center px-3 py-2 font-medium text-center text-white bg-warm-orange-dark rounded-lg hover:bg-orange-600 transition-colors duration-300 ease-in-out"
       >
         Read more
