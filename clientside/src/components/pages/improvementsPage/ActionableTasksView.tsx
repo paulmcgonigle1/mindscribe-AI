@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ImprovementData, Task } from "../../../lib/types/types";
+import { ImprovementData } from "../../../lib/types/types";
 import TaskCard from "./TaskCard";
 import { saveTask } from "../../../services/JournalService";
 import AuthContext from "../../../context/AuthContext";
