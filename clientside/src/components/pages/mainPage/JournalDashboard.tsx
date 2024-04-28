@@ -136,6 +136,7 @@ export default function JournalDashboard() {
             </p>
           </div>
         </div>
+
         <Modal
           isOpen={showQuestionnaireModal}
           onClose={() => setShowQuestionnaireModal(false)}
