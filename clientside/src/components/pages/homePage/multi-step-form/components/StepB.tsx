@@ -18,7 +18,7 @@ const StepB: React.FC<StepBProp> = ({
 }) => {
   return (
     <div>
-      <h1 className="mt-2 text-xl font-bold text-blue-900">
+      <h1 className="mt-2 text-xl font-bold text-black-900">
         Step B: Motivational Daily Messages
       </h1>
 
