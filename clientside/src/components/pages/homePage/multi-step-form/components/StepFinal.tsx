@@ -5,7 +5,7 @@ const StepFinal = () => {
         Step Final: Success Result
       </h1>
       <div className="my-4">
-        <h3>Data Submited Successfully To Server</h3>
+        <h3>You are all ready to go! </h3>
       </div>
     </div>
   );

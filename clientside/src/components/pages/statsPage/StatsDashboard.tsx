@@ -54,7 +54,8 @@ export default function StatsDashboard() {
               Not Enough Data Points
             </h1>
             <p className="text-center text-gray-700">
-              You need more journal entries to get statistical insights
+              You need more at least 5 journal entries to see statistical
+              analysis
             </p>
 
             <div className="hidden md:block">
