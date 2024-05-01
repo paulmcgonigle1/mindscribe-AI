@@ -108,7 +108,7 @@ function SignupPage() {
                                 type="text"
                                 value={username}
                                 name="username"
-                                className="w-full  p-2 border border-gray-300 rounded-md"
+                                className="w-full  p-2 border border-gray-300 rounded-md text-black"
                                 onChange={(e) => setUsername(e.target.value)}
                               />
                             </div>
@@ -123,7 +123,7 @@ function SignupPage() {
                                 <input
                                   type={showPassword ? "text" : "password"}
                                   name="password"
-                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  className="w-full p-2 border border-gray-300 rounded-md text-black"
                                   value={password}
                                   onChange={(e) => setPassword(e.target.value)}
                                 />
@@ -198,7 +198,7 @@ function SignupPage() {
                                 type="text"
                                 value={username}
                                 name="username"
-                                className="w-full p-2 border border-gray-300 rounded-md"
+                                className="w-full p-2 border border-gray-300 rounded-md text-black"
                                 onChange={(e) => setUsername(e.target.value)}
                               />
                             </div>
@@ -214,7 +214,7 @@ function SignupPage() {
                                 value={email}
                                 name="email"
                                 required
-                                className="w-full p-2 border border-gray-300 rounded-md"
+                                className="w-full p-2 border border-gray-300 rounded-md text-black"
                                 onChange={(e) => setEmail(e.target.value)}
                               />
                             </div>
@@ -229,7 +229,7 @@ function SignupPage() {
                                 <input
                                   type={showPassword ? "text" : "password"}
                                   name="password"
-                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  className="w-full p-2 border border-gray-300 rounded-md text-black"
                                   value={password}
                                   onChange={(e) => setPassword(e.target.value)}
                                 />
@@ -264,7 +264,7 @@ function SignupPage() {
                                 <input
                                   type={showPassword2 ? "text" : "password"}
                                   name="password2"
-                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                  className="w-full p-2 border border-gray-300 rounded-md text-black"
                                   value={password2}
                                   onChange={(e) => setPassword2(e.target.value)}
                                 />
