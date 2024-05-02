@@ -27,6 +27,9 @@ const ModalComponent = ({
             <h3 className="text-2xl leading-6 font-semibold text-gray-900">
               Insights by AI companion this Journal Entry
             </h3>
+            <p className="text-md text-center text-gray-600 mt-2">
+              here are your insights for today.
+            </p>
           </div>
 
           <div className="mt-2 px-7 py-3">
