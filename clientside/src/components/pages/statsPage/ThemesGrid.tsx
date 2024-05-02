@@ -20,6 +20,7 @@ import {
   FaTree,
   FaListCheck,
   FaComments,
+  FaWater,
 } from "react-icons/fa6";
 import AuthContext from "../../../context/AuthContext";
 
@@ -35,7 +36,10 @@ const themeIconMap: themeIconMapType = {
   yoga: <FaPeace className="w-8 h-8 text-blue-400" />,
   teamwork: <FaHeartCircleBolt className="w-8 h-8 text-green-400" />,
   contributing: <FaStar className="w-8 h-8 text-purple-400" />,
+  exploration: <FaStar className="w-8 h-8 text-orange-400" />,
+
   learning: <FaBook className="w-8 h-8 text-purple-400" />,
+
   perseverance: <FaDumbbell className="w-8 h-8 text-purple-400" />,
   unity: <FaFire className="w-8 h-8 text-sky-400" />,
   house: <FaHouse className="w-8 h-8 text-orange-400" />,
@@ -44,6 +48,9 @@ const themeIconMap: themeIconMapType = {
   improvement: <FaListCheck className="w-8 h-8 text-blue-400" />,
   loneliness: <FaFaceSadTear className="w-8 h-8 text-pink-400" />,
   communication: <FaComments className="w-8 h-8 text-yellow-400" />,
+  surfing: <FaWater className="w-8 h-8 text-blue-400" />,
+  gratitude: <FaFaceGrinBeamSweat className="w-8 h-8 text-pink-400" />,
+
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
 
   // Add mappings for other themes
@@ -52,7 +59,12 @@ const themeIconMap: themeIconMapType = {
 type ThemeGridProps = {
   selectedPeriod: number;
 };
-const excludedThemes = ["n/a", "spirits", "anotherEmotionToExclude"];
+const excludedThemes = [
+  "n/a",
+  "spirits",
+  "anotherEmotionToExclude",
+  "learning opportunity",
+];
 
 function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
   const [themes, setThemes] = useState<ThemeData[]>([]);

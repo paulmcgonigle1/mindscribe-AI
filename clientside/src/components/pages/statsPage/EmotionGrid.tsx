@@ -11,6 +11,11 @@ import {
   FaFaceGrinTongue,
   FaFaceFrownOpen,
   FaFaceLaughSquint,
+  FaFaceSadTear,
+  FaFaceTired,
+  FaFaceMehBlank,
+  FaFaceFrown,
+  FaRegFaceFlushed,
 } from "react-icons/fa6";
 import AuthContext from "../../../context/AuthContext";
 
@@ -27,14 +32,26 @@ const emotionIconMap: EmotionIconMapType = {
   guilt: <FaFaceFrownOpen className="w-8 h-8 text-purple-400" />,
   panic: <FaFaceGrimace className="w-8 h-8 text-purple-400" />,
   excited: <FaFaceLaughSquint className="w-8 h-8 text-sky-400" />,
+  loneliness: <FaFaceSadTear className="w-8 h-8 text-pink-400" />,
+  overwhelmed: <FaFaceFrownOpen className="w-8 h-8 text-brown-400" />,
+  discouraged: <FaFaceGrimace className="w-8 h-8 text-brown-400" />,
   energized: <FaFaceLaughSquint className="w-8 h-8 text-sky-400" />,
+  frustrated: <FaFaceTired className="w-8 h-8 text-brown-400" />,
+  disappointed: <FaFaceMehBlank className="w-8 h-8 text-red-400" />,
+  down: <FaFaceFrown className="w-8 h-8 text-yellow-400" />,
+  stressed: <FaRegFaceFlushed className="w-8 h-8 text-pink-400" />,
+  grateful: <FaFaceGrinBeamSweat className="w-8 h-8 text-blue-400" />,
+  content: <FaFaceGrinBeamSweat className="w-8 h-8 text-green-600" />,
+
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
+
   // Add mappings for other emotions
 };
 
 type EmotionGridProps = {
   selectedPeriod: number;
 };
+const excludedEmotions = ["n/a", "spirits", "anotherEmotionToExclude"];
 
 function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
   const [emotions, setEmotions] = useState<EmotionData[]>([]);
@@ -46,8 +63,14 @@ function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
         try {
           //const userId = 1;
           const userEmotions = await getEmotions(authTokens, selectedPeriod);
+
+          const validEmotions = userEmotions.filter(
+            (emotionData) =>
+              !excludedEmotions.includes(emotionData.emotion.toLowerCase())
+          );
+
           console.log(userEmotions); //this needs to be updated to get entries for the user
-          setEmotions(userEmotions);
+          setEmotions(validEmotions);
         } catch (error) {
           console.error("Error fetching emotions: ", error);
         }
