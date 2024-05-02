@@ -37,6 +37,7 @@ const themeIconMap: themeIconMapType = {
   teamwork: <FaHeartCircleBolt className="w-8 h-8 text-green-400" />,
   contributing: <FaStar className="w-8 h-8 text-purple-400" />,
   exploration: <FaStar className="w-8 h-8 text-orange-400" />,
+  conflicts: <FaHandshake className="w-8 h-8 text-red-600" />,
 
   learning: <FaBook className="w-8 h-8 text-purple-400" />,
 

@@ -16,6 +16,7 @@ import {
   FaFaceMehBlank,
   FaFaceFrown,
   FaRegFaceFlushed,
+  FaFaceLaugh,
 } from "react-icons/fa6";
 import AuthContext from "../../../context/AuthContext";
 
@@ -40,7 +41,7 @@ const emotionIconMap: EmotionIconMapType = {
   disappointed: <FaFaceMehBlank className="w-8 h-8 text-red-400" />,
   down: <FaFaceFrown className="w-8 h-8 text-yellow-400" />,
   stressed: <FaRegFaceFlushed className="w-8 h-8 text-pink-400" />,
-  grateful: <FaFaceGrinBeamSweat className="w-8 h-8 text-blue-400" />,
+  grateful: <FaFaceLaugh className="w-8 h-8 text-blue-400" />,
   content: <FaFaceGrinBeamSweat className="w-8 h-8 text-green-600" />,
 
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
