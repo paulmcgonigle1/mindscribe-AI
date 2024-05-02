@@ -27,8 +27,8 @@ const themeIconMap: themeIconMapType = {
   responsibility: <FaClipboard className="w-8 h-8 text-blue-400" />,
   yoga: <FaPeace className="w-8 h-8 text-blue-400" />,
   teamwork: <FaHeartCircleBolt className="w-8 h-8 text-green-400" />,
-  contributing: <FaStar className="w-8 h-8 text-purple-400" />,
-  unity: <FaFire className="w-8 h-8 text-sky-400" />,
+  relaxation: <FaStar className="w-8 h-8 text-purple-400" />,
+  improvement: <FaFire className="w-8 h-8 text-sky-400" />,
   house: <FaHouse className="w-8 h-8 text-orange-400" />,
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
 
