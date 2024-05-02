@@ -13,6 +13,13 @@ import {
   FaStar,
   FaFire,
   FaHouse,
+  FaRocketchat,
+  FaFaceSadTear,
+  FaBook,
+  FaDumbbell,
+  FaTree,
+  FaListCheck,
+  FaComments,
 } from "react-icons/fa6";
 import AuthContext from "../../../context/AuthContext";
 
@@ -27,9 +34,16 @@ const themeIconMap: themeIconMapType = {
   responsibility: <FaClipboard className="w-8 h-8 text-blue-400" />,
   yoga: <FaPeace className="w-8 h-8 text-blue-400" />,
   teamwork: <FaHeartCircleBolt className="w-8 h-8 text-green-400" />,
-  relaxation: <FaStar className="w-8 h-8 text-purple-400" />,
-  improvement: <FaFire className="w-8 h-8 text-sky-400" />,
+  contributing: <FaStar className="w-8 h-8 text-purple-400" />,
+  learning: <FaBook className="w-8 h-8 text-purple-400" />,
+  perseverance: <FaDumbbell className="w-8 h-8 text-purple-400" />,
+  unity: <FaFire className="w-8 h-8 text-sky-400" />,
   house: <FaHouse className="w-8 h-8 text-orange-400" />,
+  chatbot: <FaRocketchat className="w-8 h-8 text-sky-400" />,
+  nature: <FaTree className="w-8 h-8 text-green-400" />,
+  improvement: <FaListCheck className="w-8 h-8 text-blue-400" />,
+  loneliness: <FaFaceSadTear className="w-8 h-8 text-pink-400" />,
+  communication: <FaComments className="w-8 h-8 text-yellow-400" />,
   default: <FaFaceGrinBeamSweat className="w-8 h-8 text-orange-400" />,
 
   // Add mappings for other themes
@@ -38,6 +52,7 @@ const themeIconMap: themeIconMapType = {
 type ThemeGridProps = {
   selectedPeriod: number;
 };
+const excludedThemes = ["n/a", "spirits", "anotherEmotionToExclude"];
 
 function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
   const [themes, setThemes] = useState<ThemeData[]>([]);
@@ -49,8 +64,12 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
         try {
           //const userId = 1;
           const userThemes = await getThemes(authTokens, selectedPeriod);
+          const validThemes = userThemes.filter(
+            (themeData) =>
+              !excludedThemes.includes(themeData.theme.toLowerCase())
+          );
           console.log(userThemes); //this needs to be updated to get entries for the user
-          setThemes(userThemes);
+          setThemes(validThemes);
         } catch (error) {
           console.error("Error fetching themes:", error);
         }
