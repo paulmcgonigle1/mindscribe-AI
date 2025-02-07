@@ -3,30 +3,25 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 interface AuthContextType {
-  //using forms
   loginUser: (
     e: React.FormEvent<HTMLFormElement>,
     onSuccess: any,
     onError: any
   ) => Promise<void>;
-  //logout
   logoutUser: () => void;
-  //using forms
   registerUser: (
     e: React.FormEvent<HTMLFormElement>,
     onSuccess: any,
     onError: any
   ) => Promise<void>;
-  user: { name?: string; username?: string } | null; // Auser property to store user information
-  authTokens: { access: string; refresh?: string } | null; //]adjust as necessary
+  user: { name?: string; username?: string } | null;
+  authTokens: { access: string; refresh?: string } | null;
 }
-// Create context with an initial value of the same type or undefined
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export default AuthContext;
 
-// props for the provider
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -39,37 +34,35 @@ type AuthTokens = {
 interface MyTokenPayload {
   username: string;
 }
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authTokens, setAuthTokens] = useState<AuthTokens>(() => {
     try {
-      // Attempt to get the item from localStorage
       const item = localStorage.getItem("authTokens");
       return item ? JSON.parse(item) : null;
     } catch (error) {
-      // If an error occurs, log it and return null
       console.error("Error reading authTokens from localStorage:", error);
       return null;
     }
   });
+
   let [user, setUser] = useState<{ username: string } | null>(null);
   let [loading, setLoading] = useState(true);
 
-  //this is called every time this page is refreshed.
   useEffect(() => {
-    // If authTokens are present, decode them to set the user
     const token = authTokens?.access;
     if (token && typeof token === "string") {
       try {
-        // Assuming you have a function to decode the JWT and extract user info
-        const decodedUser = jwtDecode<MyTokenPayload>(authTokens.access); // Make sure to define or import jwtDecode
-
-        // console.log(decodedUser);
+        const decodedUser = jwtDecode<MyTokenPayload>(authTokens.access);
         setUser({ username: decodedUser.username });
       } catch (error) {
         console.error("Error decoding authTokens:", error);
       }
     }
-  }, [authTokens]); // Re-run this effect if authTokens change
+  }, [authTokens]);
+
+  // ✅ Get API base URL from environment variable
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const loginUser = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -83,32 +76,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const response = await axios.post(
-        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/token/",
-        {
-          username,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        `${API_URL}/myapp/api/token/`,
+        { username, password },
+        { headers: { "Content-Type": "application/json" } }
       );
 
       const data = response.data;
       setAuthTokens(data);
       setUser(jwtDecode(data.access));
       localStorage.setItem("authTokens", JSON.stringify(data));
-      onSuccess(); // Execute the callback after successful login
+      onSuccess();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         let errorMessage =
           "Authentication failed. Please check your credentials.";
         if (error.response) {
-          // More specific error handling if the server sends a response
           errorMessage = error.response.data.detail || errorMessage;
         }
-        onError(errorMessage); // Pass the error message to the onError callback
+        onError(errorMessage);
       } else {
         console.error("Login request failed:", error);
         onError("An error occurred during login.");
@@ -116,14 +101,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  //for logging user out and resettin user and tokens
   let logoutUser = () => {
     console.log("calling logoutUser in Auth Provider");
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
   };
-  //to register a user
+
   const registerUser = async (
     e: React.FormEvent<HTMLFormElement>,
     onSuccess: () => void,
@@ -136,7 +120,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const password = formData.get("password") as string;
     const password2 = formData.get("password2") as string;
 
-    // Check if passwords match
     if (password !== password2) {
       onError({ non_field_errors: ["Passwords do not match."] });
       return;
@@ -144,34 +127,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const response = await axios.post(
-        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/register/",
-        {
-          username,
-          email,
-          password,
-          password2,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        `${API_URL}/myapp/api/register/`,
+        { username, email, password, password2 },
+        { headers: { "Content-Type": "application/json" } }
       );
 
       if (response.status === 200 || 201) {
-        console.log("new user signed up");
+        console.log("New user signed up");
         onSuccess();
       } else {
-        // Handle non-200 HTTP responses
         onError(response.data);
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        // Error responses from the server will be handled here
         onError(error.response.data);
       } else {
-        // Generic error handling if the error is not from Axios
-        console.error("An error occurred during the signup", error);
+        console.error("An error occurred during signup", error);
         onError({ non_field_errors: ["An unexpected error occurred."] });
       }
     }
@@ -181,28 +152,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     console.log("Update Token Called");
 
     if (authTokens) {
-      let response = await fetch(
-        "https://mindscribe-36297a9e5954.herokuapp.com/myapp/api/token/refresh/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refresh: authTokens.refresh }),
-        }
-      );
+      let response = await fetch(`${API_URL}/myapp/api/token/refresh/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh: authTokens.refresh }),
+      });
+
       let data = await response.json();
       if (response.status === 200) {
         setAuthTokens(data);
         console.log("Token updated and refreshed successfully");
-        //using jwt decode to get the access key
         setUser(jwtDecode(data.access));
-        //setting authJWTTokens in localStorage
         localStorage.setItem("authTokens", JSON.stringify(data));
       } else {
         logoutUser();
       }
-      //sets loading false if
+
       if (loading) {
         setLoading(false);
       }
@@ -219,22 +184,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     authTokens: authTokens,
   };
 
-  //for refreshing token every 5 mins
   useEffect(() => {
     if (loading) {
       updateToken();
     }
-    //can update this if needed
     let fourMinutes = 1000 * 60 * 4;
     let interval = setInterval(() => {
       if (authTokens && authTokens.refresh) {
         updateToken();
       }
-    }, fourMinutes); // Refresh every 5 minutes
+    }, fourMinutes);
     return () => clearInterval(interval);
-  }, [authTokens, loading]); // Consider if `loading` is necessary here
+  }, [authTokens, loading]);
+
   return (
-    //also adding condition that none of the children render out before loading completed
     <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
 };
