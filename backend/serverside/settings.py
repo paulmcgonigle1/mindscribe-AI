@@ -39,9 +39,9 @@ ALLOWED_HOSTS = [
     "http://www.mindscribe.life",
     "www.mindscribe.life",
     "mindscribe.life",
-    "https://mindscribe-36297a9e5954.herokuapp.com",
-    "http://mindscribe-36297a9e5954.herokuapp.com",
-    "mindscribe-36297a9e5954.herokuapp.com",
+    "https://mindscribe-ai-05be876e196b.herokuapp.com",
+    "http://mindscribe-ai-05be876e196b.herokuapp.com",
+    "mindscribe-ai-05be876e196b.herokuapp.com",
 ]
 
 

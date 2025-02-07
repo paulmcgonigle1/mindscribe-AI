@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { JournalEntry, NewJournalEntry, Insight, ImprovementData, EmotionData, ThemeData, MyAnalysisData, Task, Settings, Preferences, JournalResponse, MessageData } from '../lib/types/types';
 
-const BASE_URL = 'https://mindscribe-36297a9e5954.herokuapp.com'; // Replace with the URL of your Django server
+const BASE_URL = 'https://mindscribe-ai-05be876e196b.herokuapp.com'; // Replace with the URL of your Django server
 
 
 
