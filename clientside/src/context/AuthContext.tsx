@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [authTokens]);
 
   // ✅ Get API base URL from environment variable
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = "https://mindscribe-ai-05be876e196b.herokuapp.com";
 
   const loginUser = async (
     e: React.FormEvent<HTMLFormElement>,
