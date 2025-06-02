@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import ActionableTasks from "./ActionableTasksView";
 import { ImprovementData, Task } from "../../../lib/types/types";
-import {
-  getCompletedTasks,
-  getImprovements,
-} from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import Improvements_Message from "./Improvements_Message";
 import { useAuth } from "../../../context/AuthContext";
 import CompletedTasksView from "./CompletedTasksView";
@@ -25,7 +22,7 @@ function ImprovementsDashboard() {
       const fetchImprovements = async () => {
         if (token) {
           try {
-            const response = await getImprovements({ access: token });
+            const response = await legacy.getImprovements();
             console.log("Updated improvements plan:", response);
             setImprovementData({
               message: response.message,
@@ -48,7 +45,7 @@ function ImprovementsDashboard() {
     const fetchImprovements = async () => {
       if (token) {
         try {
-          const response = await getImprovements({ access: token });
+          const response = await legacy.getImprovements();
           console.log("Most recent improvements plan:", response);
           setImprovementData({
             message: response.message,
@@ -67,7 +64,7 @@ function ImprovementsDashboard() {
     const fetchCompletedTasks = async () => {
       if (token) {
         try {
-          const tasks = await getCompletedTasks({ access: token }); // Implement this function based on your API
+          const tasks = await legacy.getCompletedTasks(); // Implement this function based on your API
           setCompletedTasks(tasks);
           console.log("tasks", tasks);
         } catch (error) {

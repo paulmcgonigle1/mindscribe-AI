@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
-import {
-  getSettings,
-  removeUserData,
-  updateSettings,
-} from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import Companion1 from "../../../assets/companion3.png";
 import Companion3 from "../../../assets/chatbot.png";
 import Companion2 from "../../../assets/companion4.png";
@@ -32,7 +28,7 @@ function Settings() {
     const fetchSettings = async () => {
       if (token) {
         try {
-          const fetchedsettings = await getSettings({ access: token });
+          const fetchedsettings = await legacy.getSettings();
           // console.log("Settings for this user:", fetchedsettings);
           setSettings(fetchedsettings);
         } catch (error) {
@@ -55,7 +51,7 @@ function Settings() {
 
     try {
       // Call the updateSettings function, passing the auth tokens and the current settings state.
-      const response = await updateSettings({ access: token }, settings);
+      const response = await legacy.updateSettings(settings);
       console.log("Settings updated successfully:", response);
       // Optionally, you could refresh the settings from the server again here, or handle any post-update logic.
     } catch (error) {
@@ -70,7 +66,7 @@ function Settings() {
     }
 
     try {
-      const response = await removeUserData({ access: token });
+      await legacy.removeUserData({ access: token });
       console.log("User data removed successfully:", response);
       navigate("/home");
       // Optionally, you could redirect the user to a different page or display a confirmation message.

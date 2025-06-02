@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Task } from "../../../lib/types/types";
-import { getTrackedTasks } from "../../../services/JournalService";
-import { updateTaskCompletionStatus } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import { useAuth } from "../../../context/AuthContext";
-import { saveTask } from "../../../services/JournalService";
 import Load from "../../../assets/mindscribe2/svg/load.svg";
 
 const TrackTasks = () => {
@@ -17,7 +15,7 @@ const TrackTasks = () => {
         try {
           // Note: This service might need updating to work with the new API
           const authTokens = { access: token };
-          const tasks = await getTrackedTasks(authTokens);
+          const tasks = await legacy.getTrackedTasks();
           console.log("Tasks In Progress:", tasks);
           setInProgressTasks(tasks);
         } catch (error) {
@@ -32,7 +30,7 @@ const TrackTasks = () => {
   const handleTaskCompletionChange = async (task: Task, isChecked: boolean) => {
     if (token) {
       const authTokens = { access: token };
-      await updateTaskCompletionStatus(authTokens, task.taskId);
+      await legacy.updateTaskCompletionStatus(task.taskId);
     }
 
     // Update your inProgressTasks state here to reflect the change
@@ -46,7 +44,7 @@ const TrackTasks = () => {
   const handleSaveTask = async (taskId: number, state: boolean) => {
     if (token) {
       const authTokens = { access: token };
-      const response = await saveTask(authTokens, taskId, state);
+      const response = await legacy.saveTask(taskId, state);
       console.log(response);
     }
   };

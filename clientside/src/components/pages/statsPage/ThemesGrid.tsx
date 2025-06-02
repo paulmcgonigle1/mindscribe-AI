@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getThemes } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import { ThemeData } from "../../../lib/types/types";
 import {
   FaFaceGrinBeamSweat,
@@ -76,7 +76,7 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
       if (token) {
         try {
           //const userId = 1;
-          const userThemes = await getThemes({ access: token }, selectedPeriod);
+          const userThemes = await legacy.getThemes(selectedPeriod);
           const validThemes = userThemes.filter(
             (themeData) =>
               !excludedThemes.includes(themeData.theme.toLowerCase())

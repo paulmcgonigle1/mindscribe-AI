@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import Typewriter from "typewriter-effect";
-import { fetchMessageOfDay } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 
 function Improvements_Message() {
   const [message, setMessage] = useState<string | null>(null);
@@ -11,7 +11,7 @@ function Improvements_Message() {
   const fetchMessage = async () => {
     if (token) {
       try {
-        const response = await fetchMessageOfDay({ access: token });
+        const response = await legacy.fetchMessageOfDay();
         setMessage(response.message);
         localStorage.setItem("messageOfDay", response.message); // Store the new message in localStorage
         setShouldTypeWriter(true); // Enable Typewriter when a new message is fetched

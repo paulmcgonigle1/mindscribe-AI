@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { JournalEntry } from "../../../lib/types/types";
-import { getJournals } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import { useAuth } from "../../../context/AuthContext";
 
 function StreakChart() {
@@ -17,7 +17,7 @@ function StreakChart() {
     const fetchRecentEntries = async () => {
       if (token) {
         try {
-          const journals = await getJournals({ access: token });
+          const journals = await legacy.getJournals({ access: token });
           console.log("Received journals:", journals);
           setJournals(journals);
         } catch (error) {

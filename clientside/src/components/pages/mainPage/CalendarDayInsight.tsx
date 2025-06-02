@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { Insight, JournalEntry } from "../../../lib/types/types";
-import { getInsightForJournalEntry } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import ModalComponent from "./ModalComponent";
 
 export function DayInsights({ entry }: { entry: JournalEntry }) {
@@ -16,7 +16,7 @@ export function DayInsights({ entry }: { entry: JournalEntry }) {
   const fetchAndSetInsight = async (entryId: number) => {
     if (token) {
       try {
-        const insights = await getInsightForJournalEntry(
+        const insights = await legacy.getInsightForJournalEntry(
           { access: token },
           entryId
         );

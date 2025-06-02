@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getInsightbyDay } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import { Insight } from "../../../lib/types/types";
 
 const Summary = () => {

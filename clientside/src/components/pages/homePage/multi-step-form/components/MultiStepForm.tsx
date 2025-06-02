@@ -5,7 +5,7 @@ import StepC from "./StepC";
 import StepD from "./StepD";
 import StepFinal from "./StepFinal";
 import { useAuth } from "../../../../../context/AuthContext";
-import { updatePreferances } from "../../../../../services/JournalService";
+import { legacy } from "../../../../../services/api";
 
 const initialFormData = {
   firstName: "",
@@ -85,7 +85,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
 
     try {
       // Call the updateSettings function, passing the auth tokens and the current settings state.
-      const response = await updatePreferances({ access: token }, formData);
+      const response = await legacy.updatePreferances({ access: token }, formData);
       console.log("Settings updated successfully:", response);
       setStep("Final"); // Proceed to the final step
       // Optionally, you could refresh the settings from the server again here, or handle any post-update logic.

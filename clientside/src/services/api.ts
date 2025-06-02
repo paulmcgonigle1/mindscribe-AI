@@ -237,6 +237,133 @@ export const users = {
     },
 };
 
+// Legacy compatibility functions for components that haven't been migrated yet
+export const legacy = {
+    // Themes endpoint - placeholder until backend implements it
+    getThemes: async (days: number) => {
+        console.warn('Themes endpoint not implemented in FastAPI backend yet');
+        return [];
+    },
+    
+    // Emotions endpoint - placeholder until backend implements it
+    getEmotions: async (days: number) => {
+        console.warn('Emotions endpoint not implemented in FastAPI backend yet');
+        return [];
+    },
+    
+    // Settings endpoint - using preferences for now
+    getSettings: async () => {
+        const prefs = await preferences.get();
+        return {
+            preferred_type: prefs.preferred_type || 'motivation',
+            preferred_style: prefs.preferred_style || 'insightful',
+            is_personalised: prefs.is_personalised || false,
+            responseType: prefs.response_type || 'text',
+            companionType: prefs.companion_type || 'Companion 1',
+        };
+    },
+    
+    updateSettings: async (settings: any) => {
+        return await preferences.update({
+            preferred_type: settings.preferred_type,
+            preferred_style: settings.preferred_style,
+            is_personalised: settings.is_personalised,
+            response_type: settings.responseType,
+            companion_type: settings.companionType,
+        });
+    },
+    
+    // Tasks endpoints - placeholder until backend implements it
+    getTrackedTasks: async () => {
+        console.warn('Tracked tasks endpoint not implemented in FastAPI backend yet');
+        return [];
+    },
+    
+    getCompletedTasks: async () => {
+        console.warn('Completed tasks endpoint not implemented in FastAPI backend yet');
+        return [];
+    },
+    
+    saveTask: async (taskId: number, state: boolean) => {
+        console.warn('Save task endpoint not implemented in FastAPI backend yet');
+        return {};
+    },
+    
+    updateTaskCompletionStatus: async (taskId: number) => {
+        console.warn('Task completion endpoint not implemented in FastAPI backend yet');
+        return {};
+    },
+    
+    // Improvements endpoints - placeholder until backend implements it
+    getImprovements: async () => {
+        console.warn('Get improvements endpoint not implemented in FastAPI backend yet');
+        return {
+            message: 'Welcome! Complete your first journal entry to get AI-powered improvements.',
+            tasks: [],
+            createdAt: new Date().toISOString(),
+        };
+    },
+    
+    createImprovements: async () => {
+        console.warn('Create improvements endpoint not implemented in FastAPI backend yet');
+        return {
+            message: 'AI improvements coming soon!',
+            tasks: [],
+            createdAt: new Date().toISOString(),
+        };
+    },
+    
+    fetchMessageOfDay: async () => {
+        console.warn('Message of day endpoint not implemented in FastAPI backend yet');
+        return {
+            message: 'Keep journaling! Your mental health journey is important. 🌟'
+        };
+    },
+    
+    // Journal compatibility functions
+    createEntry: async (authTokens: { access: string }, entry: { content: string; moodRating: number }) => {
+        return await journals.create(entry.content, entry.moodRating);
+    },
+    
+    getJournals: async (authTokens: { access: string }) => {
+        return await journals.getAll();
+    },
+    
+    fetchJournalEntryForToday: async (authTokens: { access: string }) => {
+        try {
+            const today = await journals.checkToday();
+            return {
+                hasEntryForToday: !!today,
+                entry: today
+            };
+        } catch (error) {
+            return {
+                hasEntryForToday: false,
+                entry: null
+            };
+        }
+    },
+    
+    getInsightForJournalEntry: async (authTokens: { access: string }, entryId: number) => {
+        try {
+            return await insights.getForEntry(entryId);
+        } catch (error) {
+            console.warn('Insights not available for entry:', entryId);
+            return [];
+        }
+    },
+    
+    removeUserData: async (authTokens: { access: string }) => {
+        console.warn('Remove user data endpoint not implemented in FastAPI backend yet');
+        return;
+    },
+    
+    updatePreferances: async (authTokens: { access: string }, formData: any) => {
+        console.warn('Update preferences endpoint not implemented in FastAPI backend yet');
+        return formData; // Return the same data for now
+    }
+};
+
 export default {
     auth,
     journals,
@@ -244,4 +371,5 @@ export default {
     improvements,
     preferences,
     users,
+    legacy,
 }; 

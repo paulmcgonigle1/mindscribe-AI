@@ -1,7 +1,7 @@
 import React from "react";
 import { ImprovementData } from "../../../lib/types/types";
 import TaskCard from "./TaskCard";
-import { saveTask } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import { useAuth } from "../../../context/AuthContext";
 import Load from "../../../assets/mindscribe2/svg/post.svg";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
   //this is savin task (adding to InProgress)
   const handleSaveTask = async (taskId: number, state: boolean) => {
     if (token) {
-      const response = await saveTask({ access: token }, taskId, state);
+      const response = await legacy.saveTask(taskId, state);
       console.log(response);
     }
   };

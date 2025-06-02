@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { JournalEntry } from "../../../lib/types/types";
 import { useState } from "react";
-import { getJournals } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import { useAuth } from "../../../context/AuthContext";
 
 import axios from "axios";
@@ -14,7 +14,7 @@ const RecentJournals: React.FC = () => {
     const fetchRecentEntries = async () => {
       if (token) {
         try {
-          const journals = await getJournals({ access: token });
+          const journals = await legacy.getJournals({ access: token });
           // console.log("Received journals:", journals);
           setJournals(journals);
         } catch (error) {

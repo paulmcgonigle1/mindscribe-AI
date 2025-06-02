@@ -19,7 +19,7 @@ import {
   useState,
 } from "react";
 import { JournalEntry } from "../../../lib/types/types";
-import { getJournals } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import { useAuth } from "../../../context/AuthContext";
 import { DayInsights } from "./CalendarDayInsight";
 function classNames(...classes: (string | boolean)[]) {
@@ -66,7 +66,7 @@ export default function Example() {
     const fetchEntries = async () => {
       if (token) {
         try {
-          const journals = await getJournals({
+          const journals = await legacy.getJournals({
             access: token,
           });
 

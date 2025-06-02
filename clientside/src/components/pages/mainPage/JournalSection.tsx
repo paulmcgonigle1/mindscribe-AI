@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createEntry } from "../../../services/JournalService";
+import { legacy } from "../../../services/api";
 import { NewJournalEntry } from "../../../lib/types/types";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -38,7 +38,7 @@ export default function JournalSection({
           moodRating: moodRating,
         };
 
-        const response = await createEntry({ access: token }, newEntry);
+        const response = await legacy.createEntry({ access: token }, newEntry);
         console.log("Entry created:", response);
         // Call the createEntry function with the newEntry object
         setEntryText("");
