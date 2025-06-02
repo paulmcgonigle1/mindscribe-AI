@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { getEmotions } from "../../../services/JournalService";
+import { useEffect, useState } from "react";
 import { EmotionData } from "../../../lib/types/types";
 import {
   FaFaceGrinBeam,
@@ -18,7 +17,7 @@ import {
   FaRegFaceFlushed,
   FaFaceLaugh,
 } from "react-icons/fa6";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 type EmotionIconMapType = {
   [key: string]: JSX.Element;
@@ -57,20 +56,29 @@ const excludedEmotions = ["n/a", "spirits", "anotherEmotionToExclude"];
 function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
   const [emotions, setEmotions] = useState<EmotionData[]>([]);
 
-  const { authTokens } = useContext(AuthContext) ?? {};
+  const { token, isAuthenticated } = useAuth();
   useEffect(() => {
     const fetchEmotions = async () => {
-      if (authTokens?.access) {
+      if (isAuthenticated && token) {
         try {
-          //const userId = 1;
-          const userEmotions = await getEmotions(authTokens, selectedPeriod);
+          // TODO: Implement emotions endpoint in FastAPI backend
+          // For now, using mock data
+          const mockEmotions: EmotionData[] = [
+            { emotion: "happy", count: 15 },
+            { emotion: "grateful", count: 12 },
+            { emotion: "content", count: 10 },
+            { emotion: "excited", count: 8 },
+            { emotion: "energized", count: 6 },
+            { emotion: "worry", count: 5 },
+            { emotion: "stress", count: 3 },
+            { emotion: "down", count: 2 }
+          ];
 
-          const validEmotions = userEmotions.filter(
+          const validEmotions = mockEmotions.filter(
             (emotionData) =>
               !excludedEmotions.includes(emotionData.emotion.toLowerCase())
           );
 
-          console.log(userEmotions); //this needs to be updated to get entries for the user
           setEmotions(validEmotions);
         } catch (error) {
           console.error("Error fetching emotions: ", error);
@@ -78,7 +86,7 @@ function EmotionGrid({ selectedPeriod }: EmotionGridProps) {
       }
     };
     fetchEmotions();
-  }, [selectedPeriod]);
+  }, [selectedPeriod, isAuthenticated, token]);
 
   return (
     <div className="flex flex-1 bg-green-100 p-4 rounded-md border border-gray-200 shadow-lg flex-col h-full">

@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { JournalEntry } from "../../../lib/types/types";
 import { getJournals } from "../../../services/JournalService";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 function StreakChart() {
   const [journals, setJournals] = useState<JournalEntry[]>([]);
-  const authContext = useContext(AuthContext);
+  const { token } = useAuth();
 
   const [streak, setStreak] = useState(0);
   const [daysStatus, setDaysStatus] = useState<boolean[]>(
@@ -15,20 +15,20 @@ function StreakChart() {
   //useEffect to fetch the recent entries
   useEffect(() => {
     const fetchRecentEntries = async () => {
-      if (authContext && authContext.authTokens) {
+      if (token) {
         try {
-          const journals = await getJournals(authContext.authTokens);
+          const journals = await getJournals({ access: token });
           console.log("Received journals:", journals);
           setJournals(journals);
         } catch (error) {
           console.error("Failed to fetch recent entries:", error);
         }
       } else {
-        console.log("Auth context or tokens are undefined/null");
+        console.log("Auth token is undefined/null");
       }
     };
     fetchRecentEntries();
-  }, []);
+  }, [token]);
   //useEffect to update the streak and daysStatus
   useEffect(() => {
     const last7Days = getLast7Days();

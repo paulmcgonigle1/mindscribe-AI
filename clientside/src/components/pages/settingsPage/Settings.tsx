@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import {
   getSettings,
   removeUserData,
@@ -21,7 +21,7 @@ function Settings() {
   });
 
   const navigate = useNavigate();
-  const { authTokens } = useContext(AuthContext) ?? {};
+  const { token } = useAuth();
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   console.log("Current settings:", settings);
@@ -30,9 +30,9 @@ function Settings() {
     // fetch settings logic
 
     const fetchSettings = async () => {
-      if (authTokens?.access) {
+      if (token) {
         try {
-          const fetchedsettings = await getSettings(authTokens);
+          const fetchedsettings = await getSettings({ access: token });
           // console.log("Settings for this user:", fetchedsettings);
           setSettings(fetchedsettings);
         } catch (error) {
@@ -42,20 +42,20 @@ function Settings() {
     };
 
     fetchSettings();
-  }, [authTokens]);
+  }, [token]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // fixes auth token error
-    if (!authTokens?.access) {
+    if (!token) {
       console.error("No authentication token available.");
       return;
     }
 
     try {
       // Call the updateSettings function, passing the auth tokens and the current settings state.
-      const response = await updateSettings(authTokens, settings);
+      const response = await updateSettings({ access: token }, settings);
       console.log("Settings updated successfully:", response);
       // Optionally, you could refresh the settings from the server again here, or handle any post-update logic.
     } catch (error) {
@@ -64,13 +64,13 @@ function Settings() {
   };
 
   const handleRemoveData = async () => {
-    if (!authTokens?.access) {
+    if (!token) {
       console.error("No authentication token available.");
       return;
     }
 
     try {
-      const response = await removeUserData(authTokens);
+      const response = await removeUserData({ access: token });
       console.log("User data removed successfully:", response);
       navigate("/home");
       // Optionally, you could redirect the user to a different page or display a confirmation message.

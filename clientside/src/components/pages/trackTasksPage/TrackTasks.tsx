@@ -1,20 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Task } from "../../../lib/types/types";
 import { getTrackedTasks } from "../../../services/JournalService";
 import { updateTaskCompletionStatus } from "../../../services/JournalService";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { saveTask } from "../../../services/JournalService";
 import Load from "../../../assets/mindscribe2/svg/load.svg";
 
 const TrackTasks = () => {
   const [inProgressTasks, setInProgressTasks] = useState<Task[]>([]);
-  const { authTokens } = useContext(AuthContext) ?? {};
+  const { token } = useAuth();
 
   useEffect(() => {
     // Fetch in-progress tasks when the modal opens
     const loadInProgressTasks = async () => {
-      if (authTokens?.access) {
+      if (token) {
         try {
+          // Note: This service might need updating to work with the new API
+          const authTokens = { access: token };
           const tasks = await getTrackedTasks(authTokens);
           console.log("Tasks In Progress:", tasks);
           setInProgressTasks(tasks);
@@ -25,10 +27,11 @@ const TrackTasks = () => {
     };
 
     loadInProgressTasks();
-  }, [authTokens]);
+  }, [token]);
 
   const handleTaskCompletionChange = async (task: Task, isChecked: boolean) => {
-    if (authTokens?.access) {
+    if (token) {
+      const authTokens = { access: token };
       await updateTaskCompletionStatus(authTokens, task.taskId);
     }
 
@@ -39,14 +42,17 @@ const TrackTasks = () => {
       )
     );
   };
+
   const handleSaveTask = async (taskId: number, state: boolean) => {
-    if (authTokens?.access) {
+    if (token) {
+      const authTokens = { access: token };
       const response = await saveTask(authTokens, taskId, state);
       console.log(response);
     }
   };
+
   const handleRemoveorCompleteTask = async (task: Task) => {
-    if (!authTokens?.access) return;
+    if (!token) return;
 
     if (task.isCompleted) {
       // If the task is completed, we assume it should be removed from tracking

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { getThemes } from "../../../services/JournalService";
 import { ThemeData } from "../../../lib/types/types";
@@ -22,7 +22,7 @@ import {
   FaComments,
   FaWater,
 } from "react-icons/fa6";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 type themeIconMapType = {
   [key: string]: JSX.Element;
@@ -69,14 +69,14 @@ const excludedThemes = [
 
 function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
   const [themes, setThemes] = useState<ThemeData[]>([]);
-  const { authTokens } = useContext(AuthContext) ?? {};
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchThemes = async () => {
-      if (authTokens?.access) {
+      if (token) {
         try {
           //const userId = 1;
-          const userThemes = await getThemes(authTokens, selectedPeriod);
+          const userThemes = await getThemes({ access: token }, selectedPeriod);
           const validThemes = userThemes.filter(
             (themeData) =>
               !excludedThemes.includes(themeData.theme.toLowerCase())
@@ -89,7 +89,7 @@ function ThemesGrid({ selectedPeriod }: ThemeGridProps) {
       }
     };
     fetchThemes();
-  }, [selectedPeriod]);
+  }, [selectedPeriod, token]);
 
   //this just displays the common themes as emojis in a nice layout.
   return (

@@ -1,17 +1,17 @@
-import { useState, useContext, useEffect } from "react";
-import AuthContext from "../../../context/AuthContext";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../../context/AuthContext";
 import Typewriter from "typewriter-effect";
 import { fetchMessageOfDay } from "../../../services/JournalService";
 
 function Improvements_Message() {
   const [message, setMessage] = useState<string | null>(null);
   const [shouldTypeWriter, setShouldTypeWriter] = useState<boolean>(true); // Indicates whether to use Typewriter effect
-  const { authTokens } = useContext(AuthContext) ?? {};
+  const { token } = useAuth();
 
   const fetchMessage = async () => {
-    if (authTokens?.access) {
+    if (token) {
       try {
-        const response = await fetchMessageOfDay(authTokens);
+        const response = await fetchMessageOfDay({ access: token });
         setMessage(response.message);
         localStorage.setItem("messageOfDay", response.message); // Store the new message in localStorage
         setShouldTypeWriter(true); // Enable Typewriter when a new message is fetched

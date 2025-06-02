@@ -15,13 +15,12 @@ import {
 import {
   Dispatch,
   SetStateAction,
-  useContext,
   useEffect,
   useState,
 } from "react";
 import { JournalEntry } from "../../../lib/types/types";
 import { getJournals } from "../../../services/JournalService";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { DayInsights } from "./CalendarDayInsight";
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
@@ -33,7 +32,7 @@ export default function Example() {
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const authContext = useContext(AuthContext);
+  const { token } = useAuth();
 
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -65,10 +64,10 @@ export default function Example() {
 
   useEffect(() => {
     const fetchEntries = async () => {
-      if (authContext?.authTokens?.access) {
+      if (token) {
         try {
           const journals = await getJournals({
-            access: authContext.authTokens.access,
+            access: token,
           });
 
           setEntries(journals);
@@ -81,7 +80,7 @@ export default function Example() {
     };
 
     fetchEntries();
-  }, []);
+  }, [token]);
 
   interface CalendarHeaderProps {
     firstDayCurrentMonth: Date;

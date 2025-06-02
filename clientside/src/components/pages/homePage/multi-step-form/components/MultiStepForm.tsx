@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import StepA from "./StepA";
 import StepB from "./StepB";
 import StepC from "./StepC";
 import StepD from "./StepD";
 import StepFinal from "./StepFinal";
-import AuthContext from "../../../../../context/AuthContext";
+import { useAuth } from "../../../../../context/AuthContext";
 import { updatePreferances } from "../../../../../services/JournalService";
 
 const initialFormData = {
@@ -24,7 +24,7 @@ interface MultiStepFormProps {
 const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
   const [step, setStep] = useState("A");
   const [formData, setFormData] = useState(initialFormData);
-  const { authTokens } = useContext(AuthContext) ?? {};
+  const { token } = useAuth();
 
   // We need a method to go to next step
   const handleNextStep = () => {
@@ -76,7 +76,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
     }
 
     // Proceed only if the auth token exists
-    if (!authTokens?.access) {
+    if (!token) {
       console.error("No authentication token available.");
       return; // Stops execution if no auth token
     }
@@ -85,7 +85,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ showStepNumber }) => {
 
     try {
       // Call the updateSettings function, passing the auth tokens and the current settings state.
-      const response = await updatePreferances(authTokens, formData);
+      const response = await updatePreferances({ access: token }, formData);
       console.log("Settings updated successfully:", response);
       setStep("Final"); // Proceed to the final step
       // Optionally, you could refresh the settings from the server again here, or handle any post-update logic.

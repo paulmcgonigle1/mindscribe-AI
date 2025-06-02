@@ -16,3 +16,4 @@ myenv/
 backend/staticfiles/
 
 backend/staticfiles
+backend_fastapi/venv

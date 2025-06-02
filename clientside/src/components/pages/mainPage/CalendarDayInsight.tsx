@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
-import { useState, useContext } from "react";
-import AuthContext from "../../../context/AuthContext";
+import { useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
 import { Insight, JournalEntry } from "../../../lib/types/types";
 import { getInsightForJournalEntry } from "../../../services/JournalService";
 import ModalComponent from "./ModalComponent";
@@ -9,15 +9,15 @@ import ModalComponent from "./ModalComponent";
 export function DayInsights({ entry }: { entry: JournalEntry }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [insight, setInsight] = useState<Insight | null>(null);
-  const authContext = useContext(AuthContext);
+  const { token } = useAuth();
 
   //use service to get insight for selectedEntry
 
   const fetchAndSetInsight = async (entryId: number) => {
-    if (authContext?.authTokens?.access) {
+    if (token) {
       try {
         const insights = await getInsightForJournalEntry(
-          { access: authContext.authTokens.access },
+          { access: token },
           entryId
         );
         // If insights are returned as an array and you want the first one:

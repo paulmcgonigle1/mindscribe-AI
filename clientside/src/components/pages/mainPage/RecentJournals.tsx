@@ -1,29 +1,27 @@
 import React, { useEffect } from "react";
 import { JournalEntry } from "../../../lib/types/types";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { getJournals } from "../../../services/JournalService";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 import axios from "axios";
 
 const RecentJournals: React.FC = () => {
   const [journals, setJournals] = useState<JournalEntry[]>([]);
-  const { authTokens, logoutUser } = useContext(AuthContext) ?? {};
+  const { token, logout } = useAuth();
 
   useEffect(() => {
     const fetchRecentEntries = async () => {
-      if (authTokens) {
+      if (token) {
         try {
-          const journals = await getJournals(authTokens);
+          const journals = await getJournals({ access: token });
           // console.log("Received journals:", journals);
           setJournals(journals);
         } catch (error) {
           //this will log you out if you are unauthorized
           if (axios.isAxiosError(error) && error.response?.status === 401) {
             console.log("Unauthorized -- logging you out");
-            if (logoutUser) {
-              logoutUser();
-            }
+            logout();
           } else {
             console.error("Failed to fetch recent entries:", error);
           }
@@ -33,7 +31,7 @@ const RecentJournals: React.FC = () => {
       }
     };
     fetchRecentEntries();
-  }, []);
+  }, [token, logout]);
   return (
     <div className="flex flex-col max-h-96 overflow-auto">
       <h2 className="text-lg font-bold mb-2">Journal Entries</h2>

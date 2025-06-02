@@ -1,39 +1,38 @@
 // StatsDashboard.js
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MoodAnalytics from "./MoodSection/MoodAnalytics";
-import { getJournals } from "../../../services/JournalService";
+import { journals } from "../../../services/api";
 import { JournalEntry } from "../../../lib/types/types";
 import MoodPieChart from "./MoodPieChart";
 import EmotionGrid from "./EmotionGrid";
 import ThemesGrid from "./ThemesGrid";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import Load from "../../../assets/mindscribe2/svg/load.svg";
 import { useNavigate } from "react-router-dom";
 
 export default function StatsDashboard() {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(7); // Default to last 7 days
-  const [journals, setJournals] = useState<JournalEntry[]>([]);
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
 
-  const authContext = useContext(AuthContext);
+  const { isAuthenticated, token } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecentEntries = async () => {
-      if (authContext && authContext.authTokens) {
+      if (isAuthenticated && token) {
         try {
-          const journals = await getJournals(authContext.authTokens);
-          console.log("Received journals:", journals);
-          setJournals(journals);
+          const journalData = await journals.getAll();
+          console.log("Received journals:", journalData);
+          setJournalEntries(journalData);
         } catch (error) {
           console.error("Failed to fetch recent entries:", error);
-        } finally {
         }
       } else {
         console.log("Auth context or tokens are undefined/null");
       }
     };
     fetchRecentEntries();
-  }, []);
+  }, [isAuthenticated, token]);
 
   const handlePeriodChange = (newPeriod: number) => {
     setSelectedPeriod(newPeriod);
@@ -43,7 +42,7 @@ export default function StatsDashboard() {
     navigate("/");
   };
 
-  const enoughEntries = journals.length >= 5;
+  const enoughEntries = journalEntries.length >= 5;
 
   return (
     <div className="flex flex-col  mx-20 my-5">
@@ -83,14 +82,14 @@ export default function StatsDashboard() {
         <div className={`flex flex-wrap -mx-4 w-full mb-4 bg-slate-50`}>
           <div className="w-full xl:w-2/3 px-4 py-3 flex min-w-0">
             <MoodAnalytics
-              entries={journals}
+              entries={journalEntries}
               selectedPeriod={selectedPeriod}
               onPeriodChange={handlePeriodChange}
             />
           </div>
           <div className="w-full xl:w-1/3 px-4 py-3  flex min-w-0">
             <MoodPieChart
-              entries={journals}
+              entries={journalEntries}
               selectedPeriod={selectedPeriod}
               onPeriodChange={handlePeriodChange}
             />

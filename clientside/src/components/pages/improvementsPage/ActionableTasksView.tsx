@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import React from "react";
 import { ImprovementData } from "../../../lib/types/types";
 import TaskCard from "./TaskCard";
 import { saveTask } from "../../../services/JournalService";
-import AuthContext from "../../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import Load from "../../../assets/mindscribe2/svg/post.svg";
 import { useNavigate } from "react-router-dom";
 
@@ -12,12 +12,12 @@ interface ImprovementsMessageProps {
 function ActionableTasksView({ improvementData }: ImprovementsMessageProps) {
   const navigate = useNavigate();
 
-  const { authTokens } = useContext(AuthContext) ?? {};
+  const { token } = useAuth();
 
   //this is savin task (adding to InProgress)
   const handleSaveTask = async (taskId: number, state: boolean) => {
-    if (authTokens?.access) {
-      const response = await saveTask(authTokens, taskId, state);
+    if (token) {
+      const response = await saveTask({ access: token }, taskId, state);
       console.log(response);
     }
   };
